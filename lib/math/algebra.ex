@@ -1,37 +1,47 @@
 defmodule Math.Algebra do
   @moduledoc false
 
+  import Integer, only: [is_even: 1]
+
   @doc ~S"""
   The `first_minor` of a `matrix` obtained by removing just the `i`-row and the `j`-column from the `matrix`.
   It is required for calculating **cofactors**, which in turn are useful for computing both the **determinant**
-  and **inverse** of square matrices.
+  and **inverse** of square matrices. `i` and `j` are zero based.
 
   ## Examples
 
-      iex> Math.Algebra.minor([[ 1.0, 4.0, 7.0],
-      ...>                     [ 3.0, 0.0, 5.0],
-      ...>                     [-1.0, 9.0,11.0]],
-      ...>                     2,
-      ...>                     3)
-      13.0
+      iex> Math.Algebra.first_minor([[ 1.0, 4.0, 7.0],
+      ...>                           [ 3.0, 0.0, 5.0],
+      ...>                           [-1.0, 9.0,11.0]],
+      ...>                           1,
+      ...>                           2)
+      [[ 1.0, 4.0],
+       [-1.0, 9.0]]
 
-      iex> Math.Algebra.minor([[6.0, 1.0, 1.0],
-      ...>                     [4.0,-2.0, 5.0],
-      ...>                     [2.0, 8.0, 7.0]],
-      ...>                     1,
-      ...>                     1)
-      -54.0
+      iex> Math.Algebra.first_minor([[6.0, 1.0, 1.0],
+      ...>                           [4.0,-2.0, 5.0],
+      ...>                           [2.0, 8.0, 7.0]],
+      ...>                           0,
+      ...>                           0)
+      [[-2.0, 5.0],
+       [ 8.0, 7.0]]
 
-      iex> Math.Algebra.determinant([[ 5.0,-7.0, 2.0, 2.0],
+      iex> Math.Algebra.first_minor([[ 5.0,-7.0, 2.0, 2.0],
       ...>                           [ 0.0, 3.0, 0.0,-4.0],
       ...>                           [-5.0,-8.0, 0.0, 3.0],
       ...>                           [ 0.0, 5.0, 0.0,-6.0]],
-      ...>                           1,
-      ...>                           3)
-      5.0
+      ...>                           0,
+      ...>                           2)
+      [[ 0.0, 3.0,-4.0],
+       [-5.0,-8.0, 3.0],
+       [ 0.0, 5.0,-6.0]]
 
   """
-  def first_minor(matrix, i, j), do: nil
+  def first_minor(matrix, i, j) do
+    matrix
+    |> List.delete_at(i)
+    |> Enum.map(&(List.delete_at(&1, j)))
+  end
 
   @doc ~S"""
   A value that can be computed from the elements of a square `matrix`.
@@ -49,17 +59,36 @@ defmodule Math.Algebra do
       -306.0
 
       iex> Math.Algebra.determinant([[4.0, 3.0, 2.0, 2.0],
-      ...>                           [0.0, 1.0, 0.0,-2.0],
-      ...>                           [1.0,-1.0, 3.0, 3.0],
-      ...>                           [2.0, 3.0, 1.0, 1.0]])
+      ...>                           [0.0, 1.0,-3.0, 3.0],
+      ...>                           [0.0,-1.0, 3.0, 3.0],
+      ...>                           [0.0, 3.0, 1.0, 1.0]])
       -240.0
 
   """
   def determinant(
         [
-          [a, b | __],
-          [c, d | _ ] | _
+          [a, b | rest],
+          [c, d | _] | _
         ]
-      ) when (__ === []), do: a * d - c * b
+      ) when (rest === []), do: a * d - c * b
+  def determinant(matrix) do
+    matrix
+    |> hd
+    |> Enum.with_index()
+    |> Enum.map(
+         fn {elem, j} ->
+           delta = matrix
+                   |> first_minor(0, j)
+                   |> determinant
+           alpha = if is_even(j) do
+             elem
+           else
+             -elem
+           end
+           alpha * delta
+         end
+       )
+    |> Enum.sum()
+  end
 
 end
