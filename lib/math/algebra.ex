@@ -115,4 +115,60 @@ defmodule Math.Algebra do
     |> Enum.map(&Tuple.to_list/1)
   end
 
+  @doc ~S"""
+  Returns the solution of a system of _linear equations_ by using Cramer's formula.
+
+    system of linear equations with unknowns:
+    ```
+    2.0*x + 3.0*y = 6.0
+    4.0*x + 9.0*y = 15.0
+    ```
+
+    `coefficients`:
+    ```
+    [[2.0, 3.0],
+     [4.0, 9.0]]
+    ```
+
+    `constants`:
+    ```
+    [ 6.0,
+     15.0]
+    ```
+
+  ## Examples
+
+      iex> Math.Algebra.cramer_solution([[2.0, 3.0],
+      ...>                               [4.0, 9.0]],
+      ...>                              [6.0, 15.0])
+      {:ok, [1.5, 1.0]}
+
+      iex> Math.Algebra.cramer_solution([[1.0, 3.0,-2.0],
+      ...>                               [3.0, 5.0, 6.0],
+      ...>                               [2.0, 4.0, 3.0]],
+      ...>                              [5.0, 7.0, 8.0])
+      {:ok, [-15.0, 8.0, 2.0]}
+
+      iex> Math.Algebra.cramer_solution([[0.0, 0.0],
+      ...>                               [3.0, 5.0]],
+      ...>                              [0.0, 12.0])
+      {:error, "The system has not a unique solution"}
+
+  """
+  def cramer_solution(coefficients, constants) do
+    determ = determinant(coefficients)
+    if determ == 0 do
+      {:error, "The system has not a unique solution"}
+    else
+      transposed = transpose(coefficients)
+      solution = for n <- 0..length(constants) - 1 do
+        denominator = transposed
+                      |> List.replace_at(n, constants)
+                      |> transpose
+                      |> determinant
+        denominator / determ
+      end
+      {:ok, solution}
+    end
+  end
 end
