@@ -91,4 +91,28 @@ defmodule Math.Algebra do
     |> Enum.sum()
   end
 
+  @doc ~S"""
+  Returns a new matrix whose rows are the columns of the original.
+
+  ## Examples
+
+      iex> Math.Algebra.transpose([[1.0, 4.0],
+      ...>                         [3.0, 0.0]])
+      [[1.0, 3.0],
+       [4.0, 0.0]]
+
+      iex> Math.Algebra.transpose([[6.0, 1.0, 1.0],
+      ...>                        [4.0,-2.0, 5.0],
+      ...>                        [2.0, 8.0, 7.0]])
+      [[6.0, 4.0, 2.0],
+       [1.0,-2.0, 8.0],
+       [1.0, 5.0, 7.0]]
+
+  """
+  def transpose(matrix) do
+    matrix
+    |> List.zip
+    |> Enum.map(&Tuple.to_list/1)
+  end
+
 end
