@@ -2,6 +2,7 @@ defmodule Math.Algebra do
   @moduledoc false
 
   import Integer, only: [is_even: 1]
+  alias Help.Utils, as: Utils
 
   @doc ~S"""
   The `first_minor` of a `matrix` obtained by removing just the `i`-row and the `j`-column from the `matrix`.
@@ -161,7 +162,7 @@ defmodule Math.Algebra do
       {:error, "The system has not a unique solution"}
     else
       transposed = transpose(coefficients)
-      solution = for n <- 0..length(constants) - 1 do
+      solution = for n <- Utils.indices(constants) do
         denominator = transposed
                       |> List.replace_at(n, constants)
                       |> transpose
