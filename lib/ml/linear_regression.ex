@@ -44,7 +44,7 @@ defmodule Ml.LinearRegression do
   end
 
   @doc ~S"""
-    The set of _predictor function_'s _coefficients_ based on observation `points`.
+  The set of _predictor function_'s _coefficients_ based on observation `points`.
 
     observations:
     ```
@@ -74,8 +74,43 @@ defmodule Ml.LinearRegression do
       ...>                                              [5.0, 2.25]])
       {:ok, [0.785, 0.425]}
 
-    ```
+
   """
   def regression_coefficients(points), do: Algebra.cramer_solution(coefficients(points), constants(points))
 
+  @doc ~S"""
+  The linear function of a set of _coefficients_ and _independent variables_,
+  whose value is used to predict the outcome of a _dependent variable_.
+
+        observations:
+        ```
+        f(1.794638, 15.15426     ) =   5.10998918E-1
+        f(3.220726, 229.6516     ) = 105.6583692
+        f(5.780040,   3.480201e+3) =   1.77699E3
+        ```
+
+        `points`:
+        ```
+        [[1.794638, 15.15426     ,   5.10998918E-1],
+         [3.220726, 229.6516     , 105.6583692    ],
+         [5.780040,   3.480201e+3,   1.77699E3    ]]
+        ```
+
+        ## Examples
+
+          iex> {_, f} = Ml.LinearRegression.predictor_function([[1.794638, 15.15426     ,   5.10998918E-1],
+          ...>                                                  [3.220726, 229.6516     , 105.6583692    ],
+          ...>                                                  [5.780040,   3.480201e+3,   1.77699E3    ]])
+          ...>f.([3, 230])
+          106.74114058686602
+
+  """
+  def predictor_function(points) do
+    {res, cs} = regression_coefficients(points)
+    if res === :ok do
+      {:ok, fn independent_variables -> Geometry.dot_product(cs, [1 | independent_variables]) end}
+    else
+      {:error, "The linear system, produced by the observation points, has not a unique solution"}
+    end
+  end
 end
