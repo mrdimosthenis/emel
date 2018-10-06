@@ -4,7 +4,7 @@ defmodule Help.Utils do
   def identity(x), do: x
 
   @doc ~S"""
-  Returns the list of all indices of `ls`.
+  The list of all indices of `ls`.
 
   ## Examples
 

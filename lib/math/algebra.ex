@@ -66,6 +66,7 @@ defmodule Math.Algebra do
       -240.0
 
   """
+  def determinant([]), do: 1
   def determinant(
         [
           [a, b | rest],
@@ -93,7 +94,7 @@ defmodule Math.Algebra do
   end
 
   @doc ~S"""
-  Returns a new matrix whose rows are the columns of the original.
+  A matrix whose rows are the columns of the original.
 
   ## Examples
 
@@ -103,8 +104,8 @@ defmodule Math.Algebra do
        [4.0, 0.0]]
 
       iex> Math.Algebra.transpose([[6.0, 1.0, 1.0],
-      ...>                        [4.0,-2.0, 5.0],
-      ...>                        [2.0, 8.0, 7.0]])
+      ...>                         [4.0,-2.0, 5.0],
+      ...>                         [2.0, 8.0, 7.0]])
       [[6.0, 4.0, 2.0],
        [1.0,-2.0, 8.0],
        [1.0, 5.0, 7.0]]
@@ -117,7 +118,7 @@ defmodule Math.Algebra do
   end
 
   @doc ~S"""
-  Returns the solution of a system of _linear equations_ by using Cramer's formula.
+  The solution of a system of _linear equations_ by using Cramer's formula.
 
     system of linear equations with unknowns:
     ```
