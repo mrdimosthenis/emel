@@ -4,7 +4,7 @@ defmodule Help.Utils do
   def identity(x), do: x
 
   @doc ~S"""
-  Returns the list of all indices of `list`.
+  Returns the list of all indices of `ls`.
 
   ## Examples
 
@@ -19,6 +19,6 @@ defmodule Help.Utils do
 
   """
   def indices([]), do: []
-  def indices(list), do: Enum.map(0 .. length(list) - 1, &identity/1)
+  def indices(ls), do: Enum.map(0 .. length(ls) - 1, &identity/1)
 
 end
