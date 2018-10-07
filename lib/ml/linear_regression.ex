@@ -44,9 +44,9 @@ defmodule Ml.LinearRegression do
   end
 
   @doc ~S"""
-  The set of _predictor function_'s _coefficients_ based on observation `points`.
+  The set of _predictor function_'s _coefficients_ based on _observations_ (`points`).
 
-    observations:
+    _observations_:
     ```
     f(1.794638, 15.15426     ) =   5.10998918E-1
     f(3.220726, 229.6516     ) = 105.6583692
@@ -82,7 +82,7 @@ defmodule Ml.LinearRegression do
   The linear function of a set of _coefficients_ and _independent variables_,
   whose value is used to predict the outcome of a _dependent variable_.
 
-        observations:
+        _observations_:
         ```
         f(1.794638, 15.15426     ) =   5.10998918E-1
         f(3.220726, 229.6516     ) = 105.6583692
