@@ -106,11 +106,11 @@ defmodule Ml.LinearRegression do
 
   """
   def predictor_function(points) do
-    {res, cs} = regression_coefficients(points)
-    if res === :ok do
+    {flag, cs} = response = regression_coefficients(points)
+    if flag === :ok do
       {:ok, fn independent_variables -> Geometry.dot_product(cs, [1 | independent_variables]) end}
     else
-      {:error, "The linear system, produced by the observation points, has not a unique solution"}
+      response
     end
   end
 end
