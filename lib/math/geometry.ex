@@ -40,4 +40,18 @@ defmodule Math.Geometry do
     |> :math.sqrt()
   end
 
+
+  @doc ~S"""
+  The neighbor that is closest to the given `point`.
+
+  ## Examples
+
+      iex> Math.Geometry.nearest_neighbor([0.9, 0.0], [[0.0, 0.0], [0.0, 0.1], [1.0, 0.0], [1.0, 1.0]])
+      [1.0, 0.0]
+
+  """
+  def nearest_neighbor(point, neighbors, distance \\ &euclidean_distance/2) do
+    Enum.min_by(neighbors, fn n -> distance.(n, point) end)
+  end
+
 end
