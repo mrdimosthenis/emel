@@ -69,10 +69,10 @@ defmodule Math.Algebra do
   def determinant([]), do: 1
   def determinant(
         [
-          [a, b | rest],
-          [c, d | _] | _
+          [a, b],
+          [c, d]
         ]
-      ) when (rest === []), do: a * d - c * b
+      ), do: a * d - c * b
   def determinant(matrix) do
     matrix
     |> hd
@@ -154,13 +154,13 @@ defmodule Math.Algebra do
       iex> Math.Algebra.cramer_solution([[0.0, 0.0],
       ...>                               [3.0, 5.0]],
       ...>                              [0.0, 12.0])
-      {:error, "The system has not a unique solution"}
+      {:error, :no_unique_solution}
 
   """
   def cramer_solution(coefficients, constants) do
     determ = determinant(coefficients)
     if determ == 0 do
-      {:error, "The system has not a unique solution"}
+      {:error, :no_unique_solution}
     else
       transposed = transpose(coefficients)
       solution = for n <- Utils.indices(constants) do

@@ -76,7 +76,11 @@ defmodule Ml.LinearRegression do
 
 
   """
-  def regression_coefficients(points), do: Algebra.cramer_solution(coefficients(points), constants(points))
+  def regression_coefficients(points) do
+    a = coefficients(points)
+    b = constants(points)
+    Algebra.cramer_solution(a, b)
+  end
 
   @doc ~S"""
   The linear function of a set of _coefficients_ and _independent variables_,
@@ -106,11 +110,12 @@ defmodule Ml.LinearRegression do
 
   """
   def predictor_function(points) do
-    {flag, cs} = response = regression_coefficients(points)
-    if flag === :ok do
-      {:ok, fn independent_variables -> Geometry.dot_product(cs, [1 | independent_variables]) end}
-    else
-      response
+    {flag, result} = regression_coefficients(points)
+    case flag do
+      :ok ->
+        {:ok, fn independent_variables -> Geometry.dot_product(result, [1 | independent_variables]) end}
+      :error ->
+        {:error, result}
     end
   end
 end
