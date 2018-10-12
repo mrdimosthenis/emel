@@ -54,4 +54,23 @@ defmodule Math.Geometry do
     Enum.min_by(neighbors, fn n -> distance.(n, point) end)
   end
 
+  @doc ~S"""
+  The arithmetic mean position of the points.
+
+  ## Examples
+
+      iex> Math.Geometry.centroid([[0.0, 0.0], [0.0, 0.1], [1.0, 0.0], [1.0, 1.0]])
+      [0.5, 0.5]
+
+  """
+  defp centroid([]), do: raise "No centroid for empty group of points"
+  defp centroid([p | _] = points) do
+    s = for i <- Utils.indices(p) do
+      points
+      |> Enum.map(fn v -> Enum.at(v, i) end)
+      |> Enum.sum()
+    end
+    Enum.map(s, fn x -> x / length(points) end)
+  end
+
 end
