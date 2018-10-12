@@ -6,34 +6,21 @@ defmodule Ml.KMeans do
   """
 
   alias Help.Utils, as: Utils
+  alias Math.Geometry, as: Geometry
 
-  defmodule Cluster do
-    @enforce_keys [:centroid, :points]
-    defstruct [:centroid, :points]
+
+  def iterate(points_of_cluster, centroids) do
+    nil
   end
 
-  defp mean([]), do: raise "No mean for empty group of points"
-  defp mean([p | _] = points) do
-    s = for i <- Utils.indices(p) do
-      points
-      |> Enum.map(fn v -> Enum.at(v, i) end)
-      |> Enum.sum()
-    end
-    Enum.map(s, fn x -> x / length(points) end)
-  end
-
-  def initialize(_, k)when k <= 0, do: raise "K should be positive"
   def initialize(points, k) when k > length(points), do: raise "K should be less or equal to the number of points"
   def initialize(points, k) do
-    shuffled = Enum.shuffle(points)
-    selected = Enum.take(shuffled, k)
-    rest = Enum.drop(shuffled, k)
-    clusters = Enum.map(selected, fn p -> %Cluster{centroid: p, points: [p]} end)
-    %{:clusters => clusters, :unassigned_points => rest}
-  end
-
-  def iterate(%{:clusters => clusters, :unassigned_points => unassigned_points}) do
-    nil
+    centroids = points
+                |> Enum.shuffle()
+                |> Enum.uniq()
+                |> Enum.take(k)
+    groups = Enum.group_by(points, fn p -> Geometry.nearest_neighbor(p, centroids) end)
+    iterate(groups)
   end
 
 end
