@@ -1,6 +1,13 @@
 defmodule Help.Utils do
   @moduledoc false
 
+  defmodule Pair do
+    @enforce_keys [:first, :second]
+    defstruct [:first, :second]
+    def first(%Pair{first: k}), do: k
+    def second(%Pair{second: v}), do: v
+  end
+
   def identity(x), do: x
 
   @doc ~S"""

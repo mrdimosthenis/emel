@@ -4,19 +4,20 @@ defmodule Ml.KMeans do
   in which each _observation_ belongs to the _cluster_ with the nearest _mean_.
 
   """
+  alias Help.Utils, as: Utils
   alias Math.Geometry, as: Geometry
 
   defp point_groups(points, centroids) do
     points
     |> Enum.group_by(fn p -> Geometry.nearest_neighbor(p, centroids) end)
-    |> Enum.map(&Tuple.to_list/1)
-    |> Enum.sort_by(&List.first/1)
+    |> Enum.map(fn {k, v} -> %Utils.Pair{first: k, second: v} end)
+    |> Enum.sort_by(&Utils.Pair.first/1)
   end
 
   defp iterate(clusters) do
-    groups = Enum.map(clusters, &List.last/1)
+    groups = Enum.map(clusters, &Utils.Pair.second/1)
     points = Enum.concat(groups)
-    old_centroids = Enum.map(clusters, &List.first/1)
+    old_centroids = Enum.map(clusters, &Utils.Pair.first/1)
     new_centroids = groups
                     |> Enum.map(&Geometry.centroid/1)
                     |> Enum.sort()
@@ -66,7 +67,7 @@ defmodule Ml.KMeans do
     points
     |> point_groups(centroids)
     |> iterate()
-    |> Enum.map(&List.last/1)
+    |> Enum.map(&Utils.Pair.second/1)
   end
 
 end
