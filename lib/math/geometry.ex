@@ -1,6 +1,8 @@
 defmodule Math.Geometry do
   @moduledoc false
 
+  alias Help.Utils, as: Utils
+
   @doc ~S"""
   The sum of the products of the corresponding entries of `x` and `y`.
 
@@ -55,22 +57,20 @@ defmodule Math.Geometry do
   end
 
   @doc ~S"""
-  The arithmetic mean position of the points.
+  The _arithmetic mean_ position of the `points`.
 
   ## Examples
 
-      iex> Math.Geometry.centroid([[0.0, 0.0], [0.0, 0.1], [1.0, 0.0], [1.0, 1.0]])
+      iex> Math.Geometry.centroid([[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0]])
       [0.5, 0.5]
 
   """
-  defp centroid([]), do: raise "No centroid for empty group of points"
-  defp centroid([p | _] = points) do
+  def centroid([]), do: raise "No centroid for empty group of points"
+  def centroid([p | _] = points) do
     s = for i <- Utils.indices(p) do
-      points
-      |> Enum.map(fn v -> Enum.at(v, i) end)
-      |> Enum.sum()
+      Enum.map(points, fn v -> Enum.at(v, i) end)
     end
-    Enum.map(s, fn x -> x / length(points) end)
+    Enum.map(s, fn v -> Enum.sum(v) / length(points) end)
   end
 
 end
