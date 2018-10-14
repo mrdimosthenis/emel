@@ -8,6 +8,15 @@ defmodule Help.Utils do
     def second(%Pair{second: v}), do: v
   end
 
+  @doc ~S"""
+  The base `b` _logarithm_ of `x`.
+
+    iex> Help.Utils.log(1.82, 10.0)
+    0.2600713879850748
+
+  """
+  def log(x, b), do: :math.log(x) / :math.log(b)
+
   def identity(x), do: x
 
   @doc ~S"""
