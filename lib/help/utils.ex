@@ -9,8 +9,11 @@ defmodule Help.Utils do
   defmodule TreeNode do
     @enforce_keys [:content, :children]
     defstruct [:content, :children]
-    def is_leaf(%TreeNode{children: ch}), do: Enum.empty?(ch)
   end
+
+  def pretty_tree(%TreeNode{content: content, children: []}), do: content
+  def pretty_tree(%TreeNode{content: content, children: children}), do: {content, Enum.map(children, &pretty_tree/1)}
+
 
   @doc ~S"""
   The base `b` _logarithm_ of `x`.
