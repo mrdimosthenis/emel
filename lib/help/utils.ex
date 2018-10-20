@@ -6,6 +6,12 @@ defmodule Help.Utils do
     defstruct [:first, :second]
   end
 
+  defmodule TreeNode do
+    @enforce_keys [:content, :children]
+    defstruct [:content, :children]
+    def is_leaf(%TreeNode{children: ch}), do: Enum.empty?(ch)
+  end
+
   @doc ~S"""
   The base `b` _logarithm_ of `x`.
 
