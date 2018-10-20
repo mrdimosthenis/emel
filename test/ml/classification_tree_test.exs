@@ -2,6 +2,7 @@ defmodule ClassificationTreeTest do
   use ExUnit.Case
   doctest Ml.ClassificationTree
   import Ml.ClassificationTree
+  alias Help.Utils, as: Utils
 
   @a [
     %{outlook: "s", windy: "f", golf: "y"},
@@ -26,6 +27,37 @@ defmodule ClassificationTreeTest do
 
   test "information gain" do
     assert information_gain(@a, :golf, :outlook) == 0.2467498197744391
+  end
+
+  test "decision tree" do
+    assert @a
+           |> decision_tree(:golf, [:outlook, :windy])
+           |> Enum.at(0)
+           |> Utils.pretty_tree ==
+             {
+               %{attribute: :outlook},
+               [
+                 {%{value: "o"}, [%{class: "y"}]},
+                 {
+                   %{value: "r"},
+                   [
+                     {
+                       %{attribute: :windy},
+                       [{%{value: "f"}, [%{class: "n"}]}, {%{value: "t"}, [%{class: "n"}]}]
+                     }
+                   ]
+                 },
+                 {
+                   %{value: "s"},
+                   [
+                     {
+                       %{attribute: :windy},
+                       [{%{value: "f"}, [%{class: "y"}]}, {%{value: "t"}, [%{class: "n"}]}]
+                     }
+                   ]
+                 }
+               ]
+             }
   end
 
 end
