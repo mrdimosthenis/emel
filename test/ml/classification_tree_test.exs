@@ -28,10 +28,4 @@ defmodule ClassificationTreeTest do
     assert information_gain(@a, :golf, :outlook) == 0.2467498197744391
   end
 
-  test "select attribute" do
-    assert select_attribute(@a, :golf, [:outlook, :windy], []) == {:ok, :outlook}
-    assert select_attribute(@a, :golf, [:outlook, :windy], [:outlook]) == {:ok, :windy}
-    assert select_attribute(@a, :golf, [:outlook, :windy], [:outlook, :windy]) == {:error, :no_available_attributes}
-  end
-
 end
