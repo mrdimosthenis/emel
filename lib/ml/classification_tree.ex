@@ -74,14 +74,14 @@ defmodule Ml.ClassificationTree do
                        content: %{
                          value: k
                        },
-                       children: decision_tree(v, class_attr, rest_attrs)
+                       children: unfold_tree(v, class_attr, rest_attrs)
                      }
         end
       )
     }
   end
 
-  def decision_tree(dataset, class_attr, non_selected_attrs) do
+  defp unfold_tree(dataset, class_attr, non_selected_attrs) do
     grouped_by_class = Enum.group_by(dataset, fn row -> row[class_attr] end)
     tree = cond do
       Enum.empty?(non_selected_attrs) -> exhausted_attributes(dataset, class_attr)
@@ -89,6 +89,11 @@ defmodule Ml.ClassificationTree do
       true -> break_down(dataset, class_attr, non_selected_attrs)
     end
     [tree]
+  end
+
+  def decision_tree(dataset, class_attr, non_selected_attrs) do
+    [tree] = unfold_tree(dataset, class_attr, non_selected_attrs)
+    Utils.pretty_tree(tree)
   end
 
 end

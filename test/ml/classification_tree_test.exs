@@ -2,7 +2,6 @@ defmodule ClassificationTreeTest do
   use ExUnit.Case
   doctest Ml.ClassificationTree
   import Ml.ClassificationTree
-  alias Help.Utils, as: Utils
 
   @a [
     %{outlook: "s", windy: "f", golf: "y"},
@@ -30,10 +29,7 @@ defmodule ClassificationTreeTest do
   end
 
   test "decision tree" do
-    assert @a
-           |> decision_tree(:golf, [:outlook, :windy])
-           |> Enum.at(0)
-           |> Utils.pretty_tree ==
+    assert decision_tree(@a, :golf, [:outlook, :windy]) ==
              {
                %{attribute: :outlook},
                [
