@@ -34,7 +34,7 @@ defmodule Ml.ClassificationTree do
     entropy(dataset, class_attr) - entropy(dataset, class_attr, attribute)
   end
 
-  defp exausted_attributes(dataset, class_attr) do
+  defp exhausted_attributes(dataset, class_attr) do
     %Utils.Pair{first: fst, second: _} = dataset
                                          |> Enum.group_by(fn row -> row[class_attr] end)
                                          |> Enum.map(fn {k, v} -> %Utils.Pair{first: k, second: length(v)} end)
@@ -84,7 +84,7 @@ defmodule Ml.ClassificationTree do
   def decision_tree(dataset, class_attr, non_selected_attrs) do
     grouped_by_class = Enum.group_by(dataset, fn row -> row[class_attr] end)
     tree = cond do
-      Enum.empty?(non_selected_attrs) -> exausted_attributes(dataset, class_attr)
+      Enum.empty?(non_selected_attrs) -> exhausted_attributes(dataset, class_attr)
       Enum.count(grouped_by_class) == 1 -> same_class(dataset, class_attr)
       true -> break_down(dataset, class_attr, non_selected_attrs)
     end
