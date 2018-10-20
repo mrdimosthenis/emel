@@ -4,8 +4,6 @@ defmodule Help.Utils do
   defmodule Pair do
     @enforce_keys [:first, :second]
     defstruct [:first, :second]
-    def first(%Pair{first: k}), do: k
-    def second(%Pair{second: v}), do: v
   end
 
   @doc ~S"""
