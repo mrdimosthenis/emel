@@ -22,7 +22,7 @@ defmodule Math.Statistics do
       0.5109640474436812
 
   """
-
+  def entropy([1.0]), do: 0.0
   def entropy(probability_values) do
     Enum.each(
       probability_values,
