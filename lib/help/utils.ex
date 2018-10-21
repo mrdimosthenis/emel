@@ -15,33 +15,28 @@ defmodule Help.Utils do
   def pretty_tree(%TreeNode{content: nil, children: children}), do: Enum.map(children, &pretty_tree/1)
   def pretty_tree(%TreeNode{content: content, children: children}), do: {content, Enum.map(children, &pretty_tree/1)}
 
-  @doc ~S"""
-  The base `b` _logarithm_ of `x`.
+  defp expand(%TreeNode{content: content, children: []}, path), do: [[content | path]]
+  defp expand(%TreeNode{content: content, children: children}, path) do
+    Enum.flat_map(
+      children,
+      fn child ->
+        expand(child, [content | path])
+      end
+    )
+  end
 
-    iex> Help.Utils.log(1.82, 10.0)
-    0.2600713879850748
+  def tree_paths(tree) do
+    tree
+    |> expand([])
+    |> Enum.map(&Enum.reverse/1)
+  end
 
-  """
   def log(x, b), do: :math.log(x) / :math.log(b)
 
   def identity(x), do: x
 
-  @doc ~S"""
-  The list of all indices of `ls`.
 
-  ## Examples
-
-      iex> Help.Utils.indices([])
-      []
-
-      iex> Help.Utils.indices([3, 7, 9])
-      [0, 1, 2]
-
-      iex> Help.Utils.indices(["b", "c", "d", "a", "e"])
-      [0, 1, 2, 3, 4]
-
-  """
   def indices([]), do: []
-  def indices(ls), do: Enum.map(0 .. length(ls) - 1, &identity/1)
+  def indices(ls), do: Enum.map(0..length(ls) - 1, &identity/1)
 
 end

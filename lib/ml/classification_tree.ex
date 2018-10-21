@@ -90,7 +90,7 @@ defmodule Ml.ClassificationTree do
   end
 
   @doc ~S"""
-  The _decision tree_ built with _ID3 Algorithm_ for a `dataset` with discrete `attributes`.
+  The expanded _decision tree_ built with the _ID3 Algorithm_ for a `dataset` with discrete `attributes`.
 
   ## Examples
 
@@ -111,15 +111,11 @@ defmodule Ml.ClassificationTree do
       ...>         %{outlook: "Rain", temperature: "Mild", humidity: "High", wind: "Strong", decision: "No"}
       ...>    ], :decision, [:outlook, :temperature, :humidity, :wind])
       [
-        {%{outlook: "Overcast"}, [%{decision: "Yes"}]},
-        {
-          %{outlook: "Rain"},
-          [[{%{wind: "Strong"}, [%{decision: "No"}]}, {%{wind: "Weak"}, [%{decision: "Yes"}]}]]
-        },
-        {
-          %{outlook: "Sunny"},
-          [[{%{humidity: "High"}, [%{decision: "No"}]}, {%{humidity: "Normal"}, [%{decision: "Yes"}]}]]
-        }
+        %{decision: "Yes", outlook: "Overcast"},
+        %{decision: "No", outlook: "Rain", wind: "Strong"},
+        %{decision: "Yes", outlook: "Rain", wind: "Weak"},
+        %{decision: "No", humidity: "High", outlook: "Sunny"},
+        %{decision: "Yes", humidity: "Normal", outlook: "Sunny"}
       ]
 
       iex> Ml.ClassificationTree.decision_tree([
@@ -139,36 +135,24 @@ defmodule Ml.ClassificationTree do
       ...>         %{risk: "high", collateral: "none", income: "moderate", debt: "high", credit_history: "bad"}
       ...>    ], :risk, [:collateral, :income, :debt, :credit_history])
       [
-        {
-          %{income: "high"},
-          [
-            [
-              {%{credit_history: "bad"}, [%{risk: "moderate"}]},
-              {%{credit_history: "good"}, [%{risk: "low"}]},
-              {%{credit_history: "unknown"}, [%{risk: "low"}]}
-            ]
-          ]
-        },
-        {%{income: "low"}, [%{risk: "high"}]},
-        {
-          %{income: "moderate"},
-          [
-            [
-              {%{credit_history: "bad"}, [%{risk: "high"}]},
-              {%{credit_history: "good"}, [%{risk: "moderate"}]},
-              {
-                %{credit_history: "unknown"},
-                [[{%{debt: "high"}, [%{risk: "high"}]}, {%{debt: "low"}, [%{risk: "moderate"}]}]]
-              }
-            ]
-          ]
-        }
+        %{credit_history: "bad", income: "high", risk: "moderate"},
+        %{credit_history: "good", income: "high", risk: "low"},
+        %{credit_history: "unknown", income: "high", risk: "low"},
+        %{income: "low", risk: "high"},
+        %{credit_history: "bad", income: "moderate", risk: "high"},
+        %{credit_history: "good", income: "moderate", risk: "moderate"},
+        %{credit_history: "unknown", debt: "high", income: "moderate", risk: "high"},
+        %{credit_history: "unknown", debt: "low", income: "moderate", risk: "moderate"}
       ]
 
   """
   def decision_tree(dataset, class, attributes) do
     [tree] = unfold_tree(dataset, class, attributes)
-    Utils.pretty_tree(tree)
+    for path <- Utils.tree_paths(tree) do
+      path
+      |> Enum.reject(&is_nil/1)
+      |> Enum.reduce(&Map.merge/2)
+    end
   end
 
 end
