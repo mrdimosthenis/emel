@@ -1,7 +1,7 @@
 defmodule Ml.ClassificationTree do
   @moduledoc ~S"""
   Uses a _decision tree_ to go from _observations_ about an item (represented in the branches)
-  to conclusions about the item's a discrete set of values (represented in the leaves).
+  to conclusions about the item's discrete target value (represented in the leaves).
 
   """
 
@@ -118,7 +118,22 @@ defmodule Ml.ClassificationTree do
         %{decision: "Yes", humidity: "Normal", outlook: "Sunny"}
       ]
 
-      iex> Ml.ClassificationTree.decision_tree([
+  """
+  def decision_tree(dataset, class, attributes) do
+    [tree] = unfold_tree(dataset, class, attributes)
+    for path <- Utils.tree_paths(tree) do
+      path
+      |> Enum.reject(&is_nil/1)
+      |> Enum.reduce(&Map.merge/2)
+    end
+  end
+
+  @doc ~S"""
+  The function that returns the item's discrete target value (`class`) using the _ID3 Algorithm_.
+
+  ## Examples
+
+      iex> f = Ml.ClassificationTree.classifier([
       ...>         %{risk: "high", collateral: "none", income: "low", debt: "high", credit_history: "bad"},
       ...>         %{risk: "high", collateral: "none", income: "moderate", debt: "high", credit_history: "unknown"},
       ...>         %{risk: "moderate", collateral: "none", income: "moderate", debt: "low", credit_history: "unknown"},
@@ -134,24 +149,18 @@ defmodule Ml.ClassificationTree do
       ...>         %{risk: "low", collateral: "none", income: "high", debt: "high", credit_history: "good"},
       ...>         %{risk: "high", collateral: "none", income: "moderate", debt: "high", credit_history: "bad"}
       ...>    ], :risk, [:collateral, :income, :debt, :credit_history])
-      [
-        %{credit_history: "bad", income: "high", risk: "moderate"},
-        %{credit_history: "good", income: "high", risk: "low"},
-        %{credit_history: "unknown", income: "high", risk: "low"},
-        %{income: "low", risk: "high"},
-        %{credit_history: "bad", income: "moderate", risk: "high"},
-        %{credit_history: "good", income: "moderate", risk: "moderate"},
-        %{credit_history: "unknown", debt: "high", income: "moderate", risk: "high"},
-        %{credit_history: "unknown", debt: "low", income: "moderate", risk: "moderate"}
-      ]
+      ...> f.(%{collateral: "none", income: "high", debt: "low", credit_history: "good"})
+      "low"
 
   """
-  def decision_tree(dataset, class, attributes) do
-    [tree] = unfold_tree(dataset, class, attributes)
-    for path <- Utils.tree_paths(tree) do
-      path
-      |> Enum.reject(&is_nil/1)
-      |> Enum.reduce(&Map.merge/2)
+  def classifier(dataset, class, attributes) do
+    rule_maps = decision_tree(dataset, class, attributes)
+    fn item ->
+      selected_rule = Enum.find(rule_maps, fn rule ->
+        keys = Map.keys(rule) -- [class]
+        Map.take(rule, keys) == Map.take(item, keys)
+      end)
+      selected_rule[class]
     end
   end
 
