@@ -42,7 +42,7 @@ defmodule Ml.ClassificationTree do
                                          |> Enum.at(0)
     %Utils.TreeNode{
       content: %{
-        class: fst
+        class_attr => fst
       },
       children: []
     }
@@ -51,7 +51,7 @@ defmodule Ml.ClassificationTree do
   defp same_class([row | _], class_attr) do
     %Utils.TreeNode{
       content: %{
-        class: row[class_attr]
+        class_attr => row[class_attr]
       },
       children: []
     }
@@ -65,14 +65,12 @@ defmodule Ml.ClassificationTree do
     )
     grouped_by_attr = Enum.group_by(dataset, fn row -> row[selected_attr] end)
     %Utils.TreeNode{
-      content: %{
-        attribute: selected_attr
-      },
+      content: nil,
       children: Enum.map(
         grouped_by_attr,
         fn {k, v} -> %Utils.TreeNode{
                        content: %{
-                         value: k
+                         selected_attr => k
                        },
                        children: unfold_tree(v, class_attr, rest_attrs)
                      }
@@ -91,8 +89,85 @@ defmodule Ml.ClassificationTree do
     [tree]
   end
 
-  def decision_tree(dataset, class_attr, non_selected_attrs) do
-    [tree] = unfold_tree(dataset, class_attr, non_selected_attrs)
+  @doc ~S"""
+  The _decision tree_ built with _ID3 Algorithm_ for a `dataset` with discrete `attributes`.
+
+  ## Examples
+
+      iex> Ml.ClassificationTree.decision_tree([
+      ...>         %{outlook: "Sunny", temperature: "Hot", humidity: "High", wind: "Weak", decision: "No"},
+      ...>         %{outlook: "Sunny", temperature: "Hot", humidity: "High", wind: "Strong", decision: "No"},
+      ...>         %{outlook: "Overcast", temperature: "Hot", humidity: "High", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Rain", temperature: "Mild", humidity: "High", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Rain", temperature: "Cool", humidity: "Normal", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Rain", temperature: "Cool", humidity: "Normal", wind: "Strong", decision: "No"},
+      ...>         %{outlook: "Overcast", temperature: "Cool", humidity: "Normal", wind: "Strong", decision: "Yes"},
+      ...>         %{outlook: "Sunny", temperature: "Mild", humidity: "High", wind: "Weak", decision: "No"},
+      ...>         %{outlook: "Sunny", temperature: "Cool", humidity: "Normal", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Rain", temperature: "Mild", humidity: "Normal", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Sunny", temperature: "Mild", humidity: "Normal", wind: "Strong", decision: "Yes"},
+      ...>         %{outlook: "Overcast", temperature: "Mild", humidity: "High", wind: "Strong", decision: "Yes"},
+      ...>         %{outlook: "Overcast", temperature: "Hot", humidity: "Normal", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Rain", temperature: "Mild", humidity: "High", wind: "Strong", decision: "No"}
+      ...>    ], :decision, [:outlook, :temperature, :humidity, :wind])
+      [
+        {%{outlook: "Overcast"}, [%{decision: "Yes"}]},
+        {
+          %{outlook: "Rain"},
+          [[{%{wind: "Strong"}, [%{decision: "No"}]}, {%{wind: "Weak"}, [%{decision: "Yes"}]}]]
+        },
+        {
+          %{outlook: "Sunny"},
+          [[{%{humidity: "High"}, [%{decision: "No"}]}, {%{humidity: "Normal"}, [%{decision: "Yes"}]}]]
+        }
+      ]
+
+      iex> Ml.ClassificationTree.decision_tree([
+      ...>         %{risk: "high", collateral: "none", income: "low", debt: "high", credit_history: "bad"},
+      ...>         %{risk: "high", collateral: "none", income: "moderate", debt: "high", credit_history: "unknown"},
+      ...>         %{risk: "moderate", collateral: "none", income: "moderate", debt: "low", credit_history: "unknown"},
+      ...>         %{risk: "high", collateral: "none", income: "low", debt: "low", credit_history: "unknown"},
+      ...>         %{risk: "low", collateral: "none", income: "high", debt: "low", credit_history: "unknown"},
+      ...>         %{risk: "low", collateral: "adequate", income: "high", debt: "low", credit_history: "unknown"},
+      ...>         %{risk: "high", collateral: "none", income: "low", debt: "low", credit_history: "bad"},
+      ...>         %{risk: "moderate", collateral: "adequate", income: "high", debt: "low", credit_history: "bad"},
+      ...>         %{risk: "low", collateral: "none", income: "high", debt: "low", credit_history: "good"},
+      ...>         %{risk: "low", collateral: "adequate", income: "high", debt: "high", credit_history: "good"},
+      ...>         %{risk: "high", collateral: "none", income: "low", debt: "high", credit_history: "good"},
+      ...>         %{risk: "moderate", collateral: "none", income: "moderate", debt: "high", credit_history: "good"},
+      ...>         %{risk: "low", collateral: "none", income: "high", debt: "high", credit_history: "good"},
+      ...>         %{risk: "high", collateral: "none", income: "moderate", debt: "high", credit_history: "bad"}
+      ...>    ], :risk, [:collateral, :income, :debt, :credit_history])
+      [
+        {
+          %{income: "high"},
+          [
+            [
+              {%{credit_history: "bad"}, [%{risk: "moderate"}]},
+              {%{credit_history: "good"}, [%{risk: "low"}]},
+              {%{credit_history: "unknown"}, [%{risk: "low"}]}
+            ]
+          ]
+        },
+        {%{income: "low"}, [%{risk: "high"}]},
+        {
+          %{income: "moderate"},
+          [
+            [
+              {%{credit_history: "bad"}, [%{risk: "high"}]},
+              {%{credit_history: "good"}, [%{risk: "moderate"}]},
+              {
+                %{credit_history: "unknown"},
+                [[{%{debt: "high"}, [%{risk: "high"}]}, {%{debt: "low"}, [%{risk: "moderate"}]}]]
+              }
+            ]
+          ]
+        }
+      ]
+
+  """
+  def decision_tree(dataset, class, attributes) do
+    [tree] = unfold_tree(dataset, class, attributes)
     Utils.pretty_tree(tree)
   end
 

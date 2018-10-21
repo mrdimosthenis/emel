@@ -28,32 +28,4 @@ defmodule ClassificationTreeTest do
     assert information_gain(@a, :golf, :outlook) == 0.2467498197744391
   end
 
-  test "decision tree" do
-    assert decision_tree(@a, :golf, [:outlook, :windy]) ==
-             {
-               %{attribute: :outlook},
-               [
-                 {%{value: "o"}, [%{class: "y"}]},
-                 {
-                   %{value: "r"},
-                   [
-                     {
-                       %{attribute: :windy},
-                       [{%{value: "f"}, [%{class: "n"}]}, {%{value: "t"}, [%{class: "n"}]}]
-                     }
-                   ]
-                 },
-                 {
-                   %{value: "s"},
-                   [
-                     {
-                       %{attribute: :windy},
-                       [{%{value: "f"}, [%{class: "y"}]}, {%{value: "t"}, [%{class: "n"}]}]
-                     }
-                   ]
-                 }
-               ]
-             }
-  end
-
 end

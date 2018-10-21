@@ -12,8 +12,8 @@ defmodule Help.Utils do
   end
 
   def pretty_tree(%TreeNode{content: content, children: []}), do: content
+  def pretty_tree(%TreeNode{content: nil, children: children}), do: Enum.map(children, &pretty_tree/1)
   def pretty_tree(%TreeNode{content: content, children: children}), do: {content, Enum.map(children, &pretty_tree/1)}
-
 
   @doc ~S"""
   The base `b` _logarithm_ of `x`.
