@@ -43,8 +43,7 @@ defmodule Ml.ClassificationTree do
     %Utils.TreeNode{
       content: %{
         class_attr => fst
-      },
-      children: []
+      }
     }
   end
 
@@ -52,8 +51,7 @@ defmodule Ml.ClassificationTree do
     %Utils.TreeNode{
       content: %{
         class_attr => row[class_attr]
-      },
-      children: []
+      }
     }
   end
 
@@ -65,7 +63,6 @@ defmodule Ml.ClassificationTree do
     )
     grouped_by_attr = Enum.group_by(dataset, fn row -> row[selected_attr] end)
     %Utils.TreeNode{
-      content: nil,
       children: Enum.map(
         grouped_by_attr,
         fn {k, v} -> %Utils.TreeNode{
