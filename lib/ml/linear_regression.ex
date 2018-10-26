@@ -4,9 +4,9 @@ defmodule Ml.LinearRegression do
 
   """
 
-  alias Help.Utils, as: Utils
-  alias Math.Algebra, as: Algebra
-  alias Math.Geometry, as: Geometry
+  alias Help.Utils
+  alias Math.Algebra
+  alias Math.Geometry
 
   @doc false
   defp c(points, i, j) do

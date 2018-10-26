@@ -2,7 +2,7 @@ defmodule Math.Algebra do
   @moduledoc false
 
   import Integer, only: [is_even: 1]
-  alias Help.Utils, as: Utils
+  alias Help.Utils
 
   @doc ~S"""
   The `first_minor` of a `matrix` obtained by removing just the `i`-row and the `j`-column from the `matrix`.

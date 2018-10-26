@@ -5,8 +5,8 @@ defmodule Ml.ClassificationTree do
 
   """
 
-  alias Help.Utils, as: Utils
-  alias Math.Statistics, as: Statistics
+  alias Help.Utils
+  alias Math.Statistics
 
   def entropy(dataset, class_attr) do
     dataset

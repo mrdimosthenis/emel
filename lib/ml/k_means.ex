@@ -4,8 +4,8 @@ defmodule Ml.KMeans do
   in which each _observation_ belongs to the _cluster_ with the nearest _mean_.
 
   """
-  alias Help.Utils, as: Utils
-  alias Math.Geometry, as: Geometry
+  alias Help.Utils
+  alias Math.Geometry
 
   defp point_groups(points, centroids) do
     points

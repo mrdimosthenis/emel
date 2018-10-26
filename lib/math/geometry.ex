@@ -1,7 +1,7 @@
 defmodule Math.Geometry do
   @moduledoc false
 
-  alias Help.Utils, as: Utils
+  alias Help.Utils
 
   @doc ~S"""
   The sum of the products of the corresponding entries of `x` and `y`.

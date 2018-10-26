@@ -1,7 +1,7 @@
 defmodule Math.Statistics do
   @moduledoc false
 
-  alias Help.Utils, as: Utils
+  alias Help.Utils
 
   @doc ~S"""
   A number that gives you an idea of how random an outcome will be based on the `probability_values`
