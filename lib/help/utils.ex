@@ -12,7 +12,7 @@ defmodule Help.Utils do
 
   def pretty_tree(%TreeNode{content: content, children: nil}), do: content
   def pretty_tree(%TreeNode{content: nil, children: children}), do: Enum.map(children, &pretty_tree/1)
-  def pretty_tree(%TreeNode{content: content, children: children}), do: {content, Enum.map(children, &pretty_tree/1)}
+  def pretty_tree(%TreeNode{content: content, children: children}), do: [content, Enum.map(children, &pretty_tree/1)]
 
   defp expand(%TreeNode{content: content, children: nil}, path), do: [[content | path]]
   defp expand(%TreeNode{content: content, children: children}, path) do

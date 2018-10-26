@@ -108,21 +108,31 @@ defmodule Ml.ClassificationTree do
       ...>         %{outlook: "Rain", temperature: "Mild", humidity: "High", wind: "Strong", decision: "No"}
       ...>    ], :decision, [:outlook, :temperature, :humidity, :wind])
       [
-        %{decision: "Yes", outlook: "Overcast"},
-        %{decision: "No", outlook: "Rain", wind: "Strong"},
-        %{decision: "Yes", outlook: "Rain", wind: "Weak"},
-        %{decision: "No", humidity: "High", outlook: "Sunny"},
-        %{decision: "Yes", humidity: "Normal", outlook: "Sunny"}
+        [%{outlook: "Overcast"}, [%{decision: "Yes"}]],
+        [
+          %{outlook: "Rain"},
+          [
+            [
+              [%{wind: "Strong"}, [%{decision: "No"}]],
+              [%{wind: "Weak"}, [%{decision: "Yes"}]]
+            ]
+          ]
+        ],
+        [
+          %{outlook: "Sunny"},
+          [
+            [
+              [%{humidity: "High"}, [%{decision: "No"}]],
+              [%{humidity: "Normal"}, [%{decision: "Yes"}]]
+            ]
+          ]
+        ]
       ]
 
   """
   def decision_tree(dataset, class, attributes) do
     [tree] = unfold_tree(dataset, class, attributes)
-    for path <- Utils.tree_paths(tree) do
-      path
-      |> Enum.reject(&is_nil/1)
-      |> Enum.reduce(&Map.merge/2)
-    end
+    Utils.pretty_tree(tree)
   end
 
   @doc ~S"""
@@ -151,12 +161,20 @@ defmodule Ml.ClassificationTree do
 
   """
   def classifier(dataset, class, attributes) do
-    rule_maps = decision_tree(dataset, class, attributes)
+    [tree] = unfold_tree(dataset, class, attributes)
+    rule_maps = for path <- Utils.tree_paths(tree) do
+      path
+      |> Enum.reject(&is_nil/1)
+      |> Enum.reduce(&Map.merge/2)
+    end
     fn item ->
-      selected_rule = Enum.find(rule_maps, fn rule ->
-        keys = Map.keys(rule) -- [class]
-        Map.take(rule, keys) == Map.take(item, keys)
-      end)
+      selected_rule = Enum.find(
+        rule_maps,
+        fn rule ->
+          keys = Map.keys(rule) -- [class]
+          Map.take(rule, keys) == Map.take(item, keys)
+        end
+      )
       selected_rule[class]
     end
   end
