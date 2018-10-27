@@ -135,6 +135,33 @@ defmodule Ml.ClassificationTree do
     Utils.pretty_tree(tree)
   end
 
+  defp actual_rule_match(rule_maps, item, class) do
+    Enum.find(
+      rule_maps,
+      fn rule ->
+        keys = Map.keys(rule) -- [class]
+        Map.take(rule, keys) == Map.take(item, keys)
+      end
+    )
+  end
+
+  defp nearest_rule_match(rule_maps, item, class) do
+    Enum.max_by(
+      rule_maps,
+      fn rule ->
+        keys = Map.keys(rule) -- [class]
+        rule_vals = rule
+                    |> Map.take(keys)
+                    |> Map.values()
+        item_vals = item
+                    |> Map.take(keys)
+                    |> Map.values()
+        Enum.zip(rule_vals, item_vals)
+        |> Enum.count(fn {rule_value, item_value} -> rule_value == item_value end)
+      end
+    )
+  end
+
   @doc ~S"""
   The function that returns the item's discrete target value (`class`) using the _ID3 Algorithm_.
 
@@ -168,20 +195,11 @@ defmodule Ml.ClassificationTree do
       |> Enum.reduce(&Map.merge/2)
     end
     fn item ->
-      selected_rule = Enum.max_by(
-        rule_maps,
-        fn rule ->
-          keys = Map.keys(rule) -- [class]
-          rule_vals = rule
-                      |> Map.take(keys)
-                      |> Map.values()
-          item_vals = item
-                      |> Map.take(keys)
-                      |> Map.values()
-          Enum.zip(rule_vals, item_vals)
-          |> Enum.count(fn {rule_value, item_value} -> rule_value == item_value end)
-        end
-      )
+      actual_rule = actual_rule_match(rule_maps, item, class)
+      selected_rule = case actual_rule do
+        nil -> nearest_rule_match(rule_maps, item, class)
+        _ -> actual_rule
+      end
       selected_rule[class]
     end
   end
