@@ -16,4 +16,11 @@ defmodule Help.DatasetManipulation do
     end
   end
 
+  def load_dataset(path, columns_of_interest) do
+    path
+    |> File.stream!()
+    |> CSV.decode!(headers: true)
+    |> Enum.map(fn row -> Map.take(row, columns_of_interest) end)
+  end
+
 end

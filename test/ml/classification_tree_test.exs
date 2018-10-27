@@ -3,6 +3,7 @@ defmodule ClassificationTreeTest do
   doctest Ml.ClassificationTree
   import Ml.ClassificationTree
   alias Help.Utils
+  alias Help.DatasetManipulation
 
   @a [
     %{outlook: "s", windy: "f", golf: "y"},
@@ -30,10 +31,20 @@ defmodule ClassificationTreeTest do
   end
 
   def parse_dataset(path) do
-    path
-    |> File.stream!()
-    |> CSV.decode!(headers: true)
-    |> Stream.map(fn row -> Map.drop(row, ["Cabin", "Embarked", "Name", "Ticket"]) end)
+    age_categorizer = DatasetManipulation.categorizer(
+      ["teen", 15, "young", 30, "middle age", 45, "old", 60, "very old"]
+    )
+    fare_categorizer = DatasetManipulation.categorizer(
+      ["cheap", 10, "normal price", 100, "expensive"]
+    )
+    loneliness_categorizer = DatasetManipulation.categorizer(
+      ["alone", 0.5, "Pair", 1.5, "accompanied"]
+    )
+
+    DatasetManipulation.load_dataset(
+      path,
+      ["PassengerId", "Survived", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
+    )
     |> Stream.filter(
          fn row ->
            row
@@ -44,37 +55,15 @@ defmodule ClassificationTreeTest do
     |> Enum.map(
          fn %{"Age" => age, "Fare" => fare, "Parch" => parch, "SibSp" => sis_sp} = row ->
            {parsed_age, ""} = Float.parse(age)
-           age_category = cond do
-             parsed_age < 15 -> "teen"
-             parsed_age < 30 -> "young"
-             parsed_age < 45 -> "middle age"
-             parsed_age < 60 -> "old"
-             true -> "very old"
-           end
            {parsed_fare, ""} = Float.parse(fare)
-           fare_category = cond do
-             parsed_fare < 10 -> "cheap"
-             parsed_fare < 100 -> "normal price"
-             true -> "expensive"
-           end
            {parsed_parch, ""} = Integer.parse(parch)
-           parch_category = cond do
-             parsed_parch == 0 -> "alone"
-             parsed_parch == 1 -> "pair"
-             true -> "accompanied"
-           end
            {parsed_sis_sp, ""} = Integer.parse(sis_sp)
-           sis_sp_category = cond do
-             parsed_sis_sp == 0 -> "alone"
-             parsed_sis_sp == 1 -> "pair"
-             true -> "accompanied"
-           end
            %{
              row |
-             "Age" => age_category,
-             "Fare" => fare_category,
-             "Parch" => parch_category,
-             "SibSp" => sis_sp_category
+             "Age" => age_categorizer.(parsed_age),
+             "Fare" => fare_categorizer.(parsed_fare),
+             "Parch" => loneliness_categorizer.(parsed_parch),
+             "SibSp" => loneliness_categorizer.(parsed_sis_sp)
            }
          end
        )
