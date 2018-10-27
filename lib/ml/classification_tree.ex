@@ -168,11 +168,18 @@ defmodule Ml.ClassificationTree do
       |> Enum.reduce(&Map.merge/2)
     end
     fn item ->
-      selected_rule = Enum.find(
+      selected_rule = Enum.max_by(
         rule_maps,
         fn rule ->
           keys = Map.keys(rule) -- [class]
-          Map.take(rule, keys) == Map.take(item, keys)
+          rule_vals = rule
+                      |> Map.take(keys)
+                      |> Map.values()
+          item_vals = item
+                      |> Map.take(keys)
+                      |> Map.values()
+          Enum.zip(rule_vals, item_vals)
+          |> Enum.count(fn {rule_value, item_value} -> rule_value == item_value end)
         end
       )
       selected_rule[class]
