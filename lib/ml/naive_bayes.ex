@@ -53,13 +53,14 @@ defmodule Ml.NaiveBayes do
       ...>         %{outlook: "Overcast", temperature: "Mild", humidity: "High", wind: "Strong", decision: "Yes"},
       ...>         %{outlook: "Overcast", temperature: "Hot", humidity: "Normal", wind: "Weak", decision: "Yes"},
       ...>         %{outlook: "Rain", temperature: "Mild", humidity: "High", wind: "Strong", decision: "No"}
-      ...>    ], :decision)
+      ...>    ], :decision, [:outlook, :temperature, :humidity, :wind])
       ...> f.(%{outlook: "Sunny", temperature: "Mild", humidity: "Normal", wind: "Strong"})
       "Yes"
 
   """
-  def classifier(observations, class) do
+  def classifier(observations, class, attributes) do
     class_values = observations
+                   |> Enum.map(fn row -> Map.take(row, [class | attributes]) end)
                    |> Enum.map(fn %{^class => val} -> val end)
                    |> Enum.uniq()
     fn values_by_attribute_map ->

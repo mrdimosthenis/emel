@@ -2,6 +2,7 @@ defmodule Ml.NaiveBayesTest do
   use ExUnit.Case
   doctest Ml.NaiveBayes
   import Ml.NaiveBayes
+  alias Help.DatasetManipulation
 
   @observations [
     %{humidity: "Humid", temperature: "Hot", wind_speed: "Fast", weather: "Sunny"},
@@ -52,7 +53,7 @@ defmodule Ml.NaiveBayesTest do
   end
 
   test "classifier" do
-    f = classifier(@observations, :weather)
+    f = classifier(@observations, :weather, [:humidity, :temperature, :wind_speed])
     assert f.(%{humidity: "Humid", temperature: "Cold", wind_speed: "Fast"}) == "Sunny"
   end
 
