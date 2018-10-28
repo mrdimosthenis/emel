@@ -60,10 +60,10 @@ defmodule Ml.NaiveBayes do
   """
   def classifier(observations, class, attributes) do
     class_values = observations
-                   |> Enum.map(fn row -> Map.take(row, [class | attributes]) end)
                    |> Enum.map(fn %{^class => val} -> val end)
                    |> Enum.uniq()
-    fn values_by_attribute_map ->
+    fn item ->
+      values_by_attribute_map = Map.take(item, attributes)
       Enum.max_by(
         class_values,
         fn class_val ->
