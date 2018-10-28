@@ -29,7 +29,7 @@ defmodule DecisionTreeTest do
     assert information_gain(@observations, :golf, :outlook) == 0.2467498197744391
   end
 
-  test "" do
+  test "titanic" do
     train_dataset = DatasetManipulation.load_dataset(
       "resources/datasets/titanic/modified/train.csv",
       ["PassengerId", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Survived"]
