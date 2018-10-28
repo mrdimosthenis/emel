@@ -1,7 +1,7 @@
-defmodule ClassificationTreeTest do
+defmodule DecisionTreeTest do
   use ExUnit.Case
-  doctest Ml.ClassificationTree
-  import Ml.ClassificationTree
+  doctest Ml.DecisionTree
+  import Ml.DecisionTree
   alias Help.DatasetManipulation
 
   @a [
@@ -38,7 +38,7 @@ defmodule ClassificationTreeTest do
       "resources/datasets/titanic/modified/test.csv",
       ["PassengerId", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
     )
-    f = Ml.ClassificationTree.classifier(
+    f = Ml.DecisionTree.classifier(
       train_dataset,
       "Survived",
       ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]

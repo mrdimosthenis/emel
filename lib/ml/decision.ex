@@ -1,4 +1,4 @@
-defmodule Ml.ClassificationTree do
+defmodule Ml.DecisionTree do
   @moduledoc ~S"""
   Uses a _decision tree_ to go from _observations_ about an item (represented in the branches)
   to conclusions about the item's discrete target value (represented in the leaves).
@@ -91,7 +91,7 @@ defmodule Ml.ClassificationTree do
 
   ## Examples
 
-      iex> Ml.ClassificationTree.decision_tree([
+      iex> Ml.DecisionTree.decision_tree([
       ...>         %{outlook: "Sunny", temperature: "Hot", humidity: "High", wind: "Weak", decision: "No"},
       ...>         %{outlook: "Sunny", temperature: "Hot", humidity: "High", wind: "Strong", decision: "No"},
       ...>         %{outlook: "Overcast", temperature: "Hot", humidity: "High", wind: "Weak", decision: "Yes"},
@@ -167,7 +167,7 @@ defmodule Ml.ClassificationTree do
 
   ## Examples
 
-      iex> f = Ml.ClassificationTree.classifier([
+      iex> f = Ml.DecisionTree.classifier([
       ...>         %{risk: "high", collateral: "none", income: "low", debt: "high", credit_history: "bad"},
       ...>         %{risk: "high", collateral: "none", income: "moderate", debt: "high", credit_history: "unknown"},
       ...>         %{risk: "moderate", collateral: "none", income: "moderate", debt: "low", credit_history: "unknown"},
