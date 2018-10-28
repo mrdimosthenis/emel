@@ -38,4 +38,20 @@ defmodule Math.Statistics do
     |> Enum.sum()
   end
 
+  @doc ~S"""
+  The probability of event A occurring given that event B has occurred.
+
+  ## Examples
+
+      iex> Math.Statistics.posterior_probability(0.8, 0.4, 0.5)
+      0.25
+
+      iex> Math.Statistics.posterior_probability(0.4, 0.5, 0.1)
+      0.125
+
+  """
+  def posterior_probability(prior_probability_B, prior_probability_A, probability_B_given_A) do
+    probability_B_given_A * prior_probability_A / prior_probability_B
+  end
+
 end

@@ -6,8 +6,8 @@ defmodule Math.Algebra do
 
   @doc ~S"""
   The `first_minor` of a `matrix` obtained by removing just the `i`-row and the `j`-column from the `matrix`.
-  It is required for calculating **cofactors**, which in turn are useful for computing both the **determinant**
-  and **inverse** of square matrices. `i` and `j` are zero based.
+  It is required for calculating _cofactors_, which in turn are useful for computing both the _determinant_
+  and _inverse_ of square matrices. `i` and `j` are zero based.
 
   ## Examples
 
