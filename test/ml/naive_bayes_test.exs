@@ -57,4 +57,29 @@ defmodule Ml.NaiveBayesTest do
     assert f.(%{humidity: "Humid", temperature: "Cold", wind_speed: "Fast"}) == "Sunny"
   end
 
+  test "iris" do
+    train_dataset = DatasetManipulation.load_dataset("resources/datasets/iris/modified/train.csv")
+    test_dataset = DatasetManipulation.load_dataset("resources/datasets/iris/modified/test.csv")
+    f = classifier(train_dataset, "species", ["petal_length", "petal_width", "sepal_length", "sepal_width"])
+    prediction_map = test_dataset
+                     |> Enum.map(
+                          fn %{"id" => id} = row ->
+                            {id, f.(row)}
+                          end
+                        )
+                     |> Map.new()
+    result_map = DatasetManipulation.load_dataset(
+                   "resources/datasets/iris/modified/results.csv"
+                 )
+                 |> Enum.map(
+                      fn %{"id" => id, "species" => species} ->
+                        {id, species}
+                      end
+                    )
+                 |> Map.new()
+    right_predictions = Enum.count(prediction_map, fn {k, v} -> v == result_map[k] end)
+    success_rate = right_predictions / Enum.count(prediction_map)
+    assert success_rate == 0.9777777777777777
+  end
+
 end
