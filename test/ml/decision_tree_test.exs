@@ -38,7 +38,7 @@ defmodule DecisionTreeTest do
       "resources/datasets/titanic/modified/test.csv",
       ["PassengerId", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
     )
-    f = Ml.DecisionTree.classifier(
+    f = classifier(
       train_dataset,
       "Survived",
       ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]

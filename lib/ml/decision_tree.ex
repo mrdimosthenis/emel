@@ -163,7 +163,7 @@ defmodule Ml.DecisionTree do
   end
 
   @doc ~S"""
-  The function that returns the item's discrete target value (`class`) using the _ID3 Algorithm_.
+  Returns the function that classifies the item by using the _ID3 Algorithm_.
 
   ## Examples
 

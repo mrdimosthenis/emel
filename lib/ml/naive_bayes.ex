@@ -9,8 +9,8 @@ defmodule Ml.NaiveBayes do
   def prior_probability(observations, attribute, value) do
     denominator = length(observations)
     numerator = observations
-    |> Enum.filter(fn %{^attribute => val} -> val == value end)
-    |> length()
+                |> Enum.filter(fn %{^attribute => val} -> val == value end)
+                |> length()
     numerator / denominator
   end
 
@@ -18,6 +18,58 @@ defmodule Ml.NaiveBayes do
     observations
     |> Enum.filter(fn %{^attribute_A => val} -> val == value_A end)
     |> prior_probability(attribute_B, value_B)
+  end
+
+  def combined_posterior_probability(observations, values_by_attribute_B_map, attribute_A, value_A) do
+    probability_a = prior_probability(observations, attribute_A, value_A)
+    combined_posterior = Enum.reduce(
+      values_by_attribute_B_map,
+      1,
+      fn ({attr, val}, acc) ->
+        b_given_a = probability_B_given_A(observations, attr, val, attribute_A, value_A)
+        acc * b_given_a
+      end
+    )
+    probability_a * combined_posterior
+  end
+
+  @doc ~S"""
+  Returns the function that classifies the item by using the _Naive Bayes Algorithm_.
+
+  ## Examples
+
+      iex> f = Ml.NaiveBayes.classifier([
+      ...>         %{outlook: "Sunny", temperature: "Hot", humidity: "High", wind: "Weak", decision: "No"},
+      ...>         %{outlook: "Sunny", temperature: "Hot", humidity: "High", wind: "Strong", decision: "No"},
+      ...>         %{outlook: "Overcast", temperature: "Hot", humidity: "High", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Rain", temperature: "Mild", humidity: "High", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Rain", temperature: "Cool", humidity: "Normal", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Rain", temperature: "Cool", humidity: "Normal", wind: "Strong", decision: "No"},
+      ...>         %{outlook: "Overcast", temperature: "Cool", humidity: "Normal", wind: "Strong", decision: "Yes"},
+      ...>         %{outlook: "Sunny", temperature: "Mild", humidity: "High", wind: "Weak", decision: "No"},
+      ...>         %{outlook: "Sunny", temperature: "Cool", humidity: "Normal", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Rain", temperature: "Mild", humidity: "Normal", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Sunny", temperature: "Mild", humidity: "Normal", wind: "Strong", decision: "Yes"},
+      ...>         %{outlook: "Overcast", temperature: "Mild", humidity: "High", wind: "Strong", decision: "Yes"},
+      ...>         %{outlook: "Overcast", temperature: "Hot", humidity: "Normal", wind: "Weak", decision: "Yes"},
+      ...>         %{outlook: "Rain", temperature: "Mild", humidity: "High", wind: "Strong", decision: "No"}
+      ...>    ], :decision)
+      ...> f.(%{outlook: "Sunny", temperature: "Mild", humidity: "Normal", wind: "Strong"})
+      "Yes"
+
+  """
+  def classifier(observations, class) do
+    class_values = observations
+                   |> Enum.map(fn %{^class => val} -> val end)
+                   |> Enum.uniq()
+    fn values_by_attribute_map ->
+      Enum.max_by(
+        class_values,
+        fn class_val ->
+          combined_posterior_probability(observations, values_by_attribute_map, class, class_val)
+        end
+      )
+    end
   end
 
 end
