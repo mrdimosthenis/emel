@@ -4,7 +4,7 @@ defmodule DecisionTreeTest do
   import Ml.DecisionTree
   alias Help.DatasetManipulation
 
-  @a [
+  @observations [
     %{outlook: "s", windy: "f", golf: "y"},
     %{outlook: "s", windy: "f", golf: "y"},
     %{outlook: "s", windy: "f", golf: "y"},
@@ -22,11 +22,11 @@ defmodule DecisionTreeTest do
   ]
 
   test "target attribute entropy" do
-    assert entropy(@a, :golf) == 0.9402859586706309
+    assert entropy(@observations, :golf) == 0.9402859586706309
   end
 
   test "information gain" do
-    assert information_gain(@a, :golf, :outlook) == 0.2467498197744391
+    assert information_gain(@observations, :golf, :outlook) == 0.2467498197744391
   end
 
   test "" do
