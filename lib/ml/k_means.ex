@@ -71,7 +71,7 @@ defmodule Ml.KMeans do
   end
 
   @doc ~S"""
-  Returns the function that classifies an item by identifying the cluster it belongs to.
+  Returns the function that classifies an item by identifying the _cluster_ it belongs to.
 
   ## Examples
 
