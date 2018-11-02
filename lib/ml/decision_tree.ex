@@ -163,7 +163,7 @@ defmodule Ml.DecisionTree do
   end
 
   @doc ~S"""
-  Returns the function that classifies the item by using the _ID3 Algorithm_.
+  Returns the function that classifies an item by using the _ID3 Algorithm_.
 
   ## Examples
 
@@ -187,8 +187,8 @@ defmodule Ml.DecisionTree do
       "low"
 
   """
-  def classifier(dataset, class, attributes) do
-    [tree] = unfold_tree(dataset, class, attributes)
+  def classifier(observations, class, attributes) do
+    [tree] = unfold_tree(observations, class, attributes)
     rule_maps = for path <- Utils.tree_paths(tree) do
       path
       |> Enum.reject(&is_nil/1)

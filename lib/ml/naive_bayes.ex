@@ -34,7 +34,7 @@ defmodule Ml.NaiveBayes do
   end
 
   @doc ~S"""
-  Returns the function that classifies the item by using the _Naive Bayes Algorithm_.
+  Returns the function that classifies an item by using the _Naive Bayes Algorithm_.
 
   ## Examples
 
