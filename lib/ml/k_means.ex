@@ -70,4 +70,32 @@ defmodule Ml.KMeans do
     |> Enum.map(&(&1.second))
   end
 
+  @doc ~S"""
+  Returns the function that classifies an item by identifying the cluster it belongs to.
+
+  ## Examples
+
+      iex> f = Ml.KMeans.classifier([[1.0, 1.0],
+      ...>                           [2.0, 1.0],
+      ...>                           [4.0, 3.0],
+      ...>                           [5.0, 4.0]],
+      ...>                           2)
+      ...> f.([1.5, 1.5])
+      "0"
+
+  """
+  def classifier(points, num_of_classes) do
+    centroids = points
+                |> clusters(num_of_classes)
+                |> Enum.map(&Geometry.centroid/1)
+    class_by_centroid = centroids
+    |> Enum.with_index()
+    |> Enum.map(fn {cntr, i} -> {cntr, Integer.to_string(i)} end)
+    |> Map.new()
+    fn item ->
+      selected_centroid = Geometry.nearest_neighbor(item, centroids)
+      class_by_centroid[selected_centroid]
+    end
+  end
+
 end
