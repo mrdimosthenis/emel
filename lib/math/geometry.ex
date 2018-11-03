@@ -42,6 +42,26 @@ defmodule Math.Geometry do
     |> :math.sqrt()
   end
 
+  @doc ~S"""
+  The _euclidean distance_ between the initial and terminal point of the `vector`.
+
+  ## Examples
+
+      iex> Math.Geometry.magnitude([0.0, 2.0])
+      2.0
+
+      iex> Math.Geometry.magnitude([6.0, 8.0])
+      10.0
+
+      iex> Math.Geometry.magnitude([1.0, -2.0, 3.0])
+      3.7416573867739413
+
+  """
+  def magnitude(vector) do
+    zero = for _ <- vector, do: 0
+    euclidean_distance(vector, zero)
+  end
+
 
   @doc ~S"""
   The neighbor that is closest to the given `point`.
