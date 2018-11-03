@@ -46,4 +46,18 @@ defmodule Help.DatasetManipulation do
     File.close(file)
   end
 
+  def training_and_test_sets(dataset, ratio) do
+    l = length(dataset)
+    n = trunc(l * ratio)
+    dataset
+    |> Enum.shuffle()
+    |> Enum.split(n)
+  end
+
+  def similarity(vector_a, vector_b) when length(vector_a) == length(vector_b) do
+    n = Enum.zip(vector_a, vector_b)
+        |> Enum.count(fn {a, b} -> a == b end)
+    n / length(vector_b)
+  end
+
 end
