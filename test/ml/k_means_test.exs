@@ -12,7 +12,7 @@ defmodule KMeansTest do
     [parsed_sepal_length, parsed_sepal_width, parsed_petal_length, parsed_petal_width]
   end
 
-  test "iris dataset" do
+  test "k-means on iris dataset" do
     {training_set, test_set} = "resources/datasets/iris/original/iris.csv"
                                |> DatasetManipulation.load_dataset()
                                |> DatasetManipulation.training_and_test_sets(0.65)
@@ -33,7 +33,7 @@ defmodule KMeansTest do
       end
     )
     score = DatasetManipulation.similarity(predicted_classes, actual_classes)
-    assert score == 0.8867924528301887
+    assert score == 0.9622641509433962
   end
 
 end

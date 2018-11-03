@@ -58,7 +58,7 @@ defmodule Ml.NaiveBayesTest do
     assert f.(%{humidity: "Humid", temperature: "Cold", wind_speed: "Fast"}) == "Sunny"
   end
 
-  test "iris dataset" do
+  test "naive Bayes on iris dataset" do
     {training_set, test_set} = "resources/datasets/iris/original/iris.csv"
                                |> DatasetManipulation.load_dataset()
                                |> DatasetManipulationTest.discrete_flower_attributes()
@@ -67,10 +67,10 @@ defmodule Ml.NaiveBayesTest do
     predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"species" => sp} -> sp end)
     score = DatasetManipulation.similarity(predicted_classes, actual_classes)
-    assert score == 0.9777777777777777
+    assert score == 0.8888888888888888
   end
 
-  test "titanic dataset" do
+  test "naive Bayes on titanic dataset" do
     {training_set, test_set} = "resources/datasets/titanic/original/train.csv"
                                |> DatasetManipulation.load_dataset(
                                     ["Survived", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
@@ -83,12 +83,12 @@ defmodule Ml.NaiveBayesTest do
                                     end
                                   )
                                |> DatasetManipulationTest.discrete_passenger_attributes()
-                               |> DatasetManipulation.training_and_test_sets(0.65)
+                               |> DatasetManipulation.training_and_test_sets(0.8)
     f = classifier(training_set, "Survived", ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"])
     predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"Survived" => sv} -> sv end)
     score = DatasetManipulation.similarity(predicted_classes, actual_classes)
-    assert score == 0.816
+    assert score == 0.7832167832167832
   end
 
 end

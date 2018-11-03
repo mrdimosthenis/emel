@@ -3,6 +3,7 @@ defmodule DecisionTreeTest do
   doctest Ml.DecisionTree
   import Ml.DecisionTree
   alias Help.DatasetManipulation
+  alias Help.DatasetManipulationTest
 
   @observations [
     %{outlook: "s", windy: "f", golf: "y"},
@@ -29,40 +30,37 @@ defmodule DecisionTreeTest do
     assert information_gain(@observations, :golf, :outlook) == 0.2467498197744391
   end
 
-  test "titanic" do
-    train_dataset = DatasetManipulation.load_dataset(
-      "resources/datasets/titanic/modified/train.csv",
-      ["PassengerId", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Survived"]
-    )
-    test_dataset = DatasetManipulation.load_dataset(
-      "resources/datasets/titanic/modified/test.csv",
-      ["PassengerId", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
-    )
-    f = classifier(
-      train_dataset,
-      "Survived",
-      ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
-    )
-    prediction_map = test_dataset
-                     |> Enum.map(
-                          fn %{"PassengerId" => passenger_id} = row ->
-                            {passenger_id, f.(row)}
-                          end
-                        )
-                     |> Map.new()
-    result_map = DatasetManipulation.load_dataset(
-                   "resources/datasets/titanic/modified/gender_submission.csv",
-                   ["PassengerId", "Survived"]
-                 )
-                 |> Enum.map(
-                      fn %{"PassengerId" => passenger_id, "Survived" => survived} ->
-                        {passenger_id, survived}
-                      end
-                    )
-                 |> Map.new()
-    right_predictions = Enum.count(prediction_map, fn {k, v} -> v == result_map[k] end)
-    success_rate = right_predictions / Enum.count(prediction_map)
-    assert success_rate == 0.8308157099697885
+  test "decision tree on iris dataset" do
+    {training_set, test_set} = "resources/datasets/iris/original/iris.csv"
+                               |> DatasetManipulation.load_dataset()
+                               |> DatasetManipulationTest.discrete_flower_attributes()
+                               |> DatasetManipulation.training_and_test_sets(0.70)
+    f = classifier(training_set, "species", ["petal_length", "petal_width", "sepal_length", "sepal_width"])
+    predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
+    actual_classes = Enum.map(test_set, fn %{"species" => sp} -> sp end)
+    score = DatasetManipulation.similarity(predicted_classes, actual_classes)
+    assert score == 0.9555555555555556
+  end
+
+  test "decision tree on titanic dataset" do
+    {training_set, test_set} = "resources/datasets/titanic/original/train.csv"
+                               |> DatasetManipulation.load_dataset(
+                                    ["Survived", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
+                                  )
+                               |> Enum.filter(
+                                    fn row ->
+                                      row
+                                      |> Map.values()
+                                      |> Enum.all?(&(&1 != ""))
+                                    end
+                                  )
+                               |> DatasetManipulationTest.discrete_passenger_attributes()
+                               |> DatasetManipulation.training_and_test_sets(0.90)
+    f = classifier(training_set, "Survived", ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"])
+    predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
+    actual_classes = Enum.map(test_set, fn %{"Survived" => sv} -> sv end)
+    score = DatasetManipulation.similarity(predicted_classes, actual_classes)
+    assert score == 0.7777777777777778
   end
 
 end
