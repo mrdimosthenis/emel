@@ -28,22 +28,13 @@ defmodule KMeansTest do
         |> Enum.map(&parse/1)
         |> DatasetManipulation.normalize(["petal_length", "petal_width", "sepal_length", "sepal_width"])
         |> Enum.map(&flower_to_point/1)
-        |> classifier(3)
+        |> classifier(["setosa", "versicolor", "virginica"])
     predicted_classes = test_set
                         |> Enum.map(&parse/1)
                         |> DatasetManipulation.normalize(["petal_length", "petal_width", "sepal_length", "sepal_width"])
                         |> Enum.map(&flower_to_point/1)
                         |> Enum.map(fn row -> f.(row) end)
-    actual_classes = Enum.map(
-      test_set,
-      fn %{"species" => sp} ->
-        case sp do
-          "setosa" -> "0"
-          "versicolor" -> "1"
-          "virginica" -> "2"
-        end
-      end
-    )
+    actual_classes = Enum.map(test_set, fn %{"species" => sp} -> sp end)
     score = DatasetManipulation.similarity(predicted_classes, actual_classes)
     assert score == 0.9666666666666667
   end

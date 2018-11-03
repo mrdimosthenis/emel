@@ -79,19 +79,20 @@ defmodule Ml.KMeans do
       ...>                           [2.0, 1.0],
       ...>                           [4.0, 3.0],
       ...>                           [5.0, 4.0]],
-      ...>                           2)
+      ...>                           ["0", "1"])
       ...> f.([1.5, 1.5])
       "0"
 
   """
-  def classifier(points, num_of_classes) do
+  def classifier(points, classes) do
+    n = length(classes)
     centroids = points
-                |> clusters(num_of_classes)
+                |> clusters(n)
                 |> Enum.map(&Geometry.centroid/1)
+                |> Enum.sort_by(&Geometry.magnitude/1)
     class_by_centroid = centroids
-    |> Enum.with_index()
-    |> Enum.map(fn {cntr, i} -> {cntr, Integer.to_string(i)} end)
-    |> Map.new()
+                        |> Enum.zip(classes)
+                        |> Map.new()
     fn item ->
       selected_centroid = Geometry.nearest_neighbor(item, centroids)
       class_by_centroid[selected_centroid]
