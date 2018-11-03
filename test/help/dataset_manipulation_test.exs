@@ -130,7 +130,7 @@ defmodule Help.DatasetManipulationTest do
     assert results == load_dataset("resources/datasets/iris/modified/results.csv")
   end
 
-  def discrete_iris_attributes(flowers) do
+  def discrete_flower_attributes(flowers) do
     sepal_length_categorizer = categorizer(
       ["very small", 4.9, "small", 5.8, "large", 7, "very large"]
     )
@@ -157,6 +157,30 @@ defmodule Help.DatasetManipulationTest do
           "sepal_width" => sepal_width_categorizer.(parse(sw)),
           "petal_length" => petal_length_categorizer.(parse(pl)),
           "petal_width" => petal_width_categorizer.(parse(pw)),
+        }
+      end
+    )
+  end
+
+  def discrete_passenger_attributes(passengers) do
+    age_categorizer = categorizer(
+      ["teen", 15, "young", 30, "middle age", 45, "old", 60, "very old"]
+    )
+    fare_categorizer = categorizer(
+      ["cheap", 10, "normal price", 100, "expensive"]
+    )
+    loneliness_categorizer = categorizer(
+      ["alone", 0.5, "Pair", 1.5, "accompanied"]
+    )
+    Enum.map(
+      passengers,
+      fn %{"Age" => age, "Fare" => fare, "Parch" => parch, "SibSp" => sis_sp} = row ->
+        %{
+          row |
+          "Age" => age_categorizer.(parse(age)),
+          "Fare" => fare_categorizer.(parse(fare)),
+          "Parch" => loneliness_categorizer.(parse(parch)),
+          "SibSp" => loneliness_categorizer.(parse(sis_sp))
         }
       end
     )
