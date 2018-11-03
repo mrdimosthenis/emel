@@ -31,7 +31,7 @@ defmodule DecisionTreeTest do
   end
 
   test "decision tree on iris dataset" do
-    {training_set, test_set} = "resources/datasets/iris/original/iris.csv"
+    {training_set, test_set} = "resources/datasets/iris.csv"
                                |> DatasetManipulation.load_dataset()
                                |> DatasetManipulationTest.discrete_flower_attributes()
                                |> DatasetManipulation.training_and_test_sets(0.70)
@@ -43,7 +43,7 @@ defmodule DecisionTreeTest do
   end
 
   test "decision tree on titanic dataset" do
-    {training_set, test_set} = "resources/datasets/titanic/original/train.csv"
+    {training_set, test_set} = "resources/datasets/titanic.csv"
                                |> DatasetManipulation.load_dataset(
                                     ["Survived", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
                                   )

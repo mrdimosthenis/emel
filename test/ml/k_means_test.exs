@@ -13,7 +13,7 @@ defmodule KMeansTest do
   end
 
   test "k-means on iris dataset" do
-    {training_set, test_set} = "resources/datasets/iris/original/iris.csv"
+    {training_set, test_set} = "resources/datasets/iris.csv"
                                |> DatasetManipulation.load_dataset()
                                |> DatasetManipulation.training_and_test_sets(0.65)
     f = training_set

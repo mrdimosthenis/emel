@@ -59,7 +59,7 @@ defmodule Ml.NaiveBayesTest do
   end
 
   test "naive Bayes on iris dataset" do
-    {training_set, test_set} = "resources/datasets/iris/original/iris.csv"
+    {training_set, test_set} = "resources/datasets/iris.csv"
                                |> DatasetManipulation.load_dataset()
                                |> DatasetManipulationTest.discrete_flower_attributes()
                                |> DatasetManipulation.training_and_test_sets(0.7)
@@ -71,7 +71,7 @@ defmodule Ml.NaiveBayesTest do
   end
 
   test "naive Bayes on titanic dataset" do
-    {training_set, test_set} = "resources/datasets/titanic/original/train.csv"
+    {training_set, test_set} = "resources/datasets/titanic.csv"
                                |> DatasetManipulation.load_dataset(
                                     ["Survived", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
                                   )
