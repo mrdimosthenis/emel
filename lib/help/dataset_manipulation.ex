@@ -3,6 +3,11 @@ defmodule Help.DatasetManipulation do
   import Integer, only: [is_odd: 1]
   alias Help.Utils
 
+  def parse(s) do
+    {parsed, ""} = Float.parse(s)
+    parsed
+  end
+
   def categorizer(categories_separated_by_thresholds) do
     thresholds = categories_separated_by_thresholds
                  |> Enum.with_index()

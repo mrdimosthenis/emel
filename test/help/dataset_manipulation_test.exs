@@ -130,4 +130,36 @@ defmodule Help.DatasetManipulationTest do
     assert results == load_dataset("resources/datasets/iris/modified/results.csv")
   end
 
+  def discrete_iris_attributes(flowers) do
+    sepal_length_categorizer = categorizer(
+      ["very small", 4.9, "small", 5.8, "large", 7, "very large"]
+    )
+    sepal_width_categorizer = categorizer(
+      ["very small", 2.3, "small", 3.4, "large", 3.8, "very large"]
+    )
+    petal_length_categorizer = categorizer(
+      ["very small", 1.9, "small", 3, "normal", 4.5, "large", 5.1, "very large"]
+    )
+    petal_width_categorizer = categorizer(
+      ["very small", 0.6, "small", 1, "normal", 1.4, "large", 1.8, "very large"]
+    )
+    Enum.map(
+      flowers,
+      fn %{
+           "sepal_length" => sl,
+           "sepal_width" => sw,
+           "petal_length" => pl,
+           "petal_width" => pw
+         } = row ->
+        %{
+          row |
+          "sepal_length" => sepal_length_categorizer.(parse(sl)),
+          "sepal_width" => sepal_width_categorizer.(parse(sw)),
+          "petal_length" => petal_length_categorizer.(parse(pl)),
+          "petal_width" => petal_width_categorizer.(parse(pw)),
+        }
+      end
+    )
+  end
+
 end
