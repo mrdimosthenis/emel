@@ -60,7 +60,7 @@ defmodule Help.DatasetManipulationTest do
     )
   end
 
-  test "category" do
+  test "categorizer" do
     f1 = categorizer([:negative, 0, :non_negative])
     assert f1.(-3) == :negative
     assert f1.(1) == :non_negative
@@ -78,6 +78,14 @@ defmodule Help.DatasetManipulationTest do
     assert_raise RuntimeError, "Categories are not separated by valid thresholds", fn ->
       _ = categorizer([:negative, :whatever])
     end
+  end
+
+  test "normalize" do
+    assert normalize([%{a: 0}, %{a: 1}], [:a]) == [%{a: 0}, %{a: 1}]
+    assert normalize([%{"x" => 1}, %{"x" => 2}, %{"x" => 1.5}], ["x"]) ==
+             [%{"x" => 0}, %{"x" => 1}, %{"x" => 0.5}]
+    assert normalize([%{"x" => 1, "y" => -2, "z" => -4}, %{"x" => 2, "y" => 0, "z" => -8}], ["y", "z"]) ==
+             [%{"x" => 1, "y" => 0, "z" => 1}, %{"x" => 2, "y" => 1, "z" => 0}]
   end
 
 end
