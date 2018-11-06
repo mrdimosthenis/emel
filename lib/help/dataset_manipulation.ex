@@ -19,14 +19,7 @@ defmodule Help.DatasetManipulation do
 
   def save_dataset([r | _] = dataset, path) do
     headers = Map.keys(r)
-    rows = Enum.map(
-      dataset,
-      fn row ->
-        row
-        |> Map.take(headers)
-        |> Map.values()
-      end
-    )
+    rows = Enum.map(dataset, fn row -> Utils.map_vals(row, headers) end)
     file = File.open!(path, [:write, :utf8])
     [headers | rows]
     |> CSV.encode

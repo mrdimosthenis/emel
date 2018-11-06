@@ -150,12 +150,8 @@ defmodule Ml.DecisionTree do
       rule_maps,
       fn rule ->
         keys = Map.keys(rule) -- [class]
-        rule_vals = rule
-                    |> Map.take(keys)
-                    |> Map.values()
-        item_vals = item
-                    |> Map.take(keys)
-                    |> Map.values()
+        rule_vals = Utils.map_vals(rule, keys)
+        item_vals = Utils.map_vals(item, keys)
         Enum.zip(rule_vals, item_vals)
         |> Enum.count(fn {rule_value, item_value} -> rule_value == item_value end)
       end

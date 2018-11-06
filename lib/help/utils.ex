@@ -34,6 +34,7 @@ defmodule Help.Utils do
 
   def identity(x), do: x
 
+  def map_vals(map, keys), do: Enum.map(keys, fn k -> map[k] end)
 
   def indices([]), do: []
   def indices(ls), do: Enum.map(0..length(ls) - 1, &identity/1)
