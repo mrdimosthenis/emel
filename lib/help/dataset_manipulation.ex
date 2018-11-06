@@ -81,7 +81,7 @@ defmodule Help.DatasetManipulation do
     |> Enum.split(n)
   end
 
-  def similarity(vector_a, vector_b) when length(vector_a) == length(vector_b) do
+  def accuracy(vector_a, vector_b) when length(vector_a) == length(vector_b) do
     n = Enum.zip(vector_a, vector_b)
         |> Enum.count(fn {a, b} -> a == b end)
     n / length(vector_b)

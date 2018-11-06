@@ -38,7 +38,7 @@ defmodule DecisionTreeTest do
     f = classifier(training_set, ["petal_length", "petal_width", "sepal_length", "sepal_width"], "species")
     predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"species" => sp} -> sp end)
-    score = DatasetManipulation.similarity(predicted_classes, actual_classes)
+    score = DatasetManipulation.accuracy(predicted_classes, actual_classes)
     assert score == 0.9555555555555556
   end
 
@@ -59,7 +59,7 @@ defmodule DecisionTreeTest do
     f = classifier(training_set, ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"], "Survived")
     predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"Survived" => sv} -> sv end)
-    score = DatasetManipulation.similarity(predicted_classes, actual_classes)
+    score = DatasetManipulation.accuracy(predicted_classes, actual_classes)
     assert score == 0.7777777777777778
   end
 

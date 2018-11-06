@@ -32,7 +32,7 @@ defmodule KMeansTest do
                         |> DatasetManipulation.normalize(["petal_length", "petal_width", "sepal_length", "sepal_width"])
                         |> Enum.map(fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"species" => sp} -> sp end)
-    score = DatasetManipulation.similarity(predicted_classes, actual_classes)
+    score = DatasetManipulation.accuracy(predicted_classes, actual_classes)
     assert score == 0.9666666666666667
   end
 
