@@ -16,10 +16,6 @@ defmodule KMeansTest do
     |> Map.new()
   end
 
-  def flower_to_point(%{"petal_length" => pl, "petal_width" => pw, "sepal_length" => sl, "sepal_width" => sw}) do
-    [pl, pw, sl, sw]
-  end
-
   test "k-means on iris dataset" do
     {training_set, test_set} = "resources/datasets/iris.csv"
                                |> DatasetManipulation.load_dataset()
@@ -27,12 +23,13 @@ defmodule KMeansTest do
     f = training_set
         |> Enum.map(&parse/1)
         |> DatasetManipulation.normalize(["petal_length", "petal_width", "sepal_length", "sepal_width"])
-        |> Enum.map(&flower_to_point/1)
-        |> classifier(["setosa", "versicolor", "virginica"])
+        |> classifier(
+             ["petal_length", "petal_width", "sepal_length", "sepal_width"],
+             ["setosa", "versicolor", "virginica"]
+           )
     predicted_classes = test_set
                         |> Enum.map(&parse/1)
                         |> DatasetManipulation.normalize(["petal_length", "petal_width", "sepal_length", "sepal_width"])
-                        |> Enum.map(&flower_to_point/1)
                         |> Enum.map(fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"species" => sp} -> sp end)
     score = DatasetManipulation.similarity(predicted_classes, actual_classes)

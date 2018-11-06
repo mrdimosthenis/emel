@@ -75,18 +75,20 @@ defmodule Ml.KMeans do
 
   ## Examples
 
-      iex> f = Ml.KMeans.classifier([[1.0, 1.0],
-      ...>                           [2.0, 1.0],
-      ...>                           [4.0, 3.0],
-      ...>                           [5.0, 4.0]],
+      iex> f = Ml.KMeans.classifier([%{x1: 1.0, x2: 1.0},
+      ...>                           %{x1: 2.0, x2: 1.0},
+      ...>                           %{x1: 4.0, x2: 3.0},
+      ...>                           %{x1: 5.0, x2: 4.0}],
+      ...>                           [:x1, :x2],
       ...>                           ["0", "1"])
-      ...> f.([1.5, 1.5])
+      ...> f.(%{x1: 1.5, x2: 1.5})
       "0"
 
   """
-  def classifier(points, classes) do
+  def classifier(dataset, continuous_attributes, classes) do
     n = length(classes)
-    centroids = points
+    centroids = dataset
+                |> Enum.map(fn row -> Utils.map_vals(row, continuous_attributes) end)
                 |> clusters(n)
                 |> Enum.map(&Geometry.centroid/1)
                 |> Enum.sort_by(&Geometry.magnitude/1)
@@ -94,7 +96,9 @@ defmodule Ml.KMeans do
                         |> Enum.zip(classes)
                         |> Map.new()
     fn item ->
-      selected_centroid = Geometry.nearest_neighbor(item, centroids)
+      selected_centroid = item
+                          |> Utils.map_vals(continuous_attributes)
+                          |> Geometry.nearest_neighbor(centroids)
       class_by_centroid[selected_centroid]
     end
   end
