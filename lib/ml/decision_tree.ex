@@ -178,13 +178,13 @@ defmodule Ml.DecisionTree do
       ...>         %{risk: "moderate", collateral: "none", income: "moderate", debt: "high", credit_history: "good"},
       ...>         %{risk: "low", collateral: "none", income: "high", debt: "high", credit_history: "good"},
       ...>         %{risk: "high", collateral: "none", income: "moderate", debt: "high", credit_history: "bad"}
-      ...>    ], :risk, [:collateral, :income, :debt, :credit_history])
+      ...>    ], [:collateral, :income, :debt, :credit_history], :risk)
       ...> f.(%{collateral: "none", income: "high", debt: "low", credit_history: "good"})
       "low"
 
   """
-  def classifier(observations, class, attributes) do
-    [tree] = unfold_tree(observations, class, attributes)
+  def classifier(dataset, discrete_attributes, class) do
+    [tree] = unfold_tree(dataset, class, discrete_attributes)
     rule_maps = for path <- Utils.tree_paths(tree) do
       path
       |> Enum.reject(&is_nil/1)

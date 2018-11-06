@@ -54,7 +54,7 @@ defmodule Ml.NaiveBayesTest do
   end
 
   test "classifier" do
-    f = classifier(@observations, :weather, [:humidity, :temperature, :wind_speed])
+    f = classifier(@observations, [:humidity, :temperature, :wind_speed], :weather)
     assert f.(%{humidity: "Humid", temperature: "Cold", wind_speed: "Fast"}) == "Sunny"
   end
 
@@ -63,7 +63,7 @@ defmodule Ml.NaiveBayesTest do
                                |> DatasetManipulation.load_dataset()
                                |> DatasetManipulationTest.discrete_flower_attributes()
                                |> DatasetManipulation.training_and_test_sets(0.7)
-    f = classifier(training_set, "species", ["petal_length", "petal_width", "sepal_length", "sepal_width"])
+    f = classifier(training_set, ["petal_length", "petal_width", "sepal_length", "sepal_width"], "species")
     predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"species" => sp} -> sp end)
     score = DatasetManipulation.similarity(predicted_classes, actual_classes)
@@ -84,7 +84,7 @@ defmodule Ml.NaiveBayesTest do
                                   )
                                |> DatasetManipulationTest.discrete_passenger_attributes()
                                |> DatasetManipulation.training_and_test_sets(0.8)
-    f = classifier(training_set, "Survived", ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"])
+    f = classifier(training_set, ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"], "Survived")
     predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"Survived" => sv} -> sv end)
     score = DatasetManipulation.similarity(predicted_classes, actual_classes)

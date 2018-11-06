@@ -53,21 +53,21 @@ defmodule Ml.NaiveBayes do
       ...>         %{outlook: "Overcast", temperature: "Mild", humidity: "High", wind: "Strong", decision: "Yes"},
       ...>         %{outlook: "Overcast", temperature: "Hot", humidity: "Normal", wind: "Weak", decision: "Yes"},
       ...>         %{outlook: "Rain", temperature: "Mild", humidity: "High", wind: "Strong", decision: "No"}
-      ...>    ], :decision, [:outlook, :temperature, :humidity, :wind])
+      ...>    ], [:outlook, :temperature, :humidity, :wind], :decision)
       ...> f.(%{outlook: "Sunny", temperature: "Mild", humidity: "Normal", wind: "Strong"})
       "Yes"
 
   """
-  def classifier(observations, class, attributes) do
-    class_values = observations
+  def classifier(dataset, discrete_attributes, class) do
+    class_values = dataset
                    |> Enum.map(fn %{^class => val} -> val end)
                    |> Enum.uniq()
     fn item ->
-      values_by_attribute_map = Map.take(item, attributes)
+      values_by_attribute_map = Map.take(item, discrete_attributes)
       Enum.max_by(
         class_values,
         fn class_val ->
-          combined_posterior_probability(observations, values_by_attribute_map, class, class_val)
+          combined_posterior_probability(dataset, values_by_attribute_map, class, class_val)
         end
       )
     end
