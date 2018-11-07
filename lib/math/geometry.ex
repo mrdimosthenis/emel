@@ -43,7 +43,7 @@ defmodule Math.Geometry do
   end
 
   @doc ~S"""
-  The _distance_ between the initial and terminal point of the `vector`.
+  The _euclidean distance_ between the initial and terminal point of the `vector`.
 
   ## Examples
 
@@ -57,9 +57,9 @@ defmodule Math.Geometry do
       3.7416573867739413
 
   """
-  def magnitude(vector, distance \\ &euclidean_distance/2) do
+  def magnitude(vector) do
     zero = for _ <- vector, do: 0
-    distance.(vector, zero)
+    euclidean_distance(vector, zero)
   end
 
 
@@ -72,8 +72,8 @@ defmodule Math.Geometry do
       [1.0, 0.0]
 
   """
-  def nearest_neighbor(point, neighbors, distance \\ &euclidean_distance/2) do
-    Enum.min_by(neighbors, fn n -> distance.(n, point) end)
+  def nearest_neighbor(point, neighbors) do
+    Enum.min_by(neighbors, fn n -> euclidean_distance(n, point) end)
   end
 
   @doc ~S"""
