@@ -46,9 +46,7 @@ defmodule Ml.KNearestNeighbors do
       ...>                                      %{x1: 7.0, x2: 4.0, y: "bad"},
       ...>                                      %{x1: 3.0, x2: 4.0, y: "good"},
       ...>                                      %{x1: 1.0, x2: 4.0, y: "good"}],
-      ...>                                     [:x1, :x2],
-      ...>                                     :y,
-      ...>                                     3)
+      ...>                                     [:x1, :x2], :y, 3)
       ...> f.(%{x1: 3.0, x2: 7.0})
       "good"
 
@@ -65,6 +63,33 @@ defmodule Ml.KNearestNeighbors do
              Enum.count(class_values, fn x -> x == v end)
            end
          )
+    end
+  end
+
+  @doc ~S"""
+  Returns the function that calculates the average value of the `dependent_variable` of the `k` nearest neighbors.
+
+        ## Examples
+
+          iex> f = Ml.KNearestNeighbors.predictor([%{x1: 0.0, x2: 0.0, x3: 0.0, y: 0.0},
+          ...>                                     %{x1: 0.5, x2: 0.5, x3: 0.5, y: 1.5},
+          ...>                                     %{x1: 1.0, x2: 1.0, x3: 1.0, y: 3.0},
+          ...>                                     %{x1: 1.5, x2: 1.5, x3: 1.5, y: 4.5},
+          ...>                                     %{x1: 2.0, x2: 2.0, x3: 2.0, y: 6.0},
+          ...>                                     %{x1: 2.5, x2: 2.5, x3: 2.5, y: 7.5},
+          ...>                                     %{x1: 3.0, x2: 3.3, x3: 3.0, y: 9.0}],
+          ...>                                    [:x1, :x2, :x3], :y, 2)
+          ...> f.(%{x1: 1.725, x2: 1.725, x3: 1.725})
+          5.25
+
+  """
+  def predictor(dataset, independent_variables, dependent_variable, k) do
+    fn item ->
+      sum = item
+            |> k_nearest_neighbors(dataset, independent_variables, k)
+            |> Enum.map(fn row -> row[dependent_variable] end)
+            |> Enum.sum()
+      sum / k
     end
   end
 

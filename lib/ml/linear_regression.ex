@@ -76,27 +76,20 @@ defmodule Ml.LinearRegression do
   end
 
   @doc ~S"""
-  The linear function of a set of _coefficients_ and _independent variables_,
-  whose value is used to predict the outcome of a _dependent variable_.
-
-        _observations_:
-        ```
-        f(1.794638, 15.15426     ) =   5.10998918E-1
-        f(3.220726, 229.6516     ) = 105.6583692
-        f(5.780040,   3.480201e+3) =   1.77699E3
+  Returns the linear function that predicts the value of the _dependent variable_.
         ```
 
         ## Examples
 
-          iex> f = Ml.LinearRegression.predictor_function([%{x1: 1.794638, x2: 15.15426     , y:   5.10998918E-1},
-          ...>                                             %{x1: 3.220726, x2: 229.6516     , y: 105.6583692    },
-          ...>                                             %{x1: 5.780040, x2:   3.480201e+3, y:   1.77699E3    }],
-          ...>                                            [:x1, :x2], :y)
+          iex> f = Ml.LinearRegression.predictor([%{x1: 1.794638, x2: 15.15426     , y:   5.10998918E-1},
+          ...>                                    %{x1: 3.220726, x2: 229.6516     , y: 105.6583692    },
+          ...>                                    %{x1: 5.780040, x2:   3.480201e+3, y:   1.77699E3    }],
+          ...>                                   [:x1, :x2], :y)
           ...> f.(%{x1: 3.0, x2: 230.0})
           106.74114058686602
 
   """
-  def predictor_function(dataset, independent_variables, dependent_variable) do
+  def predictor(dataset, independent_variables, dependent_variable) do
     vars = independent_variables ++ [dependent_variable]
     {flag, result} = dataset
                      |> Enum.map(fn row -> Utils.map_vals(row, vars) end)
@@ -106,4 +99,5 @@ defmodule Ml.LinearRegression do
       :error -> raise "The system of linear equations does not have a solution"
     end
   end
+
 end
