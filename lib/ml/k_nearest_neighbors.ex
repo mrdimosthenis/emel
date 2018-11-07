@@ -8,7 +8,7 @@ defmodule Ml.KNearestNeighbors do
   alias Math.Geometry
 
   @doc ~S"""
-  It searches through the entire `dataset` and returns the `k` most similar to the `item`.
+  It searches through the entire `dataset` and returns the `k` most similar items to the `item`.
 
   ## Examples
 
