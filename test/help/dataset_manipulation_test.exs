@@ -4,6 +4,18 @@ defmodule Help.DatasetManipulationTest do
   doctest Help.DatasetManipulation
   import Help.DatasetManipulation
 
+  def parse_flower(flower) do
+    flower
+    |> Enum.map(
+         fn {k, v} -> case Enum.member?(["petal_length", "petal_width", "sepal_length", "sepal_width"], k) do
+                        true -> {k, parse(v)}
+                        false -> {k, v}
+                      end
+         end
+       )
+    |> Map.new()
+  end
+
   def discrete_flower_attributes(flowers) do
     sepal_length_categorizer = categorizer(
       ["very small", 4.9, "small", 5.8, "large", 7, "very large"]
