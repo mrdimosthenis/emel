@@ -31,9 +31,41 @@ defmodule Ml.KNearestNeighbors do
          fn row ->
            row
            |> Utils.map_vals(continuous_attributes)
-           |> Geometry.euclidean_distance(point) end
+           |> Geometry.euclidean_distance(point)
+         end
        )
     |> Enum.take(k)
+  end
+
+  @doc ~S"""
+  Returns the function that classifies an item by finding the `k` nearest neighbors.
+
+  ## Examples
+
+      iex> f = Ml.KNearestNeighbors.classifier([%{x1: 7.0, x2: 7.0, y: "bad"},
+      ...>                                      %{x1: 7.0, x2: 4.0, y: "bad"},
+      ...>                                      %{x1: 3.0, x2: 4.0, y: "good"},
+      ...>                                      %{x1: 1.0, x2: 4.0, y: "good"}],
+      ...>                                     [:x1, :x2],
+      ...>                                     :y,
+      ...>                                     3)
+      ...> f.(%{x1: 3.0, x2: 7.0})
+      "good"
+
+  """
+  def classifier(dataset, continuous_attributes, class, k) do
+    fn item ->
+      class_values = item
+                     |> k_nearest_neighbors(dataset, continuous_attributes, k)
+                     |> Enum.map(fn row -> row[class] end)
+      class_values
+      |> Enum.uniq()
+      |> Enum.max_by(
+           fn v ->
+             Enum.count(class_values, fn x -> x == v end)
+           end
+         )
+    end
   end
 
 end
