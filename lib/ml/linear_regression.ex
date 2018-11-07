@@ -53,13 +53,6 @@ defmodule Ml.LinearRegression do
     f(5.780040,   3.480201e+3) =   1.77699E3
     ```
 
-    `points`:
-    ```
-    [[1.794638, 15.15426     ,   5.10998918E-1],
-     [3.220726, 229.6516     , 105.6583692    ],
-     [5.780040,   3.480201e+3,   1.77699E3    ]]
-    ```
-
     ## Examples
 
       iex> Ml.LinearRegression.regression_coefficients([[1.794638, 15.15426     ,   5.10998918E-1],
@@ -93,26 +86,23 @@ defmodule Ml.LinearRegression do
         f(5.780040,   3.480201e+3) =   1.77699E3
         ```
 
-        `points`:
-        ```
-        [[1.794638, 15.15426     ,   5.10998918E-1],
-         [3.220726, 229.6516     , 105.6583692    ],
-         [5.780040,   3.480201e+3,   1.77699E3    ]]
-        ```
-
         ## Examples
 
-          iex> f = Ml.LinearRegression.predictor_function([[1.794638, 15.15426     ,   5.10998918E-1],
-          ...>                                             [3.220726, 229.6516     , 105.6583692    ],
-          ...>                                             [5.780040,   3.480201e+3,   1.77699E3    ]])
-          ...> f.([3, 230])
+          iex> f = Ml.LinearRegression.predictor_function([%{x1: 1.794638, x2: 15.15426     , y:   5.10998918E-1},
+          ...>                                             %{x1: 3.220726, x2: 229.6516     , y: 105.6583692    },
+          ...>                                             %{x1: 5.780040, x2:   3.480201e+3, y:   1.77699E3    }],
+          ...>                                            [:x1, :x2], :y)
+          ...> f.(%{x1: 3.0, x2: 230.0})
           106.74114058686602
 
   """
-  def predictor_function(points) do
-    {flag, result} = regression_coefficients(points)
+  def predictor_function(dataset, independent_variables, dependent_variable) do
+    vars = independent_variables ++ [dependent_variable]
+    {flag, result} = dataset
+                     |> Enum.map(fn row -> Utils.map_vals(row, vars) end)
+                     |> regression_coefficients()
     case flag do
-      :ok -> fn independent_variables -> Geometry.dot_product(result, [1 | independent_variables]) end
+      :ok -> fn item -> Geometry.dot_product(result, [1 | Utils.map_vals(item, independent_variables)]) end
       :error -> raise "The system of linear equations does not have a solution"
     end
   end
