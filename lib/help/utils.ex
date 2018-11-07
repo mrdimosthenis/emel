@@ -36,6 +36,11 @@ defmodule Help.Utils do
 
   def map_vals(map, keys), do: Enum.map(keys, fn k -> map[k] end)
 
+  def vals_map(keys, vals) do
+    Enum.zip(keys, vals)
+    |> Map.new()
+  end
+
   def indices([]), do: []
   def indices(ls), do: Enum.map(0..length(ls) - 1, &identity/1)
 

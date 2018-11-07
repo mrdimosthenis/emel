@@ -92,9 +92,7 @@ defmodule Ml.KMeans do
                 |> clusters(n)
                 |> Enum.map(&Geometry.centroid/1)
                 |> Enum.sort_by(&Geometry.magnitude/1)
-    class_by_centroid = centroids
-                        |> Enum.zip(classes)
-                        |> Map.new()
+    class_by_centroid = Utils.vals_map(centroids, classes)
     fn item ->
       selected_centroid = item
                           |> Utils.map_vals(continuous_attributes)
