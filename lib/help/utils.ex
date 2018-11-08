@@ -2,11 +2,13 @@ defmodule Help.Utils do
   @moduledoc false
 
   defmodule Pair do
+    @moduledoc false
     @enforce_keys [:first, :second]
     defstruct [:first, :second]
   end
 
   defmodule TreeNode do
+    @moduledoc false
     defstruct [:content, :children]
   end
 
