@@ -2,8 +2,12 @@ defmodule Help.Model do
   @moduledoc false
   import Integer, only: [is_odd: 1]
 
-  def parse(s) do
-    {parsed, ""} = s
+  @doc ~S"""
+  Trims and parses the `string` into a float
+
+  """
+  def parse(string) do
+    {parsed, ""} = string
                    |> String.trim()
                    |> Float.parse()
     parsed
@@ -83,9 +87,11 @@ defmodule Help.Model do
     end
   end
 
-  # model
+  @doc ~S"""
+  Separates the `dataset` into a `training set` and `testing set`.
 
-  def training_and_test_sets(dataset, ratio) do
+  """
+  def training_and_test_sets(dataset, ratio) when (ratio > 0 and ratio < 1) do
     l = length(dataset)
     n = trunc(l * ratio)
     dataset
