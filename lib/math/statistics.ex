@@ -3,17 +3,41 @@ defmodule Math.Statistics do
 
   alias Help.Utils
 
+  @doc ~S"""
+  The ratio of same values between `vector_a` and `vector_b`.
+
+  ## Examples
+
+      iex> Math.Statistics.similarity(["a", "b", "b", "a"], ["a", "b", "b", "b"])
+      0.75
+
+      iex> Math.Statistics.similarity(["d", "b", "d", "a"], ["a", "b", "c", "d"])
+      0.25
+
+  """
+  def similarity(vector_a, vector_b) when length(vector_a) == length(vector_b) do
+    n = Enum.zip(vector_a, vector_b)
+        |> Enum.count(fn {a, b} -> a == b end)
+    n / length(vector_b)
+  end
+
+  @doc ~S"""
+  A measure of difference between two continuous variables.
+
+  ## Examples
+
+      iex> Math.Statistics.mean_absolute_error([0.0, 1.0], [0.0, 1.0])
+      0.0
+
+      iex> Math.Statistics.mean_absolute_error([5.0, 1.0, 0.0, 0.5], [0.0, 1.0, -3.0, 0.5])
+      2.0
+
+  """
   def mean_absolute_error(predictions, observations) when length(predictions) == length(observations) do
     sum_absolute_error = Enum.zip(predictions, observations)
                          |> Enum.map(fn {v1, v2} -> abs(v1 - v2) end)
                          |> Enum.sum()
     sum_absolute_error / length(observations)
-  end
-
-  def similarity(vector_a, vector_b) when length(vector_a) == length(vector_b) do
-    n = Enum.zip(vector_a, vector_b)
-        |> Enum.count(fn {a, b} -> a == b end)
-    n / length(vector_b)
   end
 
   @doc ~S"""
