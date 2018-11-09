@@ -1,7 +1,6 @@
 defmodule Help.Model do
   @moduledoc false
   import Integer, only: [is_odd: 1]
-  alias Help.Utils
 
   def parse(s) do
     {parsed, ""} = s
