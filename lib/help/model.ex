@@ -1,4 +1,4 @@
-defmodule Help.DatasetManipulation do
+defmodule Help.Model do
   @moduledoc false
   import Integer, only: [is_odd: 1]
   alias Help.Utils
@@ -30,7 +30,9 @@ defmodule Help.DatasetManipulation do
   # modify
 
   def parse(s) do
-    {parsed, ""} = Float.parse(s)
+    {parsed, ""} = s
+                   |> String.trim()
+                   |> Float.parse()
     parsed
   end
 

@@ -2,25 +2,25 @@ defmodule Ml.KNearestNeighborsTest do
   use ExUnit.Case
   doctest Ml.KNearestNeighbors
   import Ml.KNearestNeighbors
-  alias Help.DatasetManipulation
-  alias Help.DatasetManipulationTest
+  alias Help.Model
+  alias Help.ModelTest
   alias Math.Statistics
 
   test "k-nearest-neighbors on iris dataset" do
     {training_set, test_set} = "resources/datasets/iris.csv"
-                               |> DatasetManipulation.load_dataset()
-                               |> DatasetManipulation.training_and_test_sets(0.75)
+                               |> Model.load_dataset()
+                               |> Model.training_and_test_sets(0.75)
     f = training_set
-        |> Enum.map(&DatasetManipulationTest.parse_flower/1)
-        |> DatasetManipulation.normalize(["petal_length", "petal_width", "sepal_length", "sepal_width"])
+        |> Enum.map(&ModelTest.parse_flower/1)
+        |> Model.normalize(["petal_length", "petal_width", "sepal_length", "sepal_width"])
         |> classifier(
              ["petal_length", "petal_width", "sepal_length", "sepal_width"],
              "species",
              3
            )
     predicted_classes = test_set
-                        |> Enum.map(&DatasetManipulationTest.parse_flower/1)
-                        |> DatasetManipulation.normalize(["petal_length", "petal_width", "sepal_length", "sepal_width"])
+                        |> Enum.map(&ModelTest.parse_flower/1)
+                        |> Model.normalize(["petal_length", "petal_width", "sepal_length", "sepal_width"])
                         |> Enum.map(fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"species" => sp} -> sp end)
     score = Statistics.similarity(predicted_classes, actual_classes)
@@ -29,13 +29,13 @@ defmodule Ml.KNearestNeighborsTest do
 
   test "k-nearest-neighbors on two_times_minus_ten dataset" do
     {training_set, test_set} = "resources/datasets/two_times_minus_ten.csv"
-                               |> DatasetManipulation.load_dataset()
+                               |> Model.load_dataset()
                                |> Enum.map(
                                     fn %{"x" => x, "y" => y} ->
-                                      %{"x" => DatasetManipulation.parse(x), "y" => DatasetManipulation.parse(y)}
+                                      %{"x" => Model.parse(x), "y" => Model.parse(y)}
                                     end
                                   )
-                               |> DatasetManipulation.training_and_test_sets(0.8)
+                               |> Model.training_and_test_sets(0.8)
     f = predictor(training_set, ["x"], "y", 3)
     predictions = Enum.map(test_set, fn row -> f.(row) end)
     actual_values = Enum.map(test_set, fn %{"y" => v} -> v end)

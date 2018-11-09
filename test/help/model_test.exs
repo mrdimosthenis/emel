@@ -1,8 +1,8 @@
-defmodule Help.DatasetManipulationTest do
+defmodule Help.ModelTest do
   @moduledoc false
   use ExUnit.Case
-  doctest Help.DatasetManipulation
-  import Help.DatasetManipulation
+  doctest Help.Model
+  import Help.Model
 
   def parse_flower(flower) do
     flower

@@ -2,8 +2,8 @@ defmodule Ml.NaiveBayesTest do
   use ExUnit.Case
   doctest Ml.NaiveBayes
   import Ml.NaiveBayes
-  alias Help.DatasetManipulation
-  alias Help.DatasetManipulationTest
+  alias Help.Model
+  alias Help.ModelTest
   alias Math.Statistics
 
   @observations [
@@ -61,9 +61,9 @@ defmodule Ml.NaiveBayesTest do
 
   test "naive Bayes on iris dataset" do
     {training_set, test_set} = "resources/datasets/iris.csv"
-                               |> DatasetManipulation.load_dataset()
-                               |> DatasetManipulationTest.discrete_flower_attributes()
-                               |> DatasetManipulation.training_and_test_sets(0.7)
+                               |> Model.load_dataset()
+                               |> ModelTest.discrete_flower_attributes()
+                               |> Model.training_and_test_sets(0.7)
     f = classifier(training_set, ["petal_length", "petal_width", "sepal_length", "sepal_width"], "species")
     predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"species" => sp} -> sp end)
@@ -73,7 +73,7 @@ defmodule Ml.NaiveBayesTest do
 
   test "naive Bayes on titanic dataset" do
     {training_set, test_set} = "resources/datasets/titanic.csv"
-                               |> DatasetManipulation.load_dataset(
+                               |> Model.load_dataset(
                                     ["Survived", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
                                   )
                                |> Enum.filter(
@@ -83,8 +83,8 @@ defmodule Ml.NaiveBayesTest do
                                       |> Enum.all?(&(&1 != ""))
                                     end
                                   )
-                               |> DatasetManipulationTest.discrete_passenger_attributes()
-                               |> DatasetManipulation.training_and_test_sets(0.8)
+                               |> ModelTest.discrete_passenger_attributes()
+                               |> Model.training_and_test_sets(0.8)
     f = classifier(training_set, ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"], "Survived")
     predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"Survived" => sv} -> sv end)
