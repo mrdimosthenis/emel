@@ -4,6 +4,7 @@ defmodule Ml.KNearestNeighborsTest do
   import Ml.KNearestNeighbors
   alias Help.DatasetManipulation
   alias Help.DatasetManipulationTest
+  alias Math.Statistics
 
   test "k-nearest-neighbors on iris dataset" do
     {training_set, test_set} = "resources/datasets/iris.csv"
@@ -22,7 +23,7 @@ defmodule Ml.KNearestNeighborsTest do
                         |> DatasetManipulation.normalize(["petal_length", "petal_width", "sepal_length", "sepal_width"])
                         |> Enum.map(fn row -> f.(row) end)
     actual_classes = Enum.map(test_set, fn %{"species" => sp} -> sp end)
-    score = DatasetManipulation.accuracy(predicted_classes, actual_classes)
+    score = Statistics.similarity(predicted_classes, actual_classes)
     assert score == 0.9736842105263158
   end
 
@@ -38,7 +39,7 @@ defmodule Ml.KNearestNeighborsTest do
     f = predictor(training_set, ["x"], "y", 3)
     predictions = Enum.map(test_set, fn row -> f.(row) end)
     actual_values = Enum.map(test_set, fn %{"y" => v} -> v end)
-    error = DatasetManipulation.mean_absolute_error(predictions, actual_values)
+    error = Statistics.mean_absolute_error(predictions, actual_values)
     assert error == 1.7500000000000007
   end
 

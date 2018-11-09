@@ -81,17 +81,4 @@ defmodule Help.DatasetManipulation do
     |> Enum.split(n)
   end
 
-  def accuracy(vector_a, vector_b) when length(vector_a) == length(vector_b) do
-    n = Enum.zip(vector_a, vector_b)
-        |> Enum.count(fn {a, b} -> a == b end)
-    n / length(vector_b)
-  end
-
-  def mean_absolute_error(predictions, observations) when length(predictions) == length(observations) do
-    sum_absolute_error = Enum.zip(predictions, observations)
-                         |> Enum.map(fn {v1, v2} -> abs(v1 - v2) end)
-                         |> Enum.sum()
-    sum_absolute_error / length(observations)
-  end
-
 end
