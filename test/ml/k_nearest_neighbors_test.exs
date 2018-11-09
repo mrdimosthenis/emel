@@ -5,10 +5,11 @@ defmodule Ml.KNearestNeighborsTest do
   alias Help.Model
   alias Help.ModelTest
   alias Math.Statistics
+  alias Help.Io
 
   test "k-nearest-neighbors on iris dataset" do
     {training_set, test_set} = "resources/datasets/iris.csv"
-                               |> Model.load_dataset()
+                               |> Io.load_dataset()
                                |> Model.training_and_test_sets(0.75)
     f = training_set
         |> Enum.map(&ModelTest.parse_flower/1)
@@ -29,7 +30,7 @@ defmodule Ml.KNearestNeighborsTest do
 
   test "k-nearest-neighbors on two_times_minus_ten dataset" do
     {training_set, test_set} = "resources/datasets/two_times_minus_ten.csv"
-                               |> Model.load_dataset()
+                               |> Io.load_dataset()
                                |> Enum.map(
                                     fn %{"x" => x, "y" => y} ->
                                       %{"x" => Model.parse(x), "y" => Model.parse(y)}

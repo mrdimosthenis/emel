@@ -5,10 +5,11 @@ defmodule KMeansTest do
   alias Help.Model
   alias Help.ModelTest
   alias Math.Statistics
+  alias Help.Io
 
   test "k-means on iris dataset" do
     {training_set, test_set} = "resources/datasets/iris.csv"
-                               |> Model.load_dataset()
+                               |> Io.load_dataset()
                                |> Model.training_and_test_sets(0.80)
     f = training_set
         |> Enum.map(&ModelTest.parse_flower/1)

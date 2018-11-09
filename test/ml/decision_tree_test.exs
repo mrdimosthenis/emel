@@ -5,6 +5,7 @@ defmodule DecisionTreeTest do
   alias Help.Model
   alias Help.ModelTest
   alias Math.Statistics
+  alias Help.Io
 
   @observations [
     %{outlook: "s", windy: "f", golf: "y"},
@@ -33,7 +34,7 @@ defmodule DecisionTreeTest do
 
   test "decision tree on iris dataset" do
     {training_set, test_set} = "resources/datasets/iris.csv"
-                               |> Model.load_dataset()
+                               |> Io.load_dataset()
                                |> ModelTest.discrete_flower_attributes()
                                |> Model.training_and_test_sets(0.70)
     f = classifier(training_set, ["petal_length", "petal_width", "sepal_length", "sepal_width"], "species")
@@ -45,7 +46,7 @@ defmodule DecisionTreeTest do
 
   test "decision tree on titanic dataset" do
     {training_set, test_set} = "resources/datasets/titanic.csv"
-                               |> Model.load_dataset(
+                               |> Io.load_dataset(
                                     ["Survived", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
                                   )
                                |> Enum.filter(
