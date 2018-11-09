@@ -9,6 +9,28 @@ defmodule Help.Model do
     parsed
   end
 
+  @doc ~S"""
+  Returns a function that transforms a value of a _continuous attribute_ to a value of a _discrete attribute_.
+
+  ## Examples
+
+      iex> f = Help.Model.categorizer(["small", 7.0, "moderate", 12.0, "large"])
+      ...> f.(8.0)
+      "moderate"
+
+      iex> f = Help.Model.categorizer(["small", 7.0, "moderate", 12.0, "large"])
+      ...> f.(6.0)
+      "small"
+
+      iex> f = Help.Model.categorizer(["non positive", 0.0, "positive"])
+      ...> f.(-0.3)
+      "non positive"
+
+      iex> f = Help.Model.categorizer(["non positive", 0.0, "positive"])
+      ...> f.(0.0)
+      "non positive"
+
+  """
   def categorizer(categories_separated_by_thresholds) do
     thresholds = categories_separated_by_thresholds
                  |> Enum.with_index()
@@ -23,6 +45,21 @@ defmodule Help.Model do
     end
   end
 
+  @doc ~S"""
+  Applies _feature scaling_ on the `dataset`'s numeric values of `keys` and reduces them to a scale between 0 and 1.
+
+  ## Examples
+
+      iex> Help.Model.normalize([%{a: 0}, %{a: 1}], [:a])
+      [%{a: 0.0}, %{a: 1.0}]
+
+      iex> Help.Model.normalize([%{"x" => 1}, %{"x" => 2}, %{"x" => 1.5}], ["x"])
+      [%{"x" => 0.0}, %{"x" => 1.0}, %{"x" => 0.5}]
+
+      iex> Help.Model.normalize([%{"x" => 1, "y" => -2, "z" => -4}, %{"x" => 2, "y" => 2, "z" => -8}], ["y", "z"])
+      [%{"x" => 1, "y" => 0.0, "z" => 1.0}, %{"x" => 2, "y" => 1.0, "z" => 0.0}]
+
+  """
   def normalize(dataset, keys) do
     f_by_key = keys
                |> Enum.map(
