@@ -120,24 +120,6 @@ defmodule Math.Algebra do
   @doc ~S"""
   The solution of a system of _linear equations_ by using Cramer's formula.
 
-    system of linear equations with unknowns:
-    ```
-    2.0*x + 3.0*y = 6.0
-    4.0*x + 9.0*y = 15.0
-    ```
-
-    `coefficients`:
-    ```
-    [[2.0, 3.0],
-     [4.0, 9.0]]
-    ```
-
-    `constants`:
-    ```
-    [ 6.0,
-     15.0]
-    ```
-
   ## Examples
 
       iex> Math.Algebra.cramer_solution([[2.0, 3.0],

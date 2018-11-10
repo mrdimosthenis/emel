@@ -46,14 +46,7 @@ defmodule Ml.LinearRegression do
   @doc ~S"""
   The set of _predictor function_'s _coefficients_ based on _observations_ (`points`).
 
-    _observations_:
-    ```
-    f(1.794638, 15.15426     ) =   5.10998918E-1
-    f(3.220726, 229.6516     ) = 105.6583692
-    f(5.780040,   3.480201e+3) =   1.77699E3
-    ```
-
-    ## Examples
+  ## Examples
 
       iex> Ml.LinearRegression.regression_coefficients([[1.794638, 15.15426     ,   5.10998918E-1],
       ...>                                              [3.220726, 229.6516     , 105.6583692    ],
@@ -77,9 +70,8 @@ defmodule Ml.LinearRegression do
 
   @doc ~S"""
   Returns the linear function that predicts the value of the _dependent variable_.
-        ```
 
-        ## Examples
+  ## Examples
 
           iex> f = Ml.LinearRegression.predictor([%{x1: 1.794638, x2: 15.15426     , y:   5.10998918E-1},
           ...>                                    %{x1: 3.220726, x2: 229.6516     , y: 105.6583692    },

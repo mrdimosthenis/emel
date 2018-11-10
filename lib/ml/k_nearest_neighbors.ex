@@ -69,7 +69,7 @@ defmodule Ml.KNearestNeighbors do
   @doc ~S"""
   Returns the function that calculates the average value of the `dependent_variable` of the `k` nearest neighbors.
 
-        ## Examples
+  ## Examples
 
           iex> f = Ml.KNearestNeighbors.predictor([%{x1: 0.0, x2: 0.0, x3: 0.0, y: 0.0},
           ...>                                     %{x1: 0.5, x2: 0.5, x3: 0.5, y: 1.5},

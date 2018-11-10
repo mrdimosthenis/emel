@@ -5,11 +5,6 @@ defmodule Emel do
   Turn data into functions! A simple and functional *machine learning* library written in *elixir*.
 
   ```
-
-    ## Regression
-
-    ### Linear Regression
-
     iex> # set up the aliases for the module
     ...> alias Ml.LinearRegression, as: LR
     ...>
@@ -39,9 +34,9 @@ defmodule Emel do
     ...> # make predictions
     ...> f.(%{x1: 4, x2: 2})
     4.237500000000001
+  ```
 
-    ### K Nearest Neighbors
-
+  ```
     iex> alias Ml.KNearestNeighbors, as: KNN
     ...>
     ...> dataset = [
@@ -58,11 +53,9 @@ defmodule Emel do
     ...>
     ...> f.(%{x1: 1.725, x2: 1.725, x3: 1.725})
     5.25
+  ```
 
-    ## Classification
-
-    ### Decision Tree
-
+  ```
     iex> alias Ml.DecisionTree
     ...>
     ...> dataset = [
@@ -86,9 +79,9 @@ defmodule Emel do
     ...>
     ...> f.(%{outlook: "Sunny", temperature: "Mild", humidity: "Normal", wind: "Strong"})
     "Yes"
+  ```
 
-    ### Naive Bayes
-
+  ```
     iex> alias Ml.NaiveBayes
     ...>
     ...> dataset = [
@@ -112,6 +105,7 @@ defmodule Emel do
     ...>
     ...> f.(%{collateral: "none", income: "low", debt: "high", credit_history: "unknown"})
     "high"
+  ```
 
   """
 end

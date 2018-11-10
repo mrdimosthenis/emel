@@ -7,7 +7,14 @@ defmodule Emel.MixProject do
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+
+      # Docs
+      name: "emel",
+      source_url: "https://github.com/mrdimosthenis/emel",
+      docs: [
+        main: "Emel", # The main page in the docs
+      ]
     ]
   end
 
