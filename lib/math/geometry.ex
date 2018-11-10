@@ -1,5 +1,4 @@
 defmodule Math.Geometry do
-  @moduledoc false
 
   alias Help.Utils
 

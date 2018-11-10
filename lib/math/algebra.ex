@@ -1,5 +1,4 @@
 defmodule Math.Algebra do
-  @moduledoc false
 
   import Integer, only: [is_even: 1]
   alias Help.Utils

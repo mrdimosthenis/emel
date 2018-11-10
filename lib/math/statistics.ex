@@ -1,5 +1,4 @@
 defmodule Math.Statistics do
-  @moduledoc false
 
   alias Help.Utils
 

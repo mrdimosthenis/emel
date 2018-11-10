@@ -1,5 +1,5 @@
 defmodule Help.Model do
-  @moduledoc false
+
   import Integer, only: [is_odd: 1]
 
   @doc ~S"""
