@@ -38,7 +38,7 @@ defmodule Ml.PerceptronTest do
   end
 
   test "classifier" do
-    f = classifier(@dataset, [:a, :b], :and, 0.2, 10000)
+    f = classifier(@dataset, [:a, :b], :and)
     assert f.(%{a: 0, b: 0}) == false
     assert f.(%{a: 0, b: 1}) == false
     assert f.(%{a: 1, b: 0}) == false

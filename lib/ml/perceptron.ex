@@ -34,8 +34,8 @@ defmodule Ml.Perceptron do
         continuous_attributes,
         boolean_class,
         learning_rate \\ 0.0001,
-        err_thres \\ 0.21,
-        max_iter \\ 1000
+        err_thres \\ 0.1,
+        max_iter \\ 10000
       ) do
     [x | _] = xs = Enum.map(dataset, fn row -> [1 | Utils.map_vals(row, continuous_attributes)] end)
     ys = Enum.map(
