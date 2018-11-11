@@ -26,12 +26,12 @@ defmodule Emel do
 
   ### Implemented Algorithms
 
-  * [Linear Regression](https://hexdocs.pm/emel/Ml.LinearRegression.html)
-  * [K Nearest Neighbors](https://hexdocs.pm/emel/Ml.KNearestNeighbors.html)
-  * [Decision Tree](https://hexdocs.pm/emel/Ml.DecisionTree.html)
-  * [Naive Bayes](https://hexdocs.pm/emel/Ml.NaiveBayes.html)
-  * [K Means](https://hexdocs.pm/emel/Ml.KMeans.html)
-  * [Perceptron](https://hexdocs.pm/emel/Ml.Perceptron.html)
+  * [Linear Regression](https://hexdocs.pm/emel/0.1.1/Ml.LinearRegression.html)
+  * [K Nearest Neighbors](https://hexdocs.pm/emel/0.1.1/Ml.KNearestNeighbors.html)
+  * [Decision Tree](https://hexdocs.pm/emel/0.1.1/Ml.DecisionTree.html)
+  * [Naive Bayes](https://hexdocs.pm/emel/0.1.1/Ml.NaiveBayes.html)
+  * [K Means](https://hexdocs.pm/emel/0.1.1/Ml.KMeans.html)
+  * [Perceptron](https://hexdocs.pm/emel/0.1.1/Ml.Perceptron.html)
 
   ```elixir
   alias Ml.DecisionTree, as: DecisionTree
@@ -67,9 +67,9 @@ defmodule Emel do
 
   ### Mathematics
 
-  * [Algebra](https://hexdocs.pm/emel/Math.Algebra.html)
-  * [Geometry](https://hexdocs.pm/emel/Math.Geometry.html)
-  * [Statistics](https://hexdocs.pm/emel/Math.Statistics.html)
+  * [Algebra](https://hexdocs.pm/emel/0.1.1/Math.Algebra.html)
+  * [Geometry](https://hexdocs.pm/emel/0.1.1/Math.Geometry.html)
+  * [Statistics](https://hexdocs.pm/emel/0.1.1/Math.Statistics.html)
 
   ```elixir
   alias Ml.LinearRegression, as: LR
