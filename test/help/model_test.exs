@@ -6,7 +6,11 @@ defmodule Help.ModelTest do
   alias Help.Utils
 
   def parse_flower(flower) do
-    Utils.update_map(flower, ["petal_length", "petal_width", "sepal_length", "sepal_width"], fn v -> parse(v) end)
+    Utils.update_map(
+      flower,
+      ["petal_length", "petal_width", "sepal_length", "sepal_width"],
+      fn v -> parse(v) end
+    )
   end
 
   def discrete_flower_attributes(flowers) do
@@ -61,6 +65,19 @@ defmodule Help.ModelTest do
           "Parch" => loneliness_categorizer.(parse(parch)),
           "SibSp" => loneliness_categorizer.(parse(sis_sp))
         }
+      end
+    )
+  end
+
+  def continuous_passenger_attributes(passengers) do
+    Enum.map(
+      passengers,
+      fn m ->
+        Utils.update_map(
+          m,
+          ["Pclass", "Age", "Fare", "Parch", "SibSp"],
+          fn v -> parse(v) end
+        )
       end
     )
   end
