@@ -33,7 +33,7 @@ defmodule Math.Geometry do
       9.746794344808963
 
   """
-  def euclidean_distance(x, y) do
+  def euclidean_distance(x, y) when length(x) == length(y) do
     x
     |> Enum.zip(y)
     |> Enum.map(fn {a, b} -> (b - a) * (b - a) end)

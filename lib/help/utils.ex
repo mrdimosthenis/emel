@@ -46,4 +46,10 @@ defmodule Help.Utils do
   def indices([]), do: []
   def indices(ls), do: Enum.map(0..length(ls) - 1, &identity/1)
 
+  def duplicate(x, n) when n > 1 do
+    for _ <- 1 .. n do
+      x
+    end
+  end
+
 end
