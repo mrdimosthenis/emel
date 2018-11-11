@@ -67,9 +67,9 @@ defmodule Emel do
 
   ### Mathematics
 
-  * [Algebra](https://hexdocs.pm/emel/Math.Algebra.html)
-  * [Geometry](https://hexdocs.pm/emel/Math.Geometry.html)
-  * [Statistics](https://hexdocs.pm/emel/Math.Statistics.html)
+  * [Algebra](https://hexdocs.pm/emel/0.1.1/Math.Algebra.html)
+  * [Geometry](https://hexdocs.pm/emel/0.1.1/Math.Geometry.html)
+  * [Statistics](https://hexdocs.pm/emel/0.1.1/Math.Statistics.html)
 
   ```elixir
   alias Ml.LinearRegression, as: LR
