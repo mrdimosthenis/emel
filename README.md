@@ -9,12 +9,12 @@ The package can be installed by adding `emel` to your list of dependencies in `m
 ```elixir
 def deps do
   [
-    {:emel, "~> 0.1.0"}
+    {:emel, "~> 0.1.1"}
   ]
 end
 ```
 
-The docs can be found at [https://hexdocs.pm/emel](https://hexdocs.pm/emel).
+The docs can be found at [https://hexdocs.pm/emel/0.1.1](https://hexdocs.pm/emel/0.1.1).
 
 ## Usage
   ```elixir
@@ -41,12 +41,12 @@ The docs can be found at [https://hexdocs.pm/emel](https://hexdocs.pm/emel).
 
   ### Implemented Algorithms
 
-  * [Linear Regression](https://hexdocs.pm/emel/Ml.LinearRegression.html)
-  * [K Nearest Neighbors](https://hexdocs.pm/emel/Ml.KNearestNeighbors.html)
-  * [Decision Tree](https://hexdocs.pm/emel/Ml.DecisionTree.html)
-  * [Naive Bayes](https://hexdocs.pm/emel/Ml.NaiveBayes.html)
-  * [K Means](https://hexdocs.pm/emel/Ml.KMeans.html)
-  * [Perceptron](https://hexdocs.pm/emel/Ml.Perceptron.html)
+  * [Linear Regression](https://hexdocs.pm/emel/0.1.1/Ml.LinearRegression.html)
+  * [K Nearest Neighbors](https://hexdocs.pm/emel/0.1.1/Ml.KNearestNeighbors.html)
+  * [Decision Tree](https://hexdocs.pm/emel/0.1.1/Ml.DecisionTree.html)
+  * [Naive Bayes](https://hexdocs.pm/emel/0.1.1/Ml.NaiveBayes.html)
+  * [K Means](https://hexdocs.pm/emel/0.1.1/Ml.KMeans.html)
+  * [Perceptron](https://hexdocs.pm/emel/0.1.1/Ml.Perceptron.html)
 
   ```elixir
   alias Ml.DecisionTree, as: DecisionTree
