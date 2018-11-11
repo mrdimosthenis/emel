@@ -1,5 +1,5 @@
 defmodule Ml.NaiveBayes do
-  @moduledoc ~S"""
+  @moduledoc """
   A simple _probabilistic classifier_ based on applying _Bayes' theorem_
   with naive independence assumptions between the features.
   It makes classifications using the maximum _posteriori_ decision rule in a Bayesian setting.
@@ -33,7 +33,7 @@ defmodule Ml.NaiveBayes do
     probability_a * combined_posterior
   end
 
-  @doc ~S"""
+  @doc """
   Returns the function that classifies an item by using the _Naive Bayes Algorithm_.
 
   ## Examples

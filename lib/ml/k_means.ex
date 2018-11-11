@@ -1,5 +1,5 @@
 defmodule Ml.KMeans do
-  @moduledoc ~S"""
+  @moduledoc """
   Aims to partition n _observations_ into k _clusters_
   in which each _observation_ belongs to the _cluster_ with the nearest _mean_.
 
@@ -31,7 +31,7 @@ defmodule Ml.KMeans do
     end
   end
 
-  @doc ~S"""
+  @doc """
   `points` partitioned into `k` _clusters_ in which each _point_ belongs to the _cluster_ with the nearest _mean_.
 
   ## Examples
@@ -70,7 +70,7 @@ defmodule Ml.KMeans do
     |> Enum.map(&(&1.second))
   end
 
-  @doc ~S"""
+  @doc """
   Returns the function that classifies an item by identifying the _cluster_ it belongs to.
 
   ## Examples

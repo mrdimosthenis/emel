@@ -1,5 +1,5 @@
 defmodule Ml.KNearestNeighbors do
-  @moduledoc ~S"""
+  @moduledoc """
     A non-parametric method used for _classification_ and _regression_.
     In both cases, the input consists of the k closest training examples in the feature space.
 
@@ -7,7 +7,7 @@ defmodule Ml.KNearestNeighbors do
   alias Help.Utils
   alias Math.Geometry
 
-  @doc ~S"""
+  @doc """
   It searches through the entire `dataset` and returns the `k` most similar items to the `item`.
 
   ## Examples
@@ -37,7 +37,7 @@ defmodule Ml.KNearestNeighbors do
     |> Enum.take(k)
   end
 
-  @doc ~S"""
+  @doc """
   Returns the function that classifies an item by finding the `k` nearest neighbors.
 
   ## Examples
@@ -66,7 +66,7 @@ defmodule Ml.KNearestNeighbors do
     end
   end
 
-  @doc ~S"""
+  @doc """
   Returns the function that calculates the average value of the `dependent_variable` of the `k` nearest neighbors.
 
   ## Examples

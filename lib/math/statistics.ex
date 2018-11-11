@@ -2,7 +2,7 @@ defmodule Math.Statistics do
 
   alias Help.Utils
 
-  @doc ~S"""
+  @doc """
   The ratio of same values between `vector_a` and `vector_b`.
 
   ## Examples
@@ -20,7 +20,7 @@ defmodule Math.Statistics do
     n / length(vector_b)
   end
 
-  @doc ~S"""
+  @doc """
   A measure of difference between two continuous variables.
 
   ## Examples
@@ -39,7 +39,7 @@ defmodule Math.Statistics do
     sum_absolute_error / length(observations)
   end
 
-  @doc ~S"""
+  @doc """
   A number that gives you an idea of how random an outcome will be based on the `probability_values`
   of each of the possible outcomes in a situation.
 
@@ -74,7 +74,7 @@ defmodule Math.Statistics do
     |> Enum.sum()
   end
 
-  @doc ~S"""
+  @doc """
   The probability of event A occurring given that event B has occurred.
 
   ## Examples

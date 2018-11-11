@@ -2,7 +2,7 @@ defmodule Help.Model do
 
   import Integer, only: [is_odd: 1]
 
-  @doc ~S"""
+  @doc """
   Trims and parses the `string` into a float.
 
   """
@@ -13,7 +13,7 @@ defmodule Help.Model do
     parsed
   end
 
-  @doc ~S"""
+  @doc """
   Returns a function that transforms a value of a _continuous attribute_ to a value of a _discrete attribute_.
 
   ## Examples
@@ -49,7 +49,7 @@ defmodule Help.Model do
     end
   end
 
-  @doc ~S"""
+  @doc """
   Applies _feature scaling_ on the `dataset`'s numeric values of `keys` and reduces them to a scale between 0 and 1.
 
   ## Examples
@@ -87,7 +87,7 @@ defmodule Help.Model do
     end
   end
 
-  @doc ~S"""
+  @doc """
   Separates the `dataset` into a `training set` and `testing set`.
 
   """

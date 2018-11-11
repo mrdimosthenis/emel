@@ -1,5 +1,5 @@
 defmodule Ml.DecisionTree do
-  @moduledoc ~S"""
+  @moduledoc """
   Uses a _decision tree_ to go from _observations_ about an item (represented in the branches)
   to conclusions about the item's discrete target value (represented in the leaves).
 
@@ -86,7 +86,7 @@ defmodule Ml.DecisionTree do
     [tree]
   end
 
-  @doc ~S"""
+  @doc """
   The expanded _decision tree_ built with the _ID3 Algorithm_ for a `dataset` with discrete `attributes`.
 
   ## Examples
@@ -158,7 +158,7 @@ defmodule Ml.DecisionTree do
     )
   end
 
-  @doc ~S"""
+  @doc """
   Returns the function that classifies an item by using the _ID3 Algorithm_.
 
   ## Examples

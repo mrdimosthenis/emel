@@ -2,7 +2,7 @@ defmodule Math.Geometry do
 
   alias Help.Utils
 
-  @doc ~S"""
+  @doc """
   The sum of the products of the corresponding entries of `x` and `y`.
 
   ## Examples
@@ -21,7 +21,7 @@ defmodule Math.Geometry do
     |> Enum.sum()
   end
 
-  @doc ~S"""
+  @doc """
   The ordinary straight-line distance between two points in _Euclidean space_.
 
   ## Examples
@@ -41,7 +41,7 @@ defmodule Math.Geometry do
     |> :math.sqrt()
   end
 
-  @doc ~S"""
+  @doc """
   The _euclidean distance_ between the initial and terminal point of the `vector`.
 
   ## Examples
@@ -62,7 +62,7 @@ defmodule Math.Geometry do
   end
 
 
-  @doc ~S"""
+  @doc """
   The neighbor that is closest to the given `point`.
 
   ## Examples
@@ -75,7 +75,7 @@ defmodule Math.Geometry do
     Enum.min_by(neighbors, fn n -> euclidean_distance(n, point) end)
   end
 
-  @doc ~S"""
+  @doc """
   The _arithmetic mean_ position of the `points`.
 
   ## Examples

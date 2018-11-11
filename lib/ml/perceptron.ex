@@ -1,5 +1,5 @@
 defmodule Ml.Perceptron do
-  @moduledoc ~S"""
+  @moduledoc """
   A _binary classification algorithm_ that makes its predictions based on a _linear predictor function_
   combining a set of weights with the feature vector.
 
@@ -33,7 +33,7 @@ defmodule Ml.Perceptron do
     end
   end
 
-  @doc ~S"""
+  @doc """
   Returns the function that classifies an item by using the _Perceptron Algorithm_.
 
   ## Examples

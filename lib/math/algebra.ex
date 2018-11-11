@@ -3,7 +3,7 @@ defmodule Math.Algebra do
   import Integer, only: [is_even: 1]
   alias Help.Utils
 
-  @doc ~S"""
+  @doc """
   The `first_minor` of a `matrix` obtained by removing just the `i`-row and the `j`-column from the `matrix`.
   It is required for calculating _cofactors_, which in turn are useful for computing both the _determinant_
   and _inverse_ of square matrices. `i` and `j` are zero based.
@@ -43,7 +43,7 @@ defmodule Math.Algebra do
     |> Enum.map(&(List.delete_at(&1, j)))
   end
 
-  @doc ~S"""
+  @doc """
   A value that can be computed from the elements of a square `matrix`.
   Geometrically, it can be viewed as the _scaling factor_ of the _linear transformation_ described by the `matrix`.
 
@@ -92,7 +92,7 @@ defmodule Math.Algebra do
     |> Enum.sum()
   end
 
-  @doc ~S"""
+  @doc """
   A matrix whose rows are the columns of the original.
 
   ## Examples
@@ -116,7 +116,7 @@ defmodule Math.Algebra do
     |> Enum.map(&Tuple.to_list/1)
   end
 
-  @doc ~S"""
+  @doc """
   The solution of a system of _linear equations_ by using Cramer's formula.
 
   ## Examples

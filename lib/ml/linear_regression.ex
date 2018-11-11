@@ -1,5 +1,5 @@
 defmodule Ml.LinearRegression do
-  @moduledoc ~S"""
+  @moduledoc """
   A linear approach to modelling the relationship between a _dependent variable_ and one or more _independent variables_.
 
   """
@@ -43,7 +43,7 @@ defmodule Ml.LinearRegression do
     |> Enum.map(fn vector -> Enum.at(vector, -1) end)
   end
 
-  @doc ~S"""
+  @doc """
   The set of _predictor function_'s _coefficients_ based on _observations_ (`points`).
 
   ## Examples
@@ -68,7 +68,7 @@ defmodule Ml.LinearRegression do
     Algebra.cramer_solution(a, b)
   end
 
-  @doc ~S"""
+  @doc """
   Returns the linear function that predicts the value of the _dependent variable_.
 
   ## Examples
