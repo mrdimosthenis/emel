@@ -73,12 +73,12 @@ defmodule Ml.LinearRegression do
 
   ## Examples
 
-          iex> f = Ml.LinearRegression.predictor([%{x1: 1.794638, x2: 15.15426     , y:   5.10998918E-1},
-          ...>                                    %{x1: 3.220726, x2: 229.6516     , y: 105.6583692    },
-          ...>                                    %{x1: 5.780040, x2:   3.480201e+3, y:   1.77699E3    }],
-          ...>                                   [:x1, :x2], :y)
-          ...> f.(%{x1: 3.0, x2: 230.0})
-          106.74114058686602
+      iex> f = Ml.LinearRegression.predictor([%{x1: 1.794638, x2: 15.15426     , y:   5.10998918E-1},
+      ...>                                    %{x1: 3.220726, x2: 229.6516     , y: 105.6583692    },
+      ...>                                    %{x1: 5.780040, x2:   3.480201e+3, y:   1.77699E3    }],
+      ...>                                   [:x1, :x2], :y)
+      ...> f.(%{x1: 3.0, x2: 230.0})
+      106.74114058686602
 
   """
   def predictor(dataset, independent_variables, dependent_variable) do
