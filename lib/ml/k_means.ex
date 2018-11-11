@@ -32,7 +32,7 @@ defmodule Ml.KMeans do
   end
 
   @doc ~S"""
-  `Points` partitioned into `k` _clusters_ in which each _point_ belongs to the _cluster_ with the nearest _mean_.
+  `points` partitioned into `k` _clusters_ in which each _point_ belongs to the _cluster_ with the nearest _mean_.
 
   ## Examples
 
