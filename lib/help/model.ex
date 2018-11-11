@@ -3,7 +3,7 @@ defmodule Help.Model do
   import Integer, only: [is_odd: 1]
 
   @doc ~S"""
-  Trims and parses the `string` into a float
+  Trims and parses the `string` into a float.
 
   """
   def parse(string) do

@@ -43,11 +43,25 @@ defmodule Help.Utils do
     |> Map.new()
   end
 
+  def update_map(map, keys, f) do
+    Enum.reduce(
+      map,
+      %{},
+      fn ({k, v}, acc) ->
+        new_v = case Enum.member?(keys, k) do
+          true -> f.(v)
+          false -> v
+        end
+        Map.put(acc, k, new_v)
+      end
+    )
+  end
+
   def indices([]), do: []
   def indices(ls), do: Enum.map(0..length(ls) - 1, &identity/1)
 
   def duplicate(x, n) when n > 1 do
-    for _ <- 1 .. n do
+    for _ <- 1..n do
       x
     end
   end

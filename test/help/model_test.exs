@@ -3,17 +3,10 @@ defmodule Help.ModelTest do
   use ExUnit.Case
   doctest Help.Model
   import Help.Model
+  alias Help.Utils
 
   def parse_flower(flower) do
-    flower
-    |> Enum.map(
-         fn {k, v} -> case Enum.member?(["petal_length", "petal_width", "sepal_length", "sepal_width"], k) do
-                        true -> {k, parse(v)}
-                        false -> {k, v}
-                      end
-         end
-       )
-    |> Map.new()
+    Utils.update_map(flower, ["petal_length", "petal_width", "sepal_length", "sepal_width"], fn v -> parse(v) end)
   end
 
   def discrete_flower_attributes(flowers) do
