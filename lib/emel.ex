@@ -1,6 +1,6 @@
 defmodule Emel do
   @moduledoc ~S"""
-  Turn data into functions! A simple and functional **machine learning** library written in **elixir**.
+  [Turn data into functions](https://github.com/mrdimosthenis/emel)! A simple and functional **machine learning** library written in **elixir**.
 
   ```elixir
   # set up the aliases for the module
