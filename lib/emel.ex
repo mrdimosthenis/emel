@@ -31,6 +31,7 @@ defmodule Emel do
   * [Decision Tree](https://hexdocs.pm/emel/Ml.DecisionTree.html)
   * [Naive Bayes](https://hexdocs.pm/emel/Ml.NaiveBayes.html)
   * [K Means](https://hexdocs.pm/emel/Ml.KMeans.html)
+  * [Perceptron](https://hexdocs.pm/emel/Ml.Perceptron.html)
 
   ```elixir
   alias Ml.DecisionTree, as: DecisionTree
