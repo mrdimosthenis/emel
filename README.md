@@ -1,22 +1,23 @@
-# Emel
+  # Emel
 
-[Turn data into functions](https://github.com/mrdimosthenis/emel)! A simple and functional **machine learning** library written in **elixir**.
+  [Turn data into functions](https://github.com/mrdimosthenis/emel)! A simple and functional **machine learning** library written in **elixir**.
 
-## Installation
+  ## Installation
 
-The package can be installed by adding `emel` to your list of dependencies in `mix.exs`:
+  The package can be installed by adding `emel` to your list of dependencies in `mix.exs`:
 
-```elixir
-def deps do
+  ```elixir
+  def deps do
   [
-    {:emel, "~> 0.1.1"}
+    {:emel, "~> 0.1.2"}
   ]
-end
-```
+  end
+  ```
 
-The docs can be found at [https://hexdocs.pm/emel/0.1.1](https://hexdocs.pm/emel/0.1.1).
+  The docs can be found at [https://hexdocs.pm/emel/0.1.2](https://hexdocs.pm/emel/0.1.2).
 
-## Usage
+  ## Usage
+
   ```elixir
   # set up the aliases for the module
   alias Ml.KNearestNeighbors, as: KNN
@@ -41,12 +42,13 @@ The docs can be found at [https://hexdocs.pm/emel/0.1.1](https://hexdocs.pm/emel
 
   ### Implemented Algorithms
 
-  * [Linear Regression](https://hexdocs.pm/emel/0.1.1/Ml.LinearRegression.html)
-  * [K Nearest Neighbors](https://hexdocs.pm/emel/0.1.1/Ml.KNearestNeighbors.html)
-  * [Decision Tree](https://hexdocs.pm/emel/0.1.1/Ml.DecisionTree.html)
-  * [Naive Bayes](https://hexdocs.pm/emel/0.1.1/Ml.NaiveBayes.html)
-  * [K Means](https://hexdocs.pm/emel/0.1.1/Ml.KMeans.html)
-  * [Perceptron](https://hexdocs.pm/emel/0.1.1/Ml.Perceptron.html)
+  * [Linear Regression](https://hexdocs.pm/emel/0.1.2/Ml.LinearRegression.html)
+  * [K Nearest Neighbors](https://hexdocs.pm/emel/0.1.2/Ml.KNearestNeighbors.html)
+  * [Decision Tree](https://hexdocs.pm/emel/0.1.2/Ml.DecisionTree.html)
+  * [Naive Bayes](https://hexdocs.pm/emel/0.1.2/Ml.NaiveBayes.html)
+  * [K Means](https://hexdocs.pm/emel/0.1.2/Ml.KMeans.html)
+  * [Perceptron](https://hexdocs.pm/emel/0.1.2/Ml.Perceptron.html)
+  * [Artificial Neuron](https://hexdocs.pm/emel/0.1.2/Ml.ArtificialNeuron.html)
 
   ```elixir
   alias Ml.DecisionTree, as: DecisionTree
@@ -82,9 +84,10 @@ The docs can be found at [https://hexdocs.pm/emel/0.1.1](https://hexdocs.pm/emel
 
   ### Mathematics
 
-  * [Algebra](https://hexdocs.pm/emel/0.1.1/Math.Algebra.html)
-  * [Geometry](https://hexdocs.pm/emel/0.1.1/Math.Geometry.html)
-  * [Statistics](https://hexdocs.pm/emel/0.1.1/Math.Statistics.html)
+  * [Algebra](https://hexdocs.pm/emel/0.1.2/Math.Algebra.html)
+  * [Geometry](https://hexdocs.pm/emel/0.1.2/Math.Geometry.html)
+  * [Statistics](https://hexdocs.pm/emel/0.1.2/Math.Statistics.html)
+  * [Calculus](https://hexdocs.pm/emel/0.1.2/Math.Calculus.html)
 
   ```elixir
   alias Ml.LinearRegression, as: LR
@@ -119,4 +122,4 @@ The docs can be found at [https://hexdocs.pm/emel/0.1.1](https://hexdocs.pm/emel
   Stat.mean_absolute_error(predictions, actual_values)
   # 0.5889423076923077
   ```
- 
+  
