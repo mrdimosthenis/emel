@@ -13,17 +13,10 @@ defmodule Ml.ArtificialNeuron do
 
   defmodule Neuron do
     @moduledoc false
-    @enforce_keys [:ws, :fun]
-    defstruct [:ws, :fun]
+    @enforce_keys [:ws, :f, :der_f]
+    defstruct [:ws, :f, :der_f]
 
-    def new(
-          ws,
-          {f, der_f, inv_f} \\ {
-            &Calculus.logistic_function/1,
-            &Calculus.logistic_derivative/1,
-            &Calculus.logistic_inverse/1
-          }
-        ) do
+    def new(ws, f \\ &Calculus.logistic_function/1, der_f \\ &Calculus.logistic_derivative/1) do
       weights = if is_number(ws) do
         for _ <- 1..ws do
           :rand.uniform()
@@ -31,37 +24,35 @@ defmodule Ml.ArtificialNeuron do
       else
         ws
       end
-
-      %Neuron{ws: weights, fun: {f, der_f, inv_f}}
+      %Neuron{ws: weights, f: f, der_f: der_f}
     end
   end
 
-  def neuron_output(%Neuron{ws: ws, fun: {f, _, _}}, x) do
+  defp neuron_output(%Neuron{ws: ws, f: f}, x) do
     x
     |> Geometry.dot_product(ws)
     |> f.()
   end
 
-  def update_neuron_weights(%Neuron{ws: ws, fun: {f, der_f, inv_f}}, target_val, output_val, a) do
-    error = target_val - output_val
-    deriv = output_val
-            |> inv_f.()
-            |> der_f.()
-    delta = deriv * error
-    weights = Enum.map(ws, fn w -> (1 + a * delta) * w end)
-    %Neuron{ws: weights, fun: {f, der_f, inv_f}}
+  defp update_neuron_weights(%Neuron{ws: ws, f: f, der_f: der_f}, x, y, a) do
+    theta = Geometry.dot_product(x, ws)
+    y_hat = f.(theta)
+    deriv = der_f.(theta)
+    deriv = (-2) * (y - y_hat) * deriv
+    weights = Enum.map(
+      Enum.zip(ws, x),
+      fn {w, xi} -> w - a * deriv * xi end
+    )
+    %Neuron{ws: weights, f: f, der_f: der_f}
   end
 
   defp iterate(neuron, _, _, _, _, 0), do: neuron
-  defp iterate(%Neuron{ws: ws, fun: {f, der_f, inv_f}} = neuron, xs, ys, a, err_thres, max_iter) do
-    IO.puts(inspect(ws))
-    IO.puts("")
+  defp iterate(neuron, xs, ys, a, err_thres, max_iter) do
     new_neuron = Enum.reduce(
       Enum.zip(xs, ys),
       neuron,
       fn ({x, y}, acc) ->
-        output = neuron_output(neuron, x)
-        update_neuron_weights(acc, y, output, a)
+        update_neuron_weights(acc, x, y, a)
       end
     )
     mean_abs_err = xs
@@ -77,14 +68,11 @@ defmodule Ml.ArtificialNeuron do
         dataset,
         continuous_attributes,
         boolean_class,
-        {f, der_f, inv_f} \\ {
-          &Calculus.logistic_function/1,
-          &Calculus.logistic_derivative/1,
-          &Calculus.logistic_inverse/1
-        },
         learning_rate \\ 0.0001,
         err_thres \\ 0.1,
-        max_iter \\ 10000
+        max_iter \\ 10000,
+        activation_function \\ &Calculus.logistic_function/1,
+        activation_derivative \\ &Calculus.logistic_derivative/1
       ) do
     [x | _] = xs = Enum.map(dataset, fn row -> [1 | Utils.map_vals(row, continuous_attributes)] end)
     ys = Enum.map(
@@ -95,7 +83,7 @@ defmodule Ml.ArtificialNeuron do
                 end
       end
     )
-    init_neuron = Neuron.new(length(x) + 1)
+    init_neuron = Neuron.new(length(x) + 1, activation_function, activation_derivative)
     neuron = iterate(init_neuron, xs, ys, learning_rate, err_thres, max_iter)
     fn item ->
       item_vals = [1 | Utils.map_vals(item, continuous_attributes)]
