@@ -58,7 +58,7 @@ defmodule Ml.Perceptron do
       ...>                               %{x: 0.1, y: 0.0, x_less_than_y: false},
       ...>                               %{x: 0.2, y: 0.1, x_less_than_y: false},
       ...>                               %{x: 0.6, y: 0.7, x_less_than_y: true},
-      ...>                              ], [:x, :y], :x_less_than_y, 0.01, 0.001, 1000)
+      ...>                              ], [:x, :y], :x_less_than_y, 0.5, 0.001, 100)
       ...> f.(%{x: 0.55, y: 0.35})
       false
 
