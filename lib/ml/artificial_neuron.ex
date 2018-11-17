@@ -38,10 +38,10 @@ defmodule Ml.ArtificialNeuron do
     theta = Geometry.dot_product(x, ws)
     y_hat = f.(theta)
     deriv = der_f.(theta)
-    deriv = (-2) * (y - y_hat) * deriv
+    common_factor = (-2) * (y - y_hat) * deriv
     weights = Enum.map(
       Enum.zip(ws, x),
-      fn {w, xi} -> w - a * deriv * xi end
+      fn {w, xi} -> w - a * common_factor * xi end
     )
     %Neuron{ws: weights, f: f, der_f: der_f}
   end
