@@ -18,7 +18,7 @@ defmodule Math.Calculus do
   def logistic_function(x), do: 1 / (1 + :math.exp(-x))
 
   @doc """
-  The _derivative_ of the logistic_function
+  The _derivative_ of the _logistic function_.
 
   ## Examples
 
@@ -33,5 +33,22 @@ defmodule Math.Calculus do
 
   """
   def logistic_derivative(x), do: logistic_function(x) * (1 - logistic_function(x))
+
+  @doc """
+  The _inverse_ of the _logistic function_.
+
+  ## Examples
+
+      iex> Math.Calculus.logistic_inverse(0.5)
+      0.0
+
+      iex> Math.Calculus.logistic_inverse(0.9975273768433653)
+      6.000000000000048
+
+      iex> Math.Calculus.logistic_inverse(0.0024726231566347743)
+      -6.0
+
+  """
+  def logistic_inverse(x), do: :math.log(x / (1 - x))
 
 end
