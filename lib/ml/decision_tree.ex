@@ -37,7 +37,7 @@ defmodule Ml.DecisionTree do
   defp exhausted_attributes(dataset, class_attr) do
     %Utils.Pair{first: fst, second: _} = dataset
                                          |> Enum.group_by(fn row -> row[class_attr] end)
-                                         |> Enum.map(fn {k, v} -> %Utils.Pair{first: k, second: length(v)} end)
+                                         |> Enum.map(fn {k, v} -> Utils.Pair.new(k, length(v)) end)
                                          |> Enum.sort_by(&(&1.second), &>=/2)
                                          |> Enum.at(0)
     %Utils.TreeNode{

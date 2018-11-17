@@ -10,7 +10,7 @@ defmodule Ml.KMeans do
   defp point_groups(points, centroids) do
     points
     |> Enum.group_by(fn p -> Geometry.nearest_neighbor(p, centroids) end)
-    |> Enum.map(fn {k, v} -> %Utils.Pair{first: k, second: v} end)
+    |> Enum.map(fn {k, v} -> Utils.Pair.new(k, v) end)
     |> Enum.sort_by(&(&1.first))
   end
 

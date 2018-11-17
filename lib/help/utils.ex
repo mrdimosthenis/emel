@@ -5,6 +5,7 @@ defmodule Help.Utils do
     @moduledoc false
     @enforce_keys [:first, :second]
     defstruct [:first, :second]
+    def new(fst, snd), do: %Pair{first: fst, second: snd}
   end
 
   defmodule TreeNode do
