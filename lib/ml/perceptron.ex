@@ -81,7 +81,7 @@ defmodule Ml.Perceptron do
       end
     )
     init_ws = Utils.duplicate(0, length(x))
-    ws = iterate(init_ws, xs, ys, learning_rate, err_thres, max_iter - 1)
+    ws = iterate(init_ws, xs, ys, learning_rate, err_thres, max_iter)
     fn item ->
       item_vals = [1 | Utils.map_vals(item, continuous_attributes)]
       Geometry.dot_product(ws, item_vals) >= 0.5
