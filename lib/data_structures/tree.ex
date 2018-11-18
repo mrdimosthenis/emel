@@ -103,7 +103,7 @@ defmodule DataStructures.Tree do
       iex> alias DataStructures.Tree.Node
       ...>
       ...> DataStructures.Tree.apply(%Node{
-      ...>                             children: 5
+      ...>                             content: fn _ -> 5 end
       ...>                           })
       5
 
@@ -113,10 +113,10 @@ defmodule DataStructures.Tree do
       ...>                             content: fn [x, y] -> x * y end,
       ...>                             children: [
       ...>                               %Node{
-      ...>                                 children: 7
+      ...>                                 content: fn _ -> 7 end
       ...>                               },
       ...>                               %Node{
-      ...>                                 children: 2
+      ...>                                 content: fn _ -> 2 end
       ...>                               }
       ...>                             ]
       ...>                           })
@@ -131,21 +131,21 @@ defmodule DataStructures.Tree do
       ...>                                 content: fn [x] -> x * x end,
       ...>                                 children: [
       ...>                                   %Node{
-      ...>                                     children: 3
+      ...>                                     content: fn _ -> 3 end
       ...>                                   }
       ...>                                 ]
       ...>                               },
       ...>                               %Node{
-      ...>                                 children: 2
+      ...>                                 content: fn _ -> 2 end
       ...>                               }
       ...>                             ]
       ...>                           })
       11
 
   """
-  def apply(%Node{content: nil, children: params}), do: params
   def apply(%Node{content: f, children: children}) do
-    children
+    coll = children || []
+    coll
     |> Enum.map(&apply/1)
     |> f.()
   end
