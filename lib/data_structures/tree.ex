@@ -96,6 +96,61 @@ defmodule DataStructures.Tree do
   end
 
   @doc """
+  The result of invoking `f` on `node`'s `content` and `children`.
+
+  ## Examples
+
+      iex> alias DataStructures.Tree.Node
+      ...>
+      ...> DataStructures.Tree.map(%Node{
+      ...>                           content: -2,
+      ...>                           children: [
+      ...>                             %Node{
+      ...>                               content: 1
+      ...>                             },
+      ...>                             %Node{
+      ...>                               children: [
+      ...>                                 %Node{
+      ...>                                   content: 2,
+      ...>                                   children: [
+      ...>                                     %Node{
+      ...>                                       content: 3
+      ...>                                     }
+      ...>                                   ]
+      ...>                                 }]
+      ...>                             }]
+      ...>                         },
+      ...>                         fn x -> 3 * x end)
+      %DataStructures.Tree.Node{
+        content: -6,
+        children: [
+          %DataStructures.Tree.Node{
+            content: 3
+          },
+          %DataStructures.Tree.Node{
+            children: [
+              %DataStructures.Tree.Node{
+                content: 6,
+                children: [
+                  %DataStructures.Tree.Node{
+                    content: 9
+                  }]
+              }
+            ]
+          }
+        ]
+      }
+
+  """
+  def map(%Node{content: content, children: nil}, f), do: %Node{content: f.(content)}
+  def map(%Node{content: nil, children: children}, f) do
+    %Node{children: Enum.map(children, fn child -> map(child, f) end)}
+  end
+  def map(%Node{content: content, children: children}, f) do
+    %Node{content: f.(content), children: Enum.map(children, fn child -> map(child, f) end)}
+  end
+
+  @doc """
   Recursively applies the `node`'s `content` to the `children`.
 
   ## Examples
