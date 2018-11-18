@@ -65,7 +65,7 @@ defmodule Ml.ArtificialNeuron do
   end
 
   @doc """
-  Returns the function that classifies an item by using the _Artificial Neuron Function_.
+  Returns the function that classifies an item by finding and using the _Artificial Neuron Function_.
 
   ## Examples
 
