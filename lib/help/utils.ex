@@ -8,31 +8,6 @@ defmodule Help.Utils do
     def new(fst, snd), do: %Pair{first: fst, second: snd}
   end
 
-  defmodule TreeNode do
-    @moduledoc false
-    defstruct [:content, :children]
-  end
-
-  def pretty_tree(%TreeNode{content: content, children: nil}), do: content
-  def pretty_tree(%TreeNode{content: nil, children: children}), do: Enum.map(children, &pretty_tree/1)
-  def pretty_tree(%TreeNode{content: content, children: children}), do: [content, Enum.map(children, &pretty_tree/1)]
-
-  defp expand_tree(%TreeNode{content: content, children: nil}, path), do: [[content | path]]
-  defp expand_tree(%TreeNode{content: content, children: children}, path) do
-    Enum.flat_map(
-      children,
-      fn child ->
-        expand_tree(child, [content | path])
-      end
-    )
-  end
-
-  def tree_paths(tree) do
-    tree
-    |> expand_tree([])
-    |> Enum.map(&Enum.reverse/1)
-  end
-
   def log(x, b), do: :math.log(x) / :math.log(b)
 
   def identity(x), do: x

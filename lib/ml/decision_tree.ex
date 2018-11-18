@@ -7,6 +7,8 @@ defmodule Ml.DecisionTree do
 
   alias Help.Utils
   alias Math.Statistics
+  alias DataStructures.Tree
+  alias DataStructures.Tree.Node
 
   def entropy(dataset, class_attr) do
     dataset
@@ -40,7 +42,7 @@ defmodule Ml.DecisionTree do
                                          |> Enum.map(fn {k, v} -> Utils.Pair.new(k, length(v)) end)
                                          |> Enum.sort_by(&(&1.second), &>=/2)
                                          |> Enum.at(0)
-    %Utils.TreeNode{
+    %Node{
       content: %{
         class_attr => fst
       }
@@ -48,7 +50,7 @@ defmodule Ml.DecisionTree do
   end
 
   defp same_class([row | _], class_attr) do
-    %Utils.TreeNode{
+    %Node{
       content: %{
         class_attr => row[class_attr]
       }
@@ -62,10 +64,10 @@ defmodule Ml.DecisionTree do
       &>=/2
     )
     grouped_by_attr = Enum.group_by(dataset, fn row -> row[selected_attr] end)
-    %Utils.TreeNode{
+    %Node{
       children: Enum.map(
         grouped_by_attr,
-        fn {k, v} -> %Utils.TreeNode{
+        fn {k, v} -> %Node{
                        content: %{
                          selected_attr => k
                        },
@@ -132,7 +134,7 @@ defmodule Ml.DecisionTree do
   """
   def decision_tree(dataset, class, attributes) do
     [tree] = unfold_tree(dataset, class, attributes)
-    Utils.pretty_tree(tree)
+    Tree.pretty(tree)
   end
 
   defp actual_rule_match(rule_maps, item, class) do
@@ -185,7 +187,7 @@ defmodule Ml.DecisionTree do
   """
   def classifier(dataset, discrete_attributes, class) do
     [tree] = unfold_tree(dataset, class, discrete_attributes)
-    rule_maps = for path <- Utils.tree_paths(tree) do
+    rule_maps = for path <- Tree.paths(tree) do
       path
       |> Enum.reject(&is_nil/1)
       |> Enum.reduce(&Map.merge/2)
