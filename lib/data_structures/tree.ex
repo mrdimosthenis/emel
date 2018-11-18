@@ -6,7 +6,7 @@ defmodule DataStructures.Tree do
   end
 
   @doc """
-  Converts the `%Node` into a nice, visible tree for console printing.
+  Converts the `node` into a nice and visible tree for console printing.
 
   ## Examples
 
@@ -61,7 +61,7 @@ defmodule DataStructures.Tree do
   end
 
   @doc """
-  The sequences of nodes connecting the root with the leafs.
+  The sequences of nodes connecting the `tree`'s root with the leafs.
 
   ## Examples
 
@@ -95,6 +95,59 @@ defmodule DataStructures.Tree do
     |> Enum.map(&Enum.reverse/1)
   end
 
+  @doc """
+  Recursively applies the `node`'s `content` to the `children`.
 
+  ## Examples
+
+      iex> alias DataStructures.Tree.Node
+      ...>
+      ...> DataStructures.Tree.apply(%Node{
+      ...>                             children: 5
+      ...>                           })
+      5
+
+      iex> alias DataStructures.Tree.Node
+      ...>
+      ...> DataStructures.Tree.apply(%Node{
+      ...>                             content: fn [x, y] -> x * y end,
+      ...>                             children: [
+      ...>                               %Node{
+      ...>                                 children: 7
+      ...>                               },
+      ...>                               %Node{
+      ...>                                 children: 2
+      ...>                               }
+      ...>                             ]
+      ...>                           })
+      14
+
+      iex> alias DataStructures.Tree.Node
+      ...>
+      ...> DataStructures.Tree.apply(%Node{
+      ...>                             content: fn [x, y] -> x + y end,
+      ...>                             children: [
+      ...>                               %Node{
+      ...>                                 content: fn [x] -> x * x end,
+      ...>                                 children: [
+      ...>                                   %Node{
+      ...>                                     children: 3
+      ...>                                   }
+      ...>                                 ]
+      ...>                               },
+      ...>                               %Node{
+      ...>                                 children: 2
+      ...>                               }
+      ...>                             ]
+      ...>                           })
+      11
+
+  """
+  def apply(%Node{content: nil, children: params}), do: params
+  def apply(%Node{content: f, children: children}) do
+    children
+    |> Enum.map(&apply/1)
+    |> f.()
+  end
 
 end
