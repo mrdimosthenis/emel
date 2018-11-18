@@ -1,13 +1,6 @@
 defmodule Help.Utils do
   @moduledoc false
 
-  defmodule Pair do
-    @moduledoc false
-    @enforce_keys [:first, :second]
-    defstruct [:first, :second]
-    def new(fst, snd), do: %Pair{first: fst, second: snd}
-  end
-
   def log(x, b), do: :math.log(x) / :math.log(b)
 
   def identity(x), do: x

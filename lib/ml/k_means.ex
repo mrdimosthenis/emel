@@ -10,14 +10,13 @@ defmodule Ml.KMeans do
   defp point_groups(points, centroids) do
     points
     |> Enum.group_by(fn p -> Geometry.nearest_neighbor(p, centroids) end)
-    |> Enum.map(fn {k, v} -> Utils.Pair.new(k, v) end)
-    |> Enum.sort_by(&(&1.first))
+    |> Enum.sort_by(fn {k, _} -> k end)
   end
 
   defp iterate(clusters) do
-    groups = Enum.map(clusters, &(&1.second))
+    groups = Enum.map(clusters, fn {_, v} -> v end)
     points = Enum.concat(groups)
-    old_centroids = Enum.map(clusters, &(&1.first))
+    old_centroids = Enum.map(clusters, fn {v, _} -> v end)
     new_centroids = groups
                     |> Enum.map(&Geometry.centroid/1)
                     |> Enum.sort()
@@ -67,7 +66,7 @@ defmodule Ml.KMeans do
     points
     |> point_groups(centroids)
     |> iterate()
-    |> Enum.map(&(&1.second))
+    |> Enum.map(fn {_, v} -> v end)
   end
 
   @doc """

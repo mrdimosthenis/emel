@@ -37,10 +37,10 @@ defmodule Ml.DecisionTree do
   end
 
   defp exhausted_attributes(dataset, class_attr) do
-    %Utils.Pair{first: fst, second: _} = dataset
+    {fst, _} = dataset
                                          |> Enum.group_by(fn row -> row[class_attr] end)
-                                         |> Enum.map(fn {k, v} -> Utils.Pair.new(k, length(v)) end)
-                                         |> Enum.sort_by(&(&1.second), &>=/2)
+                                         |> Enum.map(fn {k, v} -> {k, length(v)} end)
+                                         |> Enum.sort_by(fn {_, v} -> v end, &>=/2)
                                          |> Enum.at(0)
     %Node{
       content: %{
