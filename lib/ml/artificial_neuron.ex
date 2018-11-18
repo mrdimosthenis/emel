@@ -77,20 +77,20 @@ defmodule Ml.ArtificialNeuron do
       ...> f.(%{a: 1, b: 1})
       true
 
-      iex> f = Ml.ArtificialNeuron.classifier([%{x: 0.0, y: 0.1, x_less_than_y: true},
-      ...>                                     %{x: 0.3, y: 0.2, x_less_than_y: false},
-      ...>                                     %{x: 0.2, y: 0.3, x_less_than_y: true},
-      ...>                                     %{x: 0.3, y: 0.4, x_less_than_y: true},
-      ...>                                     %{x: 0.4, y: 0.3, x_less_than_y: false},
-      ...>                                     %{x: 0.5, y: 0.5, x_less_than_y: false},
-      ...>                                     %{x: 0.5, y: 0.6, x_less_than_y: true},
-      ...>                                     %{x: 0.1, y: 0.2, x_less_than_y: true},
-      ...>                                     %{x: 0.0, y: 0.0, x_less_than_y: false},
-      ...>                                     %{x: 0.1, y: 0.0, x_less_than_y: false},
-      ...>                                     %{x: 0.2, y: 0.1, x_less_than_y: false},
-      ...>                                     %{x: 0.6, y: 0.7, x_less_than_y: true},
-      ...>                                    ], [:x, :y], :x_less_than_y, 0.5, 0.001, 100)
-      ...> f.(%{x: 0.55, y: 0.35})
+      iex> f = Ml.ArtificialNeuron.classifier([%{x: 0.0, y: 0.1, x_greater_than_y: false},
+      ...>                                     %{x: 0.3, y: 0.2, x_greater_than_y: true},
+      ...>                                     %{x: 0.2, y: 0.3, x_greater_than_y: false},
+      ...>                                     %{x: 0.3, y: 0.4, x_greater_than_y: false},
+      ...>                                     %{x: 0.4, y: 0.3, x_greater_than_y: true},
+      ...>                                     %{x: 0.5, y: 0.5, x_greater_than_y: true},
+      ...>                                     %{x: 0.5, y: 0.6, x_greater_than_y: false},
+      ...>                                     %{x: 0.1, y: 0.2, x_greater_than_y: false},
+      ...>                                     %{x: 0.0, y: 0.0, x_greater_than_y: true},
+      ...>                                     %{x: 0.1, y: 0.0, x_greater_than_y: true},
+      ...>                                     %{x: 0.2, y: 0.1, x_greater_than_y: true},
+      ...>                                     %{x: 0.6, y: 0.7, x_greater_than_y: false},
+      ...>                                    ], [:x, :y], :x_greater_than_y, 0.5, 0.001, 100)
+      ...> f.(%{x: 0.45, y: 0.55})
       false
 
   """
