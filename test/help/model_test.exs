@@ -1,5 +1,4 @@
 defmodule Help.ModelTest do
-  @moduledoc false
   use ExUnit.Case
   doctest Help.Model
   import Help.Model
