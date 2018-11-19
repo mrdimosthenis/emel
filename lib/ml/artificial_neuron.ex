@@ -18,9 +18,7 @@ defmodule Ml.ArtificialNeuron do
 
     def new(ws, f \\ &Calculus.logistic_function/1, der_f \\ &Calculus.logistic_derivative/1) do
       weights = if is_number(ws) do
-        for _ <- 1..ws do
-          :rand.uniform()
-        end
+        Utils.rand_float(ws)
       else
         ws
       end

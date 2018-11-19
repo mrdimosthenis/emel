@@ -35,4 +35,10 @@ defmodule Help.Utils do
     end
   end
 
+  def rand_float(n) do
+    for _ <- 1..n do
+      :rand.uniform()
+    end
+  end
+
 end
