@@ -41,4 +41,6 @@ defmodule Help.Utils do
     end
   end
 
+  def useless_process(), do: spawn fn -> nil end
+
 end

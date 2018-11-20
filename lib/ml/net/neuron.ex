@@ -15,7 +15,7 @@ defmodule Ml.Net.Neuron do
     Task.start_link(fn -> loop({ws, x_by_pid, d_by_pid, a}) end)
   end
 
-  defp fire_ys({ws, x_by_pid, d_by_pid, _}) do
+  defp forward({ws, x_by_pid, d_by_pid, _}) do
     y = x_by_pid
         |> Enum.sort_by(fn {id, _} -> id end)
         |> Enum.map(fn {_, x} -> x end)
@@ -24,7 +24,7 @@ defmodule Ml.Net.Neuron do
     Enum.each(d_by_pid, fn {pid, _} -> send pid, {:x, y, self()} end)
   end
 
-  defp fire_xs({ws, x_by_pid, d_by_pid, a}) do
+  defp backward({ws, x_by_pid, d_by_pid, a}) do
     common_factor = d_by_pid
                     |> Map.values()
                     |> Enum.sum()
@@ -47,8 +47,8 @@ defmodule Ml.Net.Neuron do
 
   defp maybe_act({ws, x_by_pid, d_by_pid, _} = state) do
     cond do
-      Enum.count(x_by_pid) == length(ws) -> fire_ys(state)
-      Enum.all?(d_by_pid, fn {_, d} -> d != nil end) -> fire_xs(state)
+      Enum.all?(d_by_pid, fn {_, d} -> d != nil end) -> backward(state)
+      Enum.count(x_by_pid) == length(ws) -> forward(state)
       true -> nil
     end
   end
