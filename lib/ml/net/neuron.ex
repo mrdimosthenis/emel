@@ -58,33 +58,34 @@ defmodule Ml.Net.Neuron do
     )
   end
 
-  defp maybe_act(
-         %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, status: status} = state
+  defp loop(
+         %State{
+           ws: ws,
+           xpids_with_vals: xpids_with_vals,
+           ypids_with_ds: ypids_with_ds,
+           action: action,
+           status: status
+         } = state
        ) do
     cond do
       Enum.count(xpids_with_vals) == length(ws) && (status == :wait_xpids || status == :wait_xvals) ->
         forward(state)
       Enum.all?(ypids_with_ds, fn {_, d} -> d != nil end) && status == :wait_dvals ->
         backward(state)
-      true -> nil
-    end
-  end
-
-  defp loop(%State{xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, action: action} = state) do
-    case action do
-      nil -> maybe_act(state)
-      f -> f.()
-    end
-    receive do
-      {:x, x, caller} ->
-        new_xpids_with_vals = case Enum.any?(xpids_with_vals, fn {xpid, _} -> xpid == caller end) do
-          true -> Utils.update_keyword_list(xpids_with_vals, caller, x)
-          false -> [{caller, x} | xpids_with_vals]
+      action != nil ->
+        action.()
+      true ->
+        receive do
+          {:x, x, caller} ->
+            new_xpids_with_vals = case Enum.any?(xpids_with_vals, fn {xpid, _} -> xpid == caller end) do
+              true -> Utils.update_keyword_list(xpids_with_vals, caller, x)
+              false -> [{caller, x} | xpids_with_vals]
+            end
+            loop(%{state | xpids_with_vals: new_xpids_with_vals, action: nil})
+          {:y, d, caller} ->
+            new_ypids_with_ds = Utils.update_keyword_list(ypids_with_ds, caller, d)
+            loop(%{state | ypids_with_ds: new_ypids_with_ds, action: nil})
         end
-        loop(%{state | xpids_with_vals: new_xpids_with_vals})
-      {:y, d, caller} ->
-        new_ypids_with_ds = Utils.update_keyword_list(ypids_with_ds, caller, d)
-        loop(%{state | ypids_with_ds: new_ypids_with_ds})
     end
   end
 
