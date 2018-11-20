@@ -38,39 +38,39 @@ defmodule Ml.Net.NeuronTest do
     temp_process_a = Utils.useless_process
     temp_process_b = Utils.useless_process
 
-    {:ok, pid} = start_link(3, 0.5, [self()])
+    {:ok, pid} = start_link(3, 0.001, [self()])
 
     refute_receive {:x, _, _}
-    send pid, {:x, 1.0, self()}
+    send pid, {:x, 0.5, self()}
     refute_receive {:x, _, _}
-    send pid, {:x, 1.0, temp_process_a}
+    send pid, {:x, 0.5, temp_process_a}
     refute_receive {:x, _, _}
-    send pid, {:x, 1.0, temp_process_b}
-    assert_receive {:x, 0.8827012393782601, _}
+    send pid, {:x, 0.5, temp_process_b}
+    assert_receive {:x, 0.7328501094653352, _}
 
     refute_receive {:y, _, _}
     send pid, {:y, -0.9, self()}
     assert_receive {:y, 0.1720318341759958, _}
 
     refute_receive {:x, _, _}
-    send pid, {:x, 1.0, self()}
+    send pid, {:x, 0.5, self()}
     refute_receive {:x, _, _}
-    send pid, {:x, 1.0, temp_process_a}
+    send pid, {:x, 0.5, temp_process_a}
     refute_receive {:x, _, _}
-    send pid, {:x, 1.0, temp_process_b}
-    assert_receive {:x, 0.8468378595384327, _}
+    send pid, {:x, 0.5, temp_process_b}
+    assert_receive {:x, 0.7328199336174254, _}
 
     refute_receive {:y, _, _}
     send pid, {:y, 0.9, self()}
-    assert_receive {:y, 0.15091664601711346, _}
+    assert_receive {:y, 0.17201071898783696, _}
 
     refute_receive {:x, _, _}
-    send pid, {:x, 1.0, self()}
+    send pid, {:x, 0.5, self()}
     refute_receive {:x, _, _}
-    send pid, {:x, 1.0, temp_process_a}
+    send pid, {:x, 0.5, temp_process_a}
     refute_receive {:x, _, _}
-    send pid, {:x, 1.0, temp_process_b}
-    assert_receive {:x, 0.8024632924463451, _}
+    send pid, {:x, 0.5, temp_process_b}
+    assert_receive {:x, 0.7327897556038121, _}
   end
 
 end
