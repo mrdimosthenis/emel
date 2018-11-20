@@ -7,7 +7,7 @@ defmodule Ml.Net.Neuron do
 
   defmodule State do
     @moduledoc false
-    defstruct [:ws, :xpids_with_vals, :ypids_with_ds, :a, :status]
+    defstruct [:ws, :xpids_with_vals, :ypids_with_ds, :a, :status, :action]
   end
 
   def start_link(num_of_inputs, learning_rate, ys_ids) do
@@ -25,8 +25,8 @@ defmodule Ml.Net.Neuron do
         |> Enum.map(fn {_, x} -> x end)
         |> Geometry.dot_product(ws)
         |> Calculus.logistic_function()
-    Enum.each(ypids_with_ds, fn {ypid, _} -> send ypid, {:x, y, self()} end)
-    loop(%{state | status: :wait_dvals})
+    action = fn -> Enum.each(ypids_with_ds, fn {ypid, _} -> send ypid, {:x, y, self()} end) end
+    loop(%{state | status: :wait_dvals, action: action})
   end
 
   defp backward(%State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a}) do
@@ -34,30 +34,47 @@ defmodule Ml.Net.Neuron do
                     |> Enum.map(fn {_, d} -> d end)
                     |> Enum.sum()
                     |> Calculus.logistic_derivative()
-    xpids_with_vals
-    |> Enum.map(fn {xpid, _} -> xpid end)
-    |> Enum.zip(ws)
-    |> Enum.each(fn {xpid, w} -> send xpid, {:y, common_factor * w, self()} end)
+    action = fn ->
+      xpids_with_vals
+      |> Enum.map(fn {xpid, _} -> xpid end)
+      |> Enum.zip(ws)
+      |> Enum.each(fn {xpid, w} -> send xpid, {:y, common_factor * w, self()} end)
+    end
     new_ws = xpids_with_vals
              |> Enum.map(fn {_, x} -> x end)
              |> Enum.zip(ws)
              |> Enum.map(fn {x, w} -> w - a * common_factor * x end)
     new_xpids_with_vals = Enum.map(xpids_with_vals, fn {xpid, _} -> {xpid, nil} end)
     new_ypids_with_ds = Enum.map(ypids_with_ds, fn {ypid, _} -> {ypid, nil} end)
-    loop(%State{ws: new_ws, xpids_with_vals: new_xpids_with_vals, ypids_with_ds: new_ypids_with_ds, a: a, status: :wait_xvals})
+    loop(
+      %State{
+        ws: new_ws,
+        xpids_with_vals: new_xpids_with_vals,
+        ypids_with_ds: new_ypids_with_ds,
+        a: a,
+        status: :wait_xvals,
+        action: action
+      }
+    )
   end
 
-  defp maybe_act(%State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, status: status} = state) do
+  defp maybe_act(
+         %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, status: status} = state
+       ) do
     cond do
       Enum.count(xpids_with_vals) == length(ws) && (status == :wait_xpids || status == :wait_xvals) ->
         forward(state)
-      Enum.all?(ypids_with_ds, fn {_, d} -> d != nil end) && status == :wait_dvals->
+      Enum.all?(ypids_with_ds, fn {_, d} -> d != nil end) && status == :wait_dvals ->
         backward(state)
       true -> nil
     end
   end
 
-  defp loop(%State{xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds} = state) do
+  defp loop(%State{xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, action: action} = state) do
+    case action do
+      nil -> nil
+      f -> f.()
+    end
     maybe_act(state)
     receive do
       {:x, x, caller} ->

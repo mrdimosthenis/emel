@@ -15,7 +15,7 @@ defmodule Ml.Net.NeuronTest do
 
 #    refute_receive {:y, _, _}
 #    send pid, {:y, 0.0, self()}
-#    assert_receive {:y, , _}
+#    assert_receive {:y, 0.0, _}
   end
 
   test "single input - double output" do
