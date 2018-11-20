@@ -20,13 +20,13 @@ defmodule Ml.Net.Neuron do
     Task.start_link(fn -> loop(state) end)
   end
 
-  defp forward(%State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a}) do
+  defp forward(%State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds} = state) do
     y = xpids_with_vals
         |> Enum.map(fn {_, x} -> x end)
         |> Geometry.dot_product(ws)
         |> Calculus.logistic_function()
     Enum.each(ypids_with_ds, fn {ypid, _} -> send ypid, {:x, y, self()} end)
-    loop(%State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a, status: :wait_dvals})
+    loop(%{state | status: :wait_dvals})
   end
 
   defp backward(%State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a}) do
@@ -57,7 +57,7 @@ defmodule Ml.Net.Neuron do
     end
   end
 
-  defp loop(%State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a, status: status} = state) do
+  defp loop(%State{xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds} = state) do
     maybe_act(state)
     receive do
       {:x, x, caller} ->
@@ -65,10 +65,10 @@ defmodule Ml.Net.Neuron do
           true -> Utils.update_keyword_list(xpids_with_vals, caller, x)
           false -> [{caller, x} | xpids_with_vals]
         end
-        loop(%State{ws: ws, xpids_with_vals: new_xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a, status: status})
+        loop(%{state | xpids_with_vals: new_xpids_with_vals})
       {:y, d, caller} ->
         new_ypids_with_ds = Utils.update_keyword_list(ypids_with_ds, caller, d)
-        loop(%State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: new_ypids_with_ds, a: a, status: status})
+        loop(%{state | ypids_with_ds: new_ypids_with_ds})
     end
   end
 
