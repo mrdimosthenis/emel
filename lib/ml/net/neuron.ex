@@ -74,6 +74,7 @@ defmodule Ml.Net.Neuron do
         backward(state)
       action != nil ->
         action.()
+        loop(%{state | action: nil})
       true ->
         receive do
           {:x, x, caller} ->
@@ -81,10 +82,10 @@ defmodule Ml.Net.Neuron do
               true -> Utils.update_keyword_list(xpids_with_vals, caller, x)
               false -> [{caller, x} | xpids_with_vals]
             end
-            loop(%{state | xpids_with_vals: new_xpids_with_vals, action: nil})
+            loop(%{state | xpids_with_vals: new_xpids_with_vals})
           {:y, d, caller} ->
             new_ypids_with_ds = Utils.update_keyword_list(ypids_with_ds, caller, d)
-            loop(%{state | ypids_with_ds: new_ypids_with_ds, action: nil})
+            loop(%{state | ypids_with_ds: new_ypids_with_ds})
         end
     end
   end
