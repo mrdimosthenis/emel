@@ -68,13 +68,13 @@ defmodule Ml.Net.Neuron do
          } = state
        ) do
     cond do
+      action != nil ->
+        action.()
+        loop(%{state | action: nil})
       Enum.count(xpids_with_vals) == length(ws) && (status == :wait_xpids || status == :wait_xvals) ->
         forward(state)
       Enum.all?(ypids_with_ds, fn {_, d} -> d != nil end) && status == :wait_dvals ->
         backward(state)
-      action != nil ->
-        action.()
-        loop(%{state | action: nil})
       true ->
         receive do
           {:x, x, caller} ->
