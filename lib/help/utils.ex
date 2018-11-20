@@ -43,4 +43,16 @@ defmodule Help.Utils do
 
   def useless_process(), do: spawn fn -> nil end
 
+  def update_keyword_list(tuples, key, new_val) do
+    tuples
+    |> Enum.reduce([], fn ({k, v}, tpls) ->
+      new_tpl = case k do
+        ^key -> {k, new_val}
+        _ -> {k, v}
+      end
+      [new_tpl | tpls]
+    end)
+    |> Enum.reverse()
+  end
+
 end
