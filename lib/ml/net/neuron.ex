@@ -54,7 +54,6 @@ defmodule Ml.Net.Neuron do
     cond do
       Enum.count(x_by_pid) == length(ws) -> fire_ys(state)
       Enum.all?(d_by_pid, fn {_, d} -> d != nil end) -> nil
-      #fire_xs(state)
       true -> nil
     end
   end
