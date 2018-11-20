@@ -21,9 +21,7 @@ defmodule Ml.Net.Neuron do
         |> Enum.map(fn {_, x} -> x end)
         |> Geometry.dot_product(ws)
         |> Calculus.logistic_function()
-    for {pid, _} <- d_by_pid do
-      send pid, {:x, y, self()}
-    end
+    Enum.each(d_by_pid, fn {pid, _} -> send pid, {:x, y, self()} end)
   end
 
   defp fire_xs({ws, x_by_pid, d_by_pid, a}) do
