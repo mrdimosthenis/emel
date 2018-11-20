@@ -72,10 +72,9 @@ defmodule Ml.Net.Neuron do
 
   defp loop(%State{xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, action: action} = state) do
     case action do
-      nil -> nil
+      nil -> maybe_act(state)
       f -> f.()
     end
-    maybe_act(state)
     receive do
       {:x, x, caller} ->
         new_xpids_with_vals = case Enum.any?(xpids_with_vals, fn {xpid, _} -> xpid == caller end) do
