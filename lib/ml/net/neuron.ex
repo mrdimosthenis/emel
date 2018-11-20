@@ -79,13 +79,10 @@ defmodule Ml.Net.Neuron do
       true ->
         receive do
           {:x, x, caller} ->
-            new_xpids_with_vals = case Enum.any?(xpids_with_vals, fn {xpid, _} -> xpid == caller end) do
-              true -> Utils.update_keyword_list(xpids_with_vals, caller, x)
-              false -> [{caller, x} | xpids_with_vals]
-            end
+            new_xpids_with_vals = Utils.put_into_keylist(xpids_with_vals, caller, x)
             loop(%{state | xpids_with_vals: new_xpids_with_vals})
           {:y, d, caller} ->
-            new_ypids_with_ds = Utils.update_keyword_list(ypids_with_ds, caller, d)
+            new_ypids_with_ds = Utils.put_into_keylist(ypids_with_ds, caller, d)
             loop(%{state | ypids_with_ds: new_ypids_with_ds})
         end
     end
