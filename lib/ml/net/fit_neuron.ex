@@ -14,7 +14,7 @@ defmodule Ml.Net.FitNeuron do
 
   # Client
 
-  def start_link(default)  do
+  def start_link(default) do
     GenServer.start_link(__MODULE__, default)
   end
 
