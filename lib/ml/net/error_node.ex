@@ -1,7 +1,7 @@
 defmodule Ml.Net.ErrorNode do
   @moduledoc false
 
-  alias Ml.Net.FitNeuron
+  alias Ml.Net.Neuron
 
   use GenServer
 
@@ -65,6 +65,7 @@ defmodule Ml.Net.ErrorNode do
   end
 
   # helper functions
+
   defp maybe_back_propagate(%State{n: n, vals_and_hats_by_yhatpid: vals_and_hats_by_yhatpid} = state) do
     new_state = if Enum.count(vals_and_hats_by_yhatpid) == n &&
                      Enum.all?(
@@ -73,7 +74,7 @@ defmodule Ml.Net.ErrorNode do
                      ) do
       for {yhatpid, %{y: y, yhat: yhat}} <- vals_and_hats_by_yhatpid do
         delta = (-2) * (y - yhat)
-        FitNeuron.back_propagate(yhatpid, self(), delta)
+        Neuron.back_propagate(yhatpid, self(), delta)
       end
       %{state | vals_and_hats_by_yhatpid: %{}}
     else

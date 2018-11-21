@@ -1,4 +1,4 @@
-defmodule Ml.Net.FitNeuron do
+defmodule Ml.Net.Neuron do
   @moduledoc false
 
   alias Help.Utils
@@ -9,7 +9,7 @@ defmodule Ml.Net.FitNeuron do
 
   defmodule State do
     @moduledoc false
-    defstruct [:ws, :xpids_with_vals, :ypids_with_ds, :a, :status]
+    defstruct [:ws, :xpids_with_vals, :ypids_with_ds, :a, :status, :is_fitting]
   end
 
   # Client
@@ -33,7 +33,7 @@ defmodule Ml.Net.FitNeuron do
   # Server (callbacks)
 
   @impl true
-  def init([n_or_ws, a, ypids]) do
+  def init([n_or_ws, a, ypids, is_fitting]) do
     ws = if is_number(n_or_ws) do
       Utils.rand_float(n_or_ws)
     else
@@ -41,14 +41,27 @@ defmodule Ml.Net.FitNeuron do
     end
     xpids_with_vals = []
     ypids_with_ds = Enum.zip(ypids, Stream.cycle([nil]))
-    state = %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a, status: :wait_xvals}
+    state = %State{
+      ws: ws,
+      xpids_with_vals: xpids_with_vals,
+      ypids_with_ds: ypids_with_ds,
+      a: a,
+      status: :wait_xvals,
+      is_fitting: is_fitting
+    }
     {:ok, state}
   end
 
   @impl true
   def handle_cast(
         {:fire, xpid, xval},
-        %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, status: status} = state
+        %State{
+          ws: ws,
+          xpids_with_vals: xpids_with_vals,
+          ypids_with_ds: ypids_with_ds,
+          status: status,
+          is_fitting: is_fitting
+        } = state
       ) do
     new_xpids_with_vals = Utils.put_into_keylist(xpids_with_vals, xpid, xval)
     new_status = if Enum.count(new_xpids_with_vals) == length(ws) &&
@@ -63,7 +76,11 @@ defmodule Ml.Net.FitNeuron do
     else
       status
     end
-    {:noreply, %{state | xpids_with_vals: new_xpids_with_vals, status: new_status}}
+    new_state = case {new_status, is_fitting} do
+      {:wait_dvals, false} -> wait_xvals_state(state)
+      _ -> %{state | xpids_with_vals: new_xpids_with_vals, status: new_status}
+    end
+    {:noreply, new_state}
   end
   def handle_cast(
         {:back_propagate, ypid, dval},
@@ -86,19 +103,23 @@ defmodule Ml.Net.FitNeuron do
                |> Enum.map(fn {_, x} -> x end)
                |> Enum.zip(ws)
                |> Enum.map(fn {x, w} -> w - a * common_factor * x end)
-      new_xpids_with_vals = Enum.map(xpids_with_vals, fn {xpid, _} -> {xpid, nil} end)
-      cleared_ypids_with_ds = Enum.map(new_ypids_with_ds, fn {ypid, _} -> {ypid, nil} end)
-      %State{
-        ws: new_ws,
-        xpids_with_vals: new_xpids_with_vals,
-        ypids_with_ds: cleared_ypids_with_ds,
-        a: a,
-        status: :wait_xvals
-      }
+      %{state | ws: new_ws}
+      |> wait_xvals_state()
     else
       %{state | ypids_with_ds: new_ypids_with_ds}
     end
     {:noreply, new_state}
+  end
+
+  # helper functions
+
+  defp wait_xvals_state(%State{xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds} = state) do
+    %{
+      state |
+      xpids_with_vals: Enum.map(xpids_with_vals, fn {xpid, _} -> {xpid, nil} end),
+      ypids_with_ds: Enum.map(ypids_with_ds, fn {ypid, _} -> {ypid, nil} end),
+      status: :wait_xvals
+    }
   end
 
 end
