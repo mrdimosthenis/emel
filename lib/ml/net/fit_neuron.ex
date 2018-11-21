@@ -1,4 +1,4 @@
-defmodule Ml.Net.FittedNeuron do
+defmodule Ml.Net.FitNeuron do
   @moduledoc false
 
   alias Help.Utils
@@ -14,7 +14,7 @@ defmodule Ml.Net.FittedNeuron do
 
   # Client
 
-  def start_link(default) do
+  def start_link(default)  do
     GenServer.start_link(__MODULE__, default)
   end
 
@@ -26,11 +26,19 @@ defmodule Ml.Net.FittedNeuron do
     GenServer.cast(pid, {:back_propagate, ypid, dval})
   end
 
+  def stop(pid) do
+    GenServer.stop(pid)
+  end
+
   # Server (callbacks)
 
   @impl true
-  def init([n, a, ypids]) do
-    ws = Utils.rand_float(n)
+  def init([n_or_ws, a, ypids]) do
+    ws = if is_number(n_or_ws) do
+      Utils.rand_float(n_or_ws)
+    else
+      n_or_ws
+    end
     xpids_with_vals = []
     ypids_with_ds = Enum.zip(ypids, Stream.cycle([nil]))
     state = %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a, status: :wait_xpids}
@@ -40,7 +48,7 @@ defmodule Ml.Net.FittedNeuron do
   @impl true
   def handle_cast(
         {:fire, xpid, xval},
-        %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a, status: status} = state
+        %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, status: status} = state
       ) do
     new_xpids_with_vals = Utils.put_into_keylist(xpids_with_vals, xpid, xval)
     new_status = if (Enum.count(new_xpids_with_vals) == length(ws) && status == :wait_xpids) ||
@@ -61,7 +69,7 @@ defmodule Ml.Net.FittedNeuron do
         %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a, status: status} = state
       ) do
     new_ypids_with_ds = Utils.put_into_keylist(ypids_with_ds, ypid, dval)
-    if Enum.all?(new_ypids_with_ds, fn {_, d} -> d != nil end) && status == :wait_dvals do
+    new_state = if Enum.all?(new_ypids_with_ds, fn {_, d} -> d != nil end) && status == :wait_dvals do
       common_factor = new_ypids_with_ds
                       |> Enum.map(fn {_, d} -> d end)
                       |> Enum.sum()
@@ -86,6 +94,7 @@ defmodule Ml.Net.FittedNeuron do
     else
       %{state | ypids_with_ds: new_ypids_with_ds}
     end
+    {:noreply, new_state}
   end
 
 end
