@@ -75,10 +75,7 @@ defmodule Ml.Net.ErrorNode do
         delta = (-2) * (y - yhat)
         FitNeuron.back_propagate(yhatpid, self(), delta)
       end
-      new_vals_and_hats_by_yhatpid = vals_and_hats_by_yhatpid
-                                     |> Enum.map(fn {k, _} -> {k, nil} end)
-                                     |> Map.new()
-      %{state | vals_and_hats_by_yhatpid: new_vals_and_hats_by_yhatpid}
+      %{state | vals_and_hats_by_yhatpid: %{}}
     else
       state
     end
