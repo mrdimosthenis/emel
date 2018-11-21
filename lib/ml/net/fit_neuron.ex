@@ -41,7 +41,7 @@ defmodule Ml.Net.FitNeuron do
     end
     xpids_with_vals = []
     ypids_with_ds = Enum.zip(ypids, Stream.cycle([nil]))
-    state = %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a, status: :wait_xpids}
+    state = %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a, status: :wait_xvals}
     {:ok, state}
   end
 
@@ -51,8 +51,9 @@ defmodule Ml.Net.FitNeuron do
         %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, status: status} = state
       ) do
     new_xpids_with_vals = Utils.put_into_keylist(xpids_with_vals, xpid, xval)
-    new_status = if (Enum.count(new_xpids_with_vals) == length(ws) && status == :wait_xpids) ||
-                      (Enum.all?(new_xpids_with_vals, fn {_, x} -> x != nil end) && status == :wait_xvals) do
+    new_status = if Enum.count(new_xpids_with_vals) == length(ws) &&
+                      Enum.all?(new_xpids_with_vals, fn {_, x} -> x != nil end) &&
+                      status == :wait_xvals do
       y = new_xpids_with_vals
           |> Enum.map(fn {_, x} -> x end)
           |> Geometry.dot_product(ws)
