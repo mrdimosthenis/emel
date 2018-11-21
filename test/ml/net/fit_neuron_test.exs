@@ -15,7 +15,7 @@ defmodule Ml.Net.FitNeuronTest do
 
     refute_receive {:"$gen_cast", {:back_propagate, _, _}}
     FitNeuron.back_propagate(pid, self(), 0.0)
-    assert_receive {:"$gen_cast", {:back_propagate, _, 0.125}}
+    assert_receive {:"$gen_cast", {:back_propagate, _, 0.0}}
   end
 
   test "single input - double output" do
@@ -31,14 +31,14 @@ defmodule Ml.Net.FitNeuronTest do
     FitNeuron.back_propagate(pid, self(), 0.7)
     refute_receive {:"$gen_cast", {:back_propagate, _, _}}
     FitNeuron.back_propagate(pid, temp_process, 0.3)
-    assert_receive {:"$gen_cast", {:back_propagate, _, 0.1179671599448891}}
+    assert_receive {:"$gen_cast", {:back_propagate, _, 0.1466749870144475}}
   end
 
   test "triple input - single output" do
     temp_process_a = Utils.useless_process
     temp_process_b = Utils.useless_process
 
-    {:ok, pid} = GenServer.start_link(FitNeuron, [[0.3, 0.5, 0.7], 0.01, [self()]])
+    {:ok, pid} = GenServer.start_link(FitNeuron, [[0.3, 0.5, 0.7], 0.1, [self()]])
 
     refute_receive {:"$gen_cast", {:fire, _, _}}
     FitNeuron.fire(pid, self(), 0.5)
@@ -50,7 +50,7 @@ defmodule Ml.Net.FitNeuronTest do
 
     refute_receive {:"$gen_cast", {:back_propagate, _, _}}
     FitNeuron.back_propagate(pid, self(), -0.9)
-    assert_receive {:"$gen_cast", {:back_propagate, _, 0.1438502151395844}}
+    assert_receive {:"$gen_cast", {:back_propagate, _, -0.13727384606994283}}
 
     refute_receive {:"$gen_cast", {:fire, _, _}}
     FitNeuron.fire(pid, self(), 0.5)
@@ -58,11 +58,11 @@ defmodule Ml.Net.FitNeuronTest do
     FitNeuron.fire(pid, temp_process_a, 0.5)
     refute_receive {:"$gen_cast", {:fire, _, _}}
     FitNeuron.fire(pid, temp_process_b, 0.5)
-    assert_receive {:"$gen_cast", {:fire, _, 0.6788427753118986}}
+    assert_receive {:"$gen_cast", {:fire, _, 0.682374998616624}}
 
     refute_receive {:"$gen_cast", {:back_propagate, _, _}}
     FitNeuron.back_propagate(pid, self(), 0.9)
-    assert_receive {:"$gen_cast", {:back_propagate, _, 0.1436390632579956}}
+    assert_receive {:"$gen_cast", {:back_propagate, _, 0.13845846679362994}}
 
     refute_receive {:"$gen_cast", {:fire, _, _}}
     FitNeuron.fire(pid, self(), 0.5)
@@ -70,7 +70,7 @@ defmodule Ml.Net.FitNeuronTest do
     FitNeuron.fire(pid, temp_process_a, 0.5)
     refute_receive {:"$gen_cast", {:fire, _, _}}
     FitNeuron.fire(pid, temp_process_b, 0.5)
-    assert_receive {:"$gen_cast", {:fire, _, 0.6785066662080377}}
+    assert_receive {:"$gen_cast", {:fire, _, 0.6791956958993584}}
   end
 
 end

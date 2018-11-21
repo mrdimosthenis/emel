@@ -70,10 +70,13 @@ defmodule Ml.Net.FitNeuron do
       ) do
     new_ypids_with_ds = Utils.put_into_keylist(ypids_with_ds, ypid, dval)
     new_state = if Enum.all?(new_ypids_with_ds, fn {_, d} -> d != nil end) && status == :wait_dvals do
-      common_factor = new_ypids_with_ds
-                      |> Enum.map(fn {_, d} -> d end)
-                      |> Enum.sum()
-                      |> Calculus.logistic_derivative()
+      theta = xpids_with_vals
+              |> Enum.map(fn {_, x} -> x end)
+              |> Geometry.dot_product(ws)
+      delta = new_ypids_with_ds
+              |> Enum.map(fn {_, d} -> d end)
+              |> Enum.sum()
+      common_factor = delta * Calculus.logistic_derivative(theta)
       xpids_with_vals
       |> Enum.map(fn {xpid, _} -> xpid end)
       |> Enum.zip(ws)
