@@ -65,6 +65,7 @@ defmodule Ml.Net.ErrorNode do
   end
 
   # helper functions
+
   defp maybe_back_propagate(%State{n: n, vals_and_hats_by_yhatpid: vals_and_hats_by_yhatpid} = state) do
     new_state = if Enum.count(vals_and_hats_by_yhatpid) == n &&
                      Enum.all?(
