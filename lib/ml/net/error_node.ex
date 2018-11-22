@@ -1,8 +1,6 @@
 defmodule Ml.Net.ErrorNode do
   @moduledoc false
 
-  alias Ml.Net.FitNeuron
-
   use GenServer
 
   defmodule State do
@@ -14,14 +12,6 @@ defmodule Ml.Net.ErrorNode do
 
   def start_link(default) do
     GenServer.start_link(__MODULE__, default)
-  end
-
-  def fire_y(pid, yhatpid, yval) do
-    GenServer.cast(pid, {:fire_y, yhatpid, yval})
-  end
-
-  def fire_y_hat(pid, yhatpid, yhatval) do
-    GenServer.cast(pid, {:fire_y_hat, yhatpid, yhatval})
   end
 
   def stop(pid) do
@@ -37,10 +27,8 @@ defmodule Ml.Net.ErrorNode do
   end
 
   @impl true
-  def handle_cast(
-        {:fire_y, yhatpid, yval},
-        %State{vals_and_hats_by_yhatpid: vals_and_hats_by_yhatpid} = state
-      ) do
+
+  def handle_info({:fire_y, yhatpid, yval}, %State{vals_and_hats_by_yhatpid: vals_and_hats_by_yhatpid} = state) do
     old_vals_and_hats = vals_and_hats_by_yhatpid[yhatpid]
     new_vals_and_hats = case old_vals_and_hats do
       nil -> %{y: yval}
@@ -50,16 +38,14 @@ defmodule Ml.Net.ErrorNode do
     new_state = %{state | vals_and_hats_by_yhatpid: new_vals_and_hats_by_yhatpid}
     maybe_back_propagate(new_state)
   end
-  def handle_cast(
-        {:fire_y_hat, yhatpid, yhatval},
-        %State{vals_and_hats_by_yhatpid: vals_and_hats_by_yhatpid} = state
-      ) do
-    old_vals_and_hats = vals_and_hats_by_yhatpid[yhatpid]
+
+  def handle_info({:fire, xpid, xval}, %State{vals_and_hats_by_yhatpid: vals_and_hats_by_yhatpid} = state) do
+    old_vals_and_hats = vals_and_hats_by_yhatpid[xpid]
     new_vals_and_hats = case old_vals_and_hats do
-      nil -> %{yhat: yhatval}
-      %{} = map -> Map.put(map, :yhat, yhatval)
+      nil -> %{yhat: xval}
+      %{} = map -> Map.put(map, :yhat, xval)
     end
-    new_vals_and_hats_by_yhatpid = Map.put(vals_and_hats_by_yhatpid, yhatpid, new_vals_and_hats)
+    new_vals_and_hats_by_yhatpid = Map.put(vals_and_hats_by_yhatpid, xpid, new_vals_and_hats)
     new_state = %{state | vals_and_hats_by_yhatpid: new_vals_and_hats_by_yhatpid}
     maybe_back_propagate(new_state)
   end
@@ -74,7 +60,7 @@ defmodule Ml.Net.ErrorNode do
                      ) do
       for {yhatpid, %{y: y, yhat: yhat}} <- vals_and_hats_by_yhatpid do
         delta = (-2) * (y - yhat)
-        FitNeuron.back_propagate(yhatpid, self(), delta)
+        send(yhatpid, {:back_propagate, self(), delta})
       end
       %{state | vals_and_hats_by_yhatpid: %{}}
     else
