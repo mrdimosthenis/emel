@@ -24,7 +24,7 @@ defmodule Ml.Net.InputNode do
 
   @impl true
   def init(ypids) do
-    ypids_with_ds = Enum.zip(ypids, Stream.cycle([false]))
+    ypids_with_ds = Enum.zip(ypids, Stream.cycle([nil]))
     state = %State{ypids_with_ds: ypids_with_ds}
     {:ok, state}
   end
