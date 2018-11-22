@@ -27,8 +27,8 @@ defmodule Ml.Net.ErrorNodeTest do
   end
 
   test "triple output" do
-    temp_process_a = Utils.useless_process
-    temp_process_b = Utils.useless_process
+    temp_process_a = Utils.useless_process()
+    temp_process_b = Utils.useless_process()
 
     {:ok, pid} = GenServer.start_link(ErrorNode, 3)
 
