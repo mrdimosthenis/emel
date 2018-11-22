@@ -18,14 +18,6 @@ defmodule Ml.Net.FitNeuron do
     GenServer.start_link(__MODULE__, default)
   end
 
-  def fire(pid, xpid, xval) do
-    GenServer.cast(pid, {:fire, xpid, xval})
-  end
-
-  def back_propagate(pid, ypid, dval) do
-    GenServer.cast(pid, {:back_propagate, ypid, dval})
-  end
-
   def get_weights(pid) do
     GenServer.call(pid, :get_weights)
   end
@@ -50,7 +42,8 @@ defmodule Ml.Net.FitNeuron do
   end
 
   @impl true
-  def handle_cast(
+
+  def handle_info(
         {:fire, xpid, xval},
         %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, status: status} = state
       ) do
@@ -62,14 +55,15 @@ defmodule Ml.Net.FitNeuron do
           |> Enum.map(fn {_, x} -> x end)
           |> Geometry.dot_product(ws)
           |> Calculus.logistic_function()
-      Enum.each(ypids_with_ds, fn {ypid, _} -> fire(ypid, self(), y) end)
+      Enum.each(ypids_with_ds, fn {ypid, _} -> send(ypid, {:fire, self(), y}) end)
       :wait_dvals
     else
       status
     end
     {:noreply, %{state | xpids_with_vals: new_xpids_with_vals, status: new_status}}
   end
-  def handle_cast(
+
+  def handle_info(
         {:back_propagate, ypid, dval},
         %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids_with_ds: ypids_with_ds, a: a, status: status} = state
       ) do
@@ -85,7 +79,7 @@ defmodule Ml.Net.FitNeuron do
       xpids_with_vals
       |> Enum.map(fn {xpid, _} -> xpid end)
       |> Enum.zip(ws)
-      |> Enum.each(fn {xpid, w} -> back_propagate(xpid, self(), common_factor * w) end)
+      |> Enum.each(fn {xpid, w} -> send(xpid, {:back_propagate, self(), common_factor * w}) end)
       new_ws = xpids_with_vals
                |> Enum.map(fn {_, x} -> x end)
                |> Enum.zip(ws)
@@ -107,9 +101,9 @@ defmodule Ml.Net.FitNeuron do
 
   @impl true
   def handle_call(:get_weights, _from, %State{ws: ws, xpids_with_vals: xpids_with_vals} = state) do
-    weights =  Enum.zip(xpids_with_vals, ws)
-    |> Enum.sort_by(fn {{xpid, _}, _} -> xpid end)
-    |> Enum.map(fn {{_, _}, w} -> w end)
+    weights = Enum.zip(xpids_with_vals, ws)
+              |> Enum.sort_by(fn {{xpid, _}, _} -> xpid end)
+              |> Enum.map(fn {{_, _}, w} -> w end)
     {:reply, weights, state}
   end
 
