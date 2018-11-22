@@ -9,6 +9,10 @@ defmodule Ml.Net.BiasNode do
     GenServer.start_link(__MODULE__, default)
   end
 
+  def fire(pid) do
+    GenServer.cast(pid, :fire)
+  end
+
   def stop(pid) do
     GenServer.stop(pid)
   end
@@ -19,6 +23,12 @@ defmodule Ml.Net.BiasNode do
   def init(ypids) do
     Enum.each(ypids, fn ypid -> send(ypid, {:fire, self(), 1.0}) end)
     {:ok, ypids}
+  end
+
+  @impl true
+  def handle_cast(:fire, ypids) do
+    Enum.each(ypids, fn ypid -> send(ypid, {:fire, self(), 1.0}) end)
+    {:noreply, ypids}
   end
 
   @impl true
