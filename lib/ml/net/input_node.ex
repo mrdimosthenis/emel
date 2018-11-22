@@ -16,6 +16,10 @@ defmodule Ml.Net.InputNode do
     GenServer.start_link(__MODULE__, default)
   end
 
+  def stop(pid) do
+    GenServer.stop(pid)
+  end
+
   # Server (callbacks)
 
   @impl true

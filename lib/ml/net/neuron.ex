@@ -22,6 +22,10 @@ defmodule Ml.Net.Neuron do
     GenServer.cast(pid, {:fire, xpid, xval})
   end
 
+  def stop(pid) do
+    GenServer.stop(pid)
+  end
+
   # Server (callbacks)
 
   @impl true
