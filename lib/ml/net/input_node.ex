@@ -47,7 +47,7 @@ defmodule Ml.Net.InputNode do
   end
 
   def handle_info({:fire, xpid, xval}, %State{ypids_with_ds: ypids_with_ds} = state) do
-    Enum.each(ypids_with_ds, fn {ypids, _} -> send(ypids, {:fire, self(), xval}) end)
+    Enum.each(ypids_with_ds, fn {ypid, _} -> send(ypid, {:fire, self(), xval}) end)
     new_state = %{state | xpid: xpid}
     {:noreply, new_state}
   end
