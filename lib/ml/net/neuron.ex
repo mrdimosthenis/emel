@@ -18,10 +18,6 @@ defmodule Ml.Net.Neuron do
     GenServer.start_link(__MODULE__, default)
   end
 
-  def fire(pid, xpid, xval) do
-    GenServer.cast(pid, {:fire, xpid, xval})
-  end
-
   def stop(pid) do
     GenServer.stop(pid)
   end
@@ -35,7 +31,8 @@ defmodule Ml.Net.Neuron do
   end
 
   @impl true
-  def handle_cast({:fire, xpid, xval}, %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids: ypids} = state) do
+
+  def handle_info({:fire, xpid, xval}, %State{ws: ws, xpids_with_vals: xpids_with_vals, ypids: ypids} = state) do
     new_xpids_with_vals = Utils.put_into_keylist(xpids_with_vals, xpid, xval)
     final_xpids_with_vals = if Enum.count(new_xpids_with_vals) == length(ws) &&
                                  Enum.all?(new_xpids_with_vals, fn {_, x} -> x != nil end) do
@@ -43,7 +40,7 @@ defmodule Ml.Net.Neuron do
           |> Enum.map(fn {_, x} -> x end)
           |> Geometry.dot_product(ws)
           |> Calculus.logistic_function()
-      Enum.each(ypids, fn {ypid, _} -> fire(ypid, self(), y) end)
+      Enum.each(ypids, fn {ypid, _} -> send(ypid, {:fire, self(), y}) end)
       Enum.map(new_xpids_with_vals, fn {xpids, _} -> {xpids, nil} end)
     else
       new_xpids_with_vals
