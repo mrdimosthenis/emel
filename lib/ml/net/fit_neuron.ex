@@ -26,6 +26,10 @@ defmodule Ml.Net.FitNeuron do
     GenServer.cast(pid, {:back_propagate, ypid, dval})
   end
 
+  def get_weights(pid) do
+    GenServer.call(pid, :get_weights)
+  end
+
   def stop(pid) do
     GenServer.stop(pid)
   end
@@ -37,7 +41,7 @@ defmodule Ml.Net.FitNeuron do
     ws = if is_number(n_or_ws) do
       Utils.rand_float(n_or_ws)
     else
-      n_or_ws
+      n_or_ws # initialization of weights can be used only in test, order is not fixed
     end
     xpids_with_vals = []
     ypids_with_ds = Enum.zip(ypids, Stream.cycle([nil]))
@@ -99,6 +103,14 @@ defmodule Ml.Net.FitNeuron do
       %{state | ypids_with_ds: new_ypids_with_ds}
     end
     {:noreply, new_state}
+  end
+
+  @impl true
+  def handle_call(:get_weights, _from, %State{ws: ws, xpids_with_vals: xpids_with_vals} = state) do
+    weights =  Enum.zip(xpids_with_vals, ws)
+    |> Enum.sort_by(fn {{xpid, _}, _} -> xpid end)
+    |> Enum.map(fn {{_, _}, w} -> w end)
+    {:reply, weights, state}
   end
 
 end

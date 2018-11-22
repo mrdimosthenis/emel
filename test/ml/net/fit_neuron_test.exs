@@ -16,6 +16,8 @@ defmodule Ml.Net.FitNeuronTest do
     refute_receive {:"$gen_cast", {:back_propagate, _, _}}
     FitNeuron.back_propagate(pid, self(), 0.0)
     assert_receive {:"$gen_cast", {:back_propagate, _, 0.0}}
+
+    assert FitNeuron.get_weights(pid) == [0.5, 0.5]
   end
 
   test "single input - double output" do
@@ -32,6 +34,8 @@ defmodule Ml.Net.FitNeuronTest do
     refute_receive {:"$gen_cast", {:back_propagate, _, _}}
     FitNeuron.back_propagate(pid, temp_process, 0.3)
     assert_receive {:"$gen_cast", {:back_propagate, _, 0.1466749870144475}}
+
+    assert FitNeuron.get_weights(pid) == [0.5388854220773135]
   end
 
   test "triple input - single output" do
@@ -52,6 +56,8 @@ defmodule Ml.Net.FitNeuronTest do
     FitNeuron.back_propagate(pid, self(), -0.9)
     assert_receive {:"$gen_cast", {:back_propagate, _, -0.13727384606994283}}
 
+    assert FitNeuron.get_weights(pid) == [0.7098052747192816, 0.5098052747192816, 0.3098052747192816]
+
     refute_receive {:"$gen_cast", {:fire, _, _}}
     FitNeuron.fire(pid, self(), 0.5)
     refute_receive {:"$gen_cast", {:fire, _, _}}
@@ -63,6 +69,8 @@ defmodule Ml.Net.FitNeuronTest do
     refute_receive {:"$gen_cast", {:back_propagate, _, _}}
     FitNeuron.back_propagate(pid, self(), 0.9)
     assert_receive {:"$gen_cast", {:back_propagate, _, 0.13845846679362994}}
+
+    assert FitNeuron.get_weights(pid) == [0.7000520035247002, 0.5000520035247003, 0.3000520035247002]
 
     refute_receive {:"$gen_cast", {:fire, _, _}}
     FitNeuron.fire(pid, self(), 0.5)
