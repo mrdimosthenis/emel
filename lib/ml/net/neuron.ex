@@ -26,7 +26,7 @@ defmodule Ml.Net.Neuron do
 
   @impl true
   def init([ws, ypids]) do
-    state = %State{ws: ws, ypids: ypids}
+    state = %State{ws: ws, xpids_with_vals: [], ypids: ypids}
     {:ok, state}
   end
 
@@ -40,7 +40,7 @@ defmodule Ml.Net.Neuron do
           |> Enum.map(fn {_, x} -> x end)
           |> Geometry.dot_product(ws)
           |> Calculus.logistic_function()
-      Enum.each(ypids, fn {ypid, _} -> send(ypid, {:fire, self(), y}) end)
+      Enum.each(ypids, fn ypid -> send(ypid, {:fire, self(), y}) end)
       Enum.map(new_xpids_with_vals, fn {xpids, _} -> {xpids, nil} end)
     else
       new_xpids_with_vals
