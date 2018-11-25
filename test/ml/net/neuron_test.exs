@@ -4,7 +4,7 @@ defmodule Ml.Net.NeuronTest do
   alias Ml.Net.Neuron
   alias Help.Utils
 
-  test "double input - single output" do
+  test "double input - single output - y side" do
     x_pid_a = Utils.useless_process()
     x_pid_b = Utils.useless_process()
     y_pid = self()
@@ -25,7 +25,6 @@ defmodule Ml.Net.NeuronTest do
     send(neuron, {:back_propagate, y_pid, 0.0})
     assert Neuron.get_ws(neuron) == [0.5, 0.5]
 
-    refute_receive {:fire, _, _}
     send(neuron, {:fire, x_pid_a, 1.0})
     refute_receive {:fire, _, _}
     send(neuron, {:fire, x_pid_b, 1.0})
@@ -34,7 +33,6 @@ defmodule Ml.Net.NeuronTest do
     send(neuron, {:back_propagate, y_pid, 0.7})
     assert Neuron.get_ws(neuron) == [0.4232233475965673, 0.4232233475965673]
 
-    refute_receive {:fire, _, _}
     send(neuron, {:fire, x_pid_a, 1.0})
     refute_receive {:fire, _, _}
     send(neuron, {:fire, x_pid_b, 1.0})
@@ -43,11 +41,29 @@ defmodule Ml.Net.NeuronTest do
     send(neuron, {:back_propagate, y_pid, -0.9})
     assert Neuron.get_ws(neuron) == [0.5230001398259432, 0.5230001398259432]
 
-    refute_receive {:fire, _, _}
     send(neuron, {:fire, x_pid_a, 1.0})
     refute_receive {:fire, _, _}
     send(neuron, {:fire, x_pid_b, 1.0})
     assert_receive {:fire, _, 0.7400061037414002}
+
+    send(neuron, {:fire, x_pid_a, 1.0})
+    assert_receive {:fire, _, 0.7400061037414002}
+
+    Neuron.unset_fit(neuron)
+
+    send(neuron, {:back_propagate, y_pid, 0.0})
+    assert Neuron.get_ws(neuron) == [0.5230001398259432, 0.5230001398259432]
+
+    send(neuron, {:fire, x_pid_a, 1.0})
+    refute_receive {:fire, _, _}
+    send(neuron, {:fire, x_pid_b, 1.0})
+    assert_receive {:fire, _, 0.7400061037414002}
+
+    send(neuron, {:fire, x_pid_a, 1.0})
+    refute_receive {:fire, _, _}
+    send(neuron, {:fire, x_pid_b, 1.0})
+    assert_receive {:fire, _, 0.7400061037414002}
+
   end
 
 end

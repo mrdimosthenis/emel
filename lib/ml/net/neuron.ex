@@ -36,8 +36,12 @@ defmodule Ml.Net.Neuron do
     GenServer.call(pid, {:set_y_pids, y_pids})
   end
 
-  def set_fit(pid, fit) do
-    GenServer.call(pid, {:set_fit, fit})
+  def set_fit(pid, a) do
+    GenServer.call(pid, {:set_fit, a})
+  end
+
+  def unset_fit(pid) do
+    GenServer.call(pid, :unset_fit)
   end
 
   def stop(pid) do
@@ -85,8 +89,13 @@ defmodule Ml.Net.Neuron do
     {:reply, :ok, new_state}
   end
 
-  def handle_call({:set_fit, fit}, _from, state) do
-    new_state = %{state | fit: fit}
+  def handle_call({:set_fit, a}, _from, state) do
+    new_state = %{state | fit: true, a: a}
+    {:reply, :ok, new_state}
+  end
+
+  def handle_call(:unset_fit, _from, state) do
+    new_state = %{state | fit: false}
     {:reply, :ok, new_state}
   end
 
