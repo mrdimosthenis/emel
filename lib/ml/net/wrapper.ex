@@ -4,6 +4,7 @@ defmodule Ml.Net.Wrapper do
   alias Ml.Net.InputNode
   alias Ml.Net.Neuron
   alias Ml.Net.ErrorNode
+  alias Help.Utils
 
   use GenServer
 
@@ -22,6 +23,10 @@ defmodule Ml.Net.Wrapper do
     GenServer.call(pid, {:fit, xs, ys})
   end
 
+  def get_weights(pid) do
+    GenServer.call(pid, :get_weights)
+  end
+
   def stop(pid) do
     GenServer.stop(pid)
   end
@@ -37,8 +42,7 @@ defmodule Ml.Net.Wrapper do
     end
 
     y_pids = for _ <- 1..yn do
-      {:ok, input_node} = GenServer.start_link(InputNode, 1)
-      input_node
+      Utils.useless_process()
     end
 
     num_of_neurons = Enum.sum(layers)
@@ -56,7 +60,7 @@ defmodule Ml.Net.Wrapper do
           ^layer_last_index -> yn
           _ -> Enum.at(layers, index + 1)
         end
-        {:ok, neuron} = GenServer.start_link(Neuron, [num_of_inputs + 1, num_of_outputs], a)
+        {:ok, neuron} = GenServer.start_link(Neuron, [num_of_inputs + 1, num_of_outputs, a])
         neuron
       end
     end
@@ -68,10 +72,8 @@ defmodule Ml.Net.Wrapper do
       InputNode.set_y_pids(pid, Enum.at(neuron_pids, 0))
     end
 
-    for pid <- y_pids do
-      InputNode.set_x_pid(pid, self())
-      InputNode.set_y_pids(pid, [err_pid])
-    end
+    InputNode.set_x_pid(b_pid, self())
+    InputNode.set_y_pids(b_pid, Enum.concat(neuron_pids))
 
     for {pids, index} <- Enum.with_index(neuron_pids) do
       for pid <- pids do
@@ -89,7 +91,7 @@ defmodule Ml.Net.Wrapper do
       end
     end
 
-    ErrorNode.set_x_pids(err_pid, Enum.at(neuron_pids, length(layers) - 1))
+    ErrorNode.set_x_pids(err_pid, Enum.at(neuron_pids, layer_last_index))
     ErrorNode.set_y_pids(err_pid, y_pids)
 
     state = %State{x_pids: x_pids, y_pids: y_pids, b_pid: b_pid, neuron_pids: neuron_pids, err_pid: err_pid}
@@ -98,22 +100,35 @@ defmodule Ml.Net.Wrapper do
 
   @impl true
 
-  def handle_call({:fit, xs, ys}, _from, %State{x_pids: x_pids, y_pids: y_pids, b_pid: b_pid} = state) do
+  def handle_call(
+        {:fit, xs, ys},
+        _from,
+        %State{x_pids: x_pids, y_pids: y_pids, err_pid: err_pid, b_pid: b_pid} = state
+      ) do
     Enum.zip(x_pids, xs)
     |> Enum.each(fn {pid, x} -> send(pid, {:fire, self(), x}) end)
 
     Enum.zip(y_pids, ys)
-    |> Enum.each(fn {pid, y} -> send(pid, {:fire, self(), y}) end)
+    |> Enum.each(fn {pid, y} -> send(err_pid, {:fire_y, pid, y}) end)
 
     send(b_pid, {:fire, self(), 1.0})
 
-    for _ <- Enum.concat([x_pids, y_pids, [b_pid]]) do
+    for _ <- 1 .. length(x_pids) + 1 do
       receive do
         {:back_propagate, _, _} -> :ok
       end
     end
 
     {:reply, :ok, state}
+  end
+
+  def handle_call(:get_weights, _from, %State{neuron_pids: neuron_pids} = state) do
+    weights = for layer <- neuron_pids do
+      for pid <- layer do
+        Neuron.get_ws(pid)
+      end
+    end
+    {:reply, weights, state}
   end
 
 end
