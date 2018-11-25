@@ -133,8 +133,8 @@ defmodule Ml.Net.Neuron do
           ws: ws,
           x_pids: x_pids,
           xs: xs,
-          ys: ys,
           y_pids: y_pids,
+          ys: ys,
           a: a
         } = state
       ) do
