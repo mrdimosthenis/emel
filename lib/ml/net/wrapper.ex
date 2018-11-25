@@ -77,17 +77,16 @@ defmodule Ml.Net.Wrapper do
 
     for {pids, index} <- Enum.with_index(neuron_pids) do
       for pid <- pids do
-        case index do
-          0 ->
-            Neuron.set_x_pids(pid, x_pids ++ [b_pid])
-            Neuron.set_y_pids(pid, Enum.at(neuron_pids, index + 1))
-          ^layer_last_index ->
-            Neuron.set_x_pids(pid, Enum.at(neuron_pids, index - 1) ++ [b_pid])
-            Neuron.set_y_pids(pid, [err_pid])
-          _ ->
-            Neuron.set_x_pids(pid, Enum.at(neuron_pids, index - 1) ++ [b_pid])
-            Neuron.set_y_pids(pid, Enum.at(neuron_pids, index + 1))
+        neuron_x_pids = case index do
+          0 -> x_pids ++ [b_pid]
+          _ -> Enum.at(neuron_pids, index - 1) ++ [b_pid]
         end
+        neuron_y_pids = case index do
+          ^layer_last_index -> [err_pid]
+          _ -> Enum.at(neuron_pids, index + 1)
+        end
+        Neuron.set_x_pids(pid, neuron_x_pids)
+        Neuron.set_y_pids(pid, neuron_y_pids)
       end
     end
 
