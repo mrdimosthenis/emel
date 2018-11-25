@@ -4,37 +4,42 @@ defmodule Ml.Net.InputNodeTest do
   alias Ml.Net.InputNode
   alias Help.Utils
 
-  test "node side" do
-    x_node = Utils.useless_process()
-    other_neuron = Utils.useless_process()
+  test "neuron side" do
+    wrapper_node = Utils.useless_process()
+    neuron_a = self()
+    neuron_b = Utils.useless_process()
 
-    {:ok, pid} = GenServer.start_link(InputNode, [other_neuron, self()])
+    {:ok, input_node} = GenServer.start_link(InputNode, 2)
+    InputNode.set_y_pids(input_node, [neuron_a, neuron_b])
 
     refute_receive {:fire, _, _}
-    send(pid, {:fire, x_node, 0.6})
+    send(input_node, {:fire, wrapper_node, 0.6})
     assert_receive {:fire, _, 0.6}
   end
 
-  test "x side" do
+  test "wrapper side" do
+    wrapper_node = self()
     neuron_a = Utils.useless_process()
     neuron_b = Utils.useless_process()
 
-    {:ok, pid} = GenServer.start_link(InputNode, [neuron_a, neuron_b])
+    {:ok, input_node} = GenServer.start_link(InputNode, 2)
+    InputNode.set_x_pid(input_node, wrapper_node)
+    InputNode.set_y_pids(input_node, [neuron_a, neuron_b])
 
-    send(pid, {:fire, self(), 0.6})
+    send(input_node, {:fire, wrapper_node, 0.6})
     refute_receive {:back_propagate, _, _}
-    send(pid, {:back_propagate, neuron_a, 0.2})
+    send(input_node, {:back_propagate, neuron_a, 0.2})
     refute_receive {:back_propagate, _, _}
-    send(pid, {:back_propagate, neuron_b, 0.1})
+    send(input_node, {:back_propagate, neuron_b, 0.1})
     assert_receive {:back_propagate, _, 0.30000000000000004}
 
-    send(pid, {:fire, self(), 0.8})
+    send(input_node, {:fire, wrapper_node, 0.8})
     refute_receive {:back_propagate, _, _}
-    send(pid, {:back_propagate, neuron_b, 0.1})
+    send(input_node, {:back_propagate, neuron_b, 0.1})
     refute_receive {:back_propagate, _, _}
-    send(pid, {:back_propagate, neuron_b, 0.1})
+    send(input_node, {:back_propagate, neuron_b, 0.1})
     refute_receive {:back_propagate, _, _}
-    send(pid, {:back_propagate, neuron_a, 0.7})
+    send(input_node, {:back_propagate, neuron_a, 0.7})
     assert_receive {:back_propagate, _, 0.7999999999999999}
   end
 
