@@ -60,9 +60,8 @@ defmodule Ml.Net.Neuron do
     {:ok, state}
   end
 
-  def init([xn, yn]) do
-    ws = Utils.rand_float(xn)
-    xs = Utils.duplicate(nil, xn)
+  def init([ws, yn]) do
+    xs = Utils.duplicate(nil, length(ws))
     ys = Utils.duplicate(nil, yn)
     state = %State{ws: ws, xs: xs, ys: ys, fit: false}
     {:ok, state}

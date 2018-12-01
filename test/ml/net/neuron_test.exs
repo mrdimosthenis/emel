@@ -4,7 +4,7 @@ defmodule Ml.Net.NeuronTest do
   alias Ml.Net.Neuron
   alias Help.Utils
 
-  test "double input - single output - y side" do
+  test "double input - single output - y side - fitting" do
     x_pid_a = Utils.useless_process()
     x_pid_b = Utils.useless_process()
     y_pid = self()
@@ -65,7 +65,7 @@ defmodule Ml.Net.NeuronTest do
     assert_receive {:fire, _, 0.7400061037414002}
   end
 
-  test "single input - double output - x side" do
+  test "single input - double output - x side - fitting" do
     x_pid = self()
     y_pid_a = Utils.useless_process()
     y_pid_b = Utils.useless_process()
@@ -90,8 +90,7 @@ defmodule Ml.Net.NeuronTest do
     x_pid_b = Utils.useless_process()
     y_pid = self()
 
-    {:ok, neuron} = GenServer.start_link(Neuron, [2, 1])
-    Neuron.set_ws(neuron, [0.65, 0.45])
+    {:ok, neuron} = GenServer.start_link(Neuron, [[0.65, 0.45], 1])
     Neuron.set_x_pids(neuron, [x_pid_a, x_pid_b])
     Neuron.set_y_pids(neuron, [y_pid])
 
