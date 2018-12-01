@@ -63,4 +63,14 @@ defmodule Ml.Net.WrapperTest do
     assert weights_1 != weights_2 && weights_2 != weights_3
   end
 
+  test "triple input - triple output - deep neural net" do
+    {:ok, wrapper} = GenServer.start_link(Wrapper, [3, 3, [4, 5, 3], 0.25])
+    weights_1 = Wrapper.get_weights(wrapper)
+    Wrapper.fit(wrapper, [0, 1, 0.5], [0, 1, 0.5])
+    weights_2 = Wrapper.get_weights(wrapper)
+    Wrapper.fit(wrapper, [1, 0, 0.5], [0.5, 1, 0.5])
+    weights_3 = Wrapper.get_weights(wrapper)
+    assert weights_1 != weights_2 && weights_2 != weights_3
+  end
+
 end
