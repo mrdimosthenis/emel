@@ -66,7 +66,6 @@ defmodule Help.Utils do
     obj
     |> inspect()
     |> IO.puts()
-    IO.puts("")
   end
 
 end

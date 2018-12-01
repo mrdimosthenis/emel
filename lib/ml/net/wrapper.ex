@@ -57,7 +57,7 @@ defmodule Ml.Net.Wrapper do
           _ -> Enum.at(layers, index - 1)
         end
         num_of_outputs = case index do
-          ^layer_last_index -> yn
+          ^layer_last_index -> 1
           _ -> Enum.at(layers, index + 1)
         end
         {:ok, neuron} = GenServer.start_link(Neuron, [num_of_inputs + 1, num_of_outputs, a])
