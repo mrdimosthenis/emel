@@ -53,7 +53,7 @@ defmodule Ml.Net.FitWrapperTest do
     assert weights_1 != weights_2 && weights_2 != weights_3
   end
 
-  test "single input - double output - 1 single layer" do
+  test "double input - double output - 1 double layer" do
     {:ok, fit_wrapper} = GenServer.start_link(FitWrapper, [2, 2, [2], 0.25])
     weights_1 = FitWrapper.get_weights(fit_wrapper)
     FitWrapper.fit(fit_wrapper, [0, 1], [0, 1])
