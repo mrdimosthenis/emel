@@ -1,4 +1,4 @@
-defmodule Ml.Net.Wrapper do
+defmodule Ml.Net.FitWrapper do
   @moduledoc false
 
   alias Ml.Net.InputNode
