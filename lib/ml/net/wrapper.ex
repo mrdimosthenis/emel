@@ -39,7 +39,7 @@ defmodule Ml.Net.Wrapper do
 
   def init([[first_layer | _] = weights, yn]) do
     xn = first_layer
-         |> Enum.at(0)
+         |> hd()
          |> Enum.drop(-1)
          |> Enum.count()
     x_pids = for _ <- 1..xn do
@@ -71,7 +71,7 @@ defmodule Ml.Net.Wrapper do
 
     for pid <- x_pids do
       InputNode.set_x_pid(pid, self())
-      InputNode.set_y_pids(pid, Enum.at(neuron_pids, 0))
+      InputNode.set_y_pids(pid, hd(neuron_pids))
     end
 
     InputNode.set_x_pid(b_pid, self())

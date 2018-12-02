@@ -76,7 +76,7 @@ defmodule Ml.Net.FitWrapper do
 
     for pid <- x_pids do
       InputNode.set_x_pid(pid, self())
-      InputNode.set_y_pids(pid, Enum.at(neuron_pids, 0))
+      InputNode.set_y_pids(pid, hd(neuron_pids))
     end
 
     InputNode.set_x_pid(b_pid, self())

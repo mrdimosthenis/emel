@@ -41,7 +41,7 @@ defmodule Ml.DecisionTree do
                                          |> Enum.group_by(fn row -> row[class_attr] end)
                                          |> Enum.map(fn {k, v} -> {k, length(v)} end)
                                          |> Enum.sort_by(fn {_, v} -> v end, &>=/2)
-                                         |> Enum.at(0)
+                                         |> hd()
     %Node{
       content: %{
         class_attr => fst
