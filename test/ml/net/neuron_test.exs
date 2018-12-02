@@ -31,38 +31,38 @@ defmodule Ml.Net.NeuronTest do
     assert_receive {:fire, _, 0.7310585786300049}
 
     send(neuron, {:back_propagate, y_pid, 0.7})
-    assert Neuron.get_ws(neuron) == [0.4232233475965673, 0.4232233475965673]
+    assert Neuron.get_ws(neuron) == [0.4311858233654814, 0.4311858233654814]
 
     send(neuron, {:fire, x_pid_a, 1.0})
     refute_receive {:fire, _, _}
     send(neuron, {:fire, x_pid_b, 1.0})
-    assert_receive {:fire, _, 0.6998212248866079}
+    assert_receive {:fire, _, 0.7031559210394115}
 
     send(neuron, {:back_propagate, y_pid, -0.9})
-    assert Neuron.get_ws(neuron) == [0.5230001398259432, 0.5230001398259432]
+    assert Neuron.get_ws(neuron) == [0.5251132756514642, 0.5251132756514642]
 
     send(neuron, {:fire, x_pid_a, 1.0})
     refute_receive {:fire, _, _}
     send(neuron, {:fire, x_pid_b, 1.0})
-    assert_receive {:fire, _, 0.7400061037414002}
+    assert_receive {:fire, _, 0.7408184008775683}
 
     send(neuron, {:fire, x_pid_a, 1.0})
-    assert_receive {:fire, _, 0.7400061037414002}
+    assert_receive {:fire, _, 0.7408184008775683}
 
     Neuron.unset_fit(neuron)
 
     send(neuron, {:back_propagate, y_pid, 0.0})
-    assert Neuron.get_ws(neuron) == [0.5230001398259432, 0.5230001398259432]
+    assert Neuron.get_ws(neuron) == [0.5251132756514642, 0.5251132756514642]
 
     send(neuron, {:fire, x_pid_a, 1.0})
     refute_receive {:fire, _, _}
     send(neuron, {:fire, x_pid_b, 1.0})
-    assert_receive {:fire, _, 0.7400061037414002}
+    assert_receive {:fire, _, 0.7408184008775683}
 
     send(neuron, {:fire, x_pid_a, 1.0})
     refute_receive {:fire, _, _}
     send(neuron, {:fire, x_pid_b, 1.0})
-    assert_receive {:fire, _, 0.7400061037414002}
+    assert_receive {:fire, _, 0.7408184008775683}
   end
 
   test "single input - double output - x side - fitting" do
@@ -82,7 +82,7 @@ defmodule Ml.Net.NeuronTest do
     send(neuron, {:back_propagate, y_pid_a, 0.7})
     refute_receive {:back_propagate, _, _}
     send(neuron, {:back_propagate, y_pid_b, 0.1})
-    assert_receive {:back_propagate, _, 0.09280718965530217}
+    assert_receive {:back_propagate, _, 0.09900662908474397}
   end
 
   test "double input - single output - y side - no fitting" do

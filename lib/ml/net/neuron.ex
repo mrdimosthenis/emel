@@ -141,7 +141,6 @@ defmodule Ml.Net.Neuron do
     temp_ys = List.replace_at(ys, index, y_val)
     {new_ws, new_xs, new_ys} = case Enum.all?(temp_ys, fn y -> y != nil end) do
       true -> theta = Geometry.dot_product(ws, xs)
-                      |> Calculus.logistic_function()
               delta = Enum.sum(temp_ys)
               common_factor = delta * Calculus.logistic_derivative(theta)
               Enum.zip(x_pids, ws)
