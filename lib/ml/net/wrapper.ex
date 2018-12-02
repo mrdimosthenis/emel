@@ -26,6 +26,13 @@ defmodule Ml.Net.Wrapper do
     GenServer.call(pid, :stop)
   end
 
+  def with(wrapper_config, f) do
+    {:ok, wrapper} = start_link(wrapper_config)
+    result = f.(wrapper)
+    stop(wrapper)
+    result
+  end
+
   # Server (callbacks)
 
   @impl true

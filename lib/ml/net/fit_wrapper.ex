@@ -31,6 +31,13 @@ defmodule Ml.Net.FitWrapper do
     GenServer.call(pid, :stop)
   end
 
+  def with(fit_wrapper_config, f) do
+    {:ok, fit_wrapper} = start_link(fit_wrapper_config)
+    result = f.(fit_wrapper)
+    stop(fit_wrapper)
+    result
+  end
+
   # Server (callbacks)
 
   @impl true

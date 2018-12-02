@@ -16,16 +16,19 @@ defmodule Ml.LogisticRegression do
     Enum.zip(xs, ys)
     |> Enum.each(fn {x, y} -> FitWrapper.fit(fit_wrapper, x, [y]) end)
     weights = FitWrapper.get_weights(fit_wrapper)
-    {:ok, wrapper} = GenServer.start_link(Wrapper, [weights, 1])
-    mean_abs_err = xs
-                   |> Enum.map(
-                        fn x ->
-                          [y_hat] = Wrapper.predict(wrapper, x)
-                          y_hat
-                        end
-                      )
-                   |> Statistics.mean_absolute_error(ys)
-    Wrapper.stop(wrapper)
+    mean_abs_err = Wrapper.with(
+      [weights, 1],
+      fn wrapper ->
+        xs
+        |> Enum.map(
+             fn x ->
+               [y_hat] = Wrapper.predict(wrapper, x)
+               y_hat
+             end
+           )
+        |> Statistics.mean_absolute_error(ys)
+      end
+    )
     case mean_abs_err < err_thres do
       true -> nil
       false -> iterate(fit_wrapper, xs, ys, a, err_thres, max_iter - 1)
@@ -66,7 +69,7 @@ defmodule Ml.LogisticRegression do
       ...>                                       %{x: 0.1, y: 0.0, greater_than: true},
       ...>                                       %{x: 0.2, y: 0.1, greater_than: true},
       ...>                                       %{x: 0.6, y: 0.7, greater_than: false},
-      ...>                                      ], [:x, :y], :greater_than, 0.1, 0.01, 1000)
+      ...>                                      ], [:x, :y], :greater_than, 0.2, 0.01, 1000)
       ...> f.([%{x: 0.2, y: 0.1},
       ...>     %{x: 0.3, y: 0.2},
       ...>     %{x: 0.1, y: 0.3},
@@ -93,21 +96,23 @@ defmodule Ml.LogisticRegression do
                 end
       end
     )
-    {:ok, fit_wrapper} = GenServer.start_link(FitWrapper, [length(x), 1, [1], learning_rate])
-    iterate(fit_wrapper, xs, ys, learning_rate, err_thres, max_iter)
-    weights = FitWrapper.get_weights(fit_wrapper)
-    FitWrapper.stop(fit_wrapper)
+    weights = FitWrapper.with(
+      [length(x), 1, [1], learning_rate],
+      fn fit_wrapper ->
+        iterate(fit_wrapper, xs, ys, learning_rate, err_thres, max_iter)
+        FitWrapper.get_weights(fit_wrapper)
+      end
+    )
     fn
       %{} = item ->
-        {:ok, wrapper} = GenServer.start_link(Wrapper, [weights, 1])
-        result = predict(item, wrapper, continuous_attributes)
-        Wrapper.stop(wrapper)
-        result
+        Wrapper.with([weights, 1], fn wrapper -> predict(item, wrapper, continuous_attributes) end)
       [_ | _] = items ->
-        {:ok, wrapper} = GenServer.start_link(Wrapper, [weights, 1])
-        results = Enum.map(items, fn x -> predict(x, wrapper, continuous_attributes) end)
-        Wrapper.stop(wrapper)
-        results
+        Wrapper.with(
+          [weights, 1],
+          fn wrapper ->
+            Enum.map(items, fn x -> predict(x, wrapper, continuous_attributes) end)
+          end
+        )
     end
   end
 
