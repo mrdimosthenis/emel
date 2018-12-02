@@ -1,3 +1,5 @@
+  # emel
+  
   [Turn data into functions](https://github.com/mrdimosthenis/emel)! A simple and functional **machine learning** library written in **elixir**.
 
   ## Installation
@@ -7,12 +9,12 @@
   ```elixir
   def deps do
   [
-    {:emel, "~> 0.1.2"}
+    {:emel, "~> 0.2.0"}
   ]
   end
   ```
 
-  The docs can be found at [https://hexdocs.pm/emel/0.1.2](https://hexdocs.pm/emel/0.1.2).
+  The docs can be found at [https://hexdocs.pm/emel/0.2.0](https://hexdocs.pm/emel/0.2.0).
 
   ## Usage
 
@@ -40,14 +42,14 @@
 
   ### Implemented Algorithms
 
-  * [Linear Regression](https://hexdocs.pm/emel/0.1.2/Ml.LinearRegression.html)
-  * [K Nearest Neighbors](https://hexdocs.pm/emel/0.1.2/Ml.KNearestNeighbors.html)
-  * [Decision Tree](https://hexdocs.pm/emel/0.1.2/Ml.DecisionTree.html)
-  * [Naive Bayes](https://hexdocs.pm/emel/0.1.2/Ml.NaiveBayes.html)
-  * [K Means](https://hexdocs.pm/emel/0.1.2/Ml.KMeans.html)
-  * [Perceptron](https://hexdocs.pm/emel/0.1.2/Ml.Perceptron.html)
-  * [Logistic Regression](https://hexdocs.pm/emel/0.1.2/Ml.LogisticRegression.html)
-  * [Neural Network](https://hexdocs.pm/emel/0.1.2/Ml.NeuralNetwork.html)
+  * [Linear Regression](https://hexdocs.pm/emel/0.2.0/Ml.LinearRegression.html)
+  * [K Nearest Neighbors](https://hexdocs.pm/emel/0.2.0/Ml.KNearestNeighbors.html)
+  * [Decision Tree](https://hexdocs.pm/emel/0.2.0/Ml.DecisionTree.html)
+  * [Naive Bayes](https://hexdocs.pm/emel/0.2.0/Ml.NaiveBayes.html)
+  * [K Means](https://hexdocs.pm/emel/0.2.0/Ml.KMeans.html)
+  * [Perceptron](https://hexdocs.pm/emel/0.2.0/Ml.Perceptron.html)
+  * [Logistic Regression](https://hexdocs.pm/emel/0.2.0/Ml.LogisticRegression.html)
+  * [Neural Network](https://hexdocs.pm/emel/0.2.0/Ml.NeuralNetwork.html)
 
   ```elixir
   alias Ml.DecisionTree, as: DecisionTree
@@ -83,10 +85,10 @@
 
   ### Mathematics
 
-  * [Algebra](https://hexdocs.pm/emel/0.1.2/Math.Algebra.html)
-  * [Geometry](https://hexdocs.pm/emel/0.1.2/Math.Geometry.html)
-  * [Statistics](https://hexdocs.pm/emel/0.1.2/Math.Statistics.html)
-  * [Calculus](https://hexdocs.pm/emel/0.1.2/Math.Calculus.html)
+  * [Algebra](https://hexdocs.pm/emel/0.2.0/Math.Algebra.html)
+  * [Geometry](https://hexdocs.pm/emel/0.2.0/Math.Geometry.html)
+  * [Statistics](https://hexdocs.pm/emel/0.2.0/Math.Statistics.html)
+  * [Calculus](https://hexdocs.pm/emel/0.2.0/Math.Calculus.html)
 
   ```elixir
   alias Ml.LinearRegression, as: LR

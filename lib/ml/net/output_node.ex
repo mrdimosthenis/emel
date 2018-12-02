@@ -4,8 +4,6 @@ defmodule Ml.Net.OutputNode do
   import List, only: [replace_at: 3]
 
   alias Help.Utils
-  alias Math.Geometry
-  alias Math.Calculus
 
   use GenServer
 
