@@ -28,7 +28,7 @@ defmodule Ml.Net.FitWrapper do
   end
 
   def stop(pid) do
-    GenServer.stop(pid)
+    GenServer.call(pid, :stop)
   end
 
   # Server (callbacks)
@@ -112,7 +112,7 @@ defmodule Ml.Net.FitWrapper do
 
     send(b_pid, {:fire, self(), 1.0})
 
-    for _ <- 1 .. length(x_pids) + 1 do
+    for _ <- 1..length(x_pids) + 1 do
       receive do
         {:back_propagate, _, _} -> :ok
       end
@@ -128,6 +128,27 @@ defmodule Ml.Net.FitWrapper do
       end
     end
     {:reply, weights, state}
+  end
+
+  def handle_call(
+        :stop,
+        _from,
+        %State{
+          x_pids: x_pids,
+          y_pids: y_pids,
+          err_pid: err_pid,
+          neuron_pids: neuron_pids,
+          b_pid: b_pid
+        } = state
+      ) do
+    Enum.each(x_pids, fn pid -> InputNode.stop(pid) end)
+    Enum.each(y_pids, fn pid -> Process.exit(pid, :ok) end)
+    ErrorNode.stop(err_pid)
+    neuron_pids
+    |> Enum.concat()
+    |> Enum.each(fn pid -> Neuron.stop(pid) end)
+    InputNode.stop(b_pid)
+    {:reply, :ok, state}
   end
 
 end

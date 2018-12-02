@@ -23,7 +23,7 @@ defmodule Ml.Net.Wrapper do
   end
 
   def stop(pid) do
-    GenServer.stop(pid)
+    GenServer.call(pid, :stop)
   end
 
   # Server (callbacks)
@@ -109,6 +109,16 @@ defmodule Ml.Net.Wrapper do
     end
 
     {:reply, prediction, state}
+  end
+
+  def handle_call(:stop, _from, %State{x_pids: x_pids, y_pid: y_pid, b_pid: b_pid, neuron_pids: neuron_pids} = state) do
+    Enum.each(x_pids, fn pid -> InputNode.stop(pid) end)
+    OutputNode.stop(y_pid)
+    InputNode.stop(b_pid)
+    neuron_pids
+    |> Enum.concat()
+    |> Enum.each(fn pid -> Neuron.stop(pid) end)
+    {:reply, :ok, state}
   end
 
 end
