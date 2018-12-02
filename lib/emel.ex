@@ -48,7 +48,7 @@ defmodule Emel do
   * [Naive Bayes](https://hexdocs.pm/emel/0.1.2/Ml.NaiveBayes.html)
   * [K Means](https://hexdocs.pm/emel/0.1.2/Ml.KMeans.html)
   * [Perceptron](https://hexdocs.pm/emel/0.1.2/Ml.Perceptron.html)
-  * [Artificial Neuron](https://hexdocs.pm/emel/0.1.2/Ml.ArtificialNeuron.html)
+  * [Logistic Regression](https://hexdocs.pm/emel/0.1.2/Ml.LogisticRegression.html)
 
   ```elixir
   alias Ml.DecisionTree, as: DecisionTree
