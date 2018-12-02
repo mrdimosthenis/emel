@@ -36,15 +36,15 @@ defmodule Ml.NeuralNetworkTest do
                                       }
                                     end
                                   )
-                               |> Model.training_and_test_sets(0.90)
+                               |> Model.training_and_test_sets(0.60)
     f = classifier(
       training_set,
       ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"],
       "Survived",
-      [7, 5, 3],
-      0.01,
-      0.001,
-      10
+      [7, 2, 2],
+      0.5,
+      0.1,
+      50
     )
     predicted_classes = f.(test_set)
     actual_classes = Enum.map(test_set, fn %{"Survived" => sv} -> sv end)

@@ -16,7 +16,7 @@ defmodule Ml.NeuralNetwork do
     |> Enum.each(fn {x, y} -> FitWrapper.fit(fit_wrapper, x, y) end)
     weights = FitWrapper.get_weights(fit_wrapper)
     mean_abs_err = Wrapper.with(
-      [weights, 1],
+      [weights, length(hd(ys))],
       fn wrapper ->
         mean_absolute_errors = xs
                                |> Enum.map(
@@ -30,6 +30,7 @@ defmodule Ml.NeuralNetwork do
                                       Statistics.mean_absolute_error(y_hat_list, y_list)
                                     end
                                   )
+                               |> Enum.sum()
         mean_absolute_errors / length(ys)
       end
     )
@@ -49,6 +50,27 @@ defmodule Ml.NeuralNetwork do
     selected_class
   end
 
+  @doc """
+  Returns the function that classifies an item (or a list of items) by using the _Neural Network Framework.
+
+  ## Examples
+
+      iex> f = Ml.NeuralNetwork.classifier([%{a: 0, b: 0, exclusive_or: "false"},
+      ...>                                  %{a: 0, b: 1, exclusive_or: "true"},
+      ...>                                  %{a: 1, b: 0, exclusive_or: "true"},
+      ...>                                  %{a: 1, b: 1, exclusive_or: "false"}],
+      ...>                                 [:a, :b],      # features
+      ...>                                 :exclusive_or, # class
+      ...>                                 [2],           # single hidden layer with two neurons
+      ...>                                 0.5,           # learning rate
+      ...>                                 0.01,          # error threshold
+      ...>                                 1000           # maximum number of iterations
+      ...>                                 )
+      ...> f.([%{a: 0, b: 0},
+      ...>     %{a: 1, b: 1}])
+      ["false", "false"]
+
+  """
   def classifier(
         dataset,
         continuous_attributes,
