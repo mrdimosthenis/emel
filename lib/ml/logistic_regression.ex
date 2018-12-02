@@ -32,8 +32,17 @@ defmodule Ml.LogisticRegression do
     end
   end
 
+  defp predict(item, wrapper, continuous_attributes) do
+    f = fn x -> Wrapper.predict(wrapper, x) end
+    y_hat = item
+            |> Utils.map_vals(continuous_attributes)
+            |> f.()
+            |> hd
+    y_hat >= 0.5
+  end
+
   @doc """
-  Returns the function that classifies an item by using the _Naive Bayes Algorithm_.
+  Returns the function that classifies an item (or a list of items) by using the _Logistic Regression Algorithm_.
 
   ## Examples
 
@@ -50,16 +59,21 @@ defmodule Ml.LogisticRegression do
       ...>                                       %{x: 0.2, y: 0.3, greater_than: false},
       ...>                                       %{x: 0.3, y: 0.4, greater_than: false},
       ...>                                       %{x: 0.4, y: 0.3, greater_than: true},
-      ...>                                       %{x: 0.5, y: 0.5, greater_than: true},
+      ...>                                       %{x: 0.5, y: 0.5, greater_than: false},
       ...>                                       %{x: 0.5, y: 0.6, greater_than: false},
       ...>                                       %{x: 0.1, y: 0.2, greater_than: false},
-      ...>                                       %{x: 0.0, y: 0.0, greater_than: true},
+      ...>                                       %{x: 0.0, y: 0.0, greater_than: false},
       ...>                                       %{x: 0.1, y: 0.0, greater_than: true},
       ...>                                       %{x: 0.2, y: 0.1, greater_than: true},
       ...>                                       %{x: 0.6, y: 0.7, greater_than: false},
       ...>                                      ], [:x, :y], :greater_than, 0.1, 0.01, 1000)
-      ...> f.(%{x: 0.65, y: 0.75})
-      false
+      ...> f.([%{x: 0.2, y: 0.1},
+      ...>     %{x: 0.3, y: 0.2},
+      ...>     %{x: 0.1, y: 0.3},
+      ...>     %{x: 0.3, y: 0.1},
+      ...>     %{x: 0.5, y: 0.4},
+      ...>     %{x: 0.5, y: 0.5}])
+      [true, true, false, true, true, false]
 
   """
   def classifier(
@@ -83,13 +97,17 @@ defmodule Ml.LogisticRegression do
     iterate(fit_wrapper, xs, ys, learning_rate, err_thres, max_iter)
     weights = FitWrapper.get_weights(fit_wrapper)
     FitWrapper.stop(fit_wrapper)
-    fn item ->
-      {:ok, wrapper} = GenServer.start_link(Wrapper, [weights, 1])
-      item_vals = Utils.map_vals(item, continuous_attributes)
-      [yhat] = Wrapper.predict(wrapper, item_vals)
-      result = yhat >= 0.5
-      Wrapper.stop(wrapper)
-      result
+    fn
+      %{} = item ->
+        {:ok, wrapper} = GenServer.start_link(Wrapper, [weights, 1])
+        result = predict(item, wrapper, continuous_attributes)
+        Wrapper.stop(wrapper)
+        result
+      [_ | _] = items ->
+        {:ok, wrapper} = GenServer.start_link(Wrapper, [weights, 1])
+        results = Enum.map(items, fn x -> predict(x, wrapper, continuous_attributes) end)
+        Wrapper.stop(wrapper)
+        results
     end
   end
 
