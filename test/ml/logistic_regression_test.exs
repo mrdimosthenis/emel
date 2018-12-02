@@ -38,7 +38,7 @@ defmodule Ml.LogisticRegressionTest do
                                   )
                                |> Model.training_and_test_sets(0.90)
     f = classifier(training_set, ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"], "Survived", 0.01, 0.001, 10)
-    predicted_classes = Enum.map(test_set, fn row -> f.(row) end)
+    predicted_classes = f.(test_set)
     actual_classes = Enum.map(test_set, fn %{"Survived" => sv} -> sv end)
     score = Statistics.similarity(predicted_classes, actual_classes)
     assert score > 0.7
