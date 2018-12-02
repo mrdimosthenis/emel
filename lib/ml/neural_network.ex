@@ -75,7 +75,7 @@ defmodule Ml.NeuralNetwork do
       end
     )
     weights = FitWrapper.with(
-      [length(x), length(dist_class_vals), hidden_layers, learning_rate],
+      [length(x), length(dist_class_vals), hidden_layers ++ [length(dist_class_vals)], learning_rate],
       fn fit_wrapper ->
         iterate(fit_wrapper, xs, ys, learning_rate, err_thres, max_iter)
         FitWrapper.get_weights(fit_wrapper)
