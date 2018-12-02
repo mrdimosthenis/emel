@@ -55,17 +55,18 @@ defmodule Ml.NeuralNetwork do
 
   ## Examples
 
-      iex> f = Ml.NeuralNetwork.classifier([%{a: 0, b: 0, exclusive_or: false},
-      ...>                                  %{a: 0, b: 1, exclusive_or: true},
-      ...>                                  %{a: 1, b: 0, exclusive_or: true},
-      ...>                                  %{a: 1, b: 1, exclusive_or: false}],
-      ...>                                 [:a, :b],      # features
-      ...>                                 :exclusive_or, # class
-      ...>                                 [2],           # single hidden layer with two neurons
-      ...>                                 0.5,           # learning rate
-      ...>                                 0.01,          # error threshold
-      ...>                                 10000          # maximum number of iterations
-      ...>                                 )
+      iex> f = Ml.NeuralNetwork.classifier(
+      ...>          [%{a: 0, b: 0, exclusive_or: false},
+      ...>           %{a: 0, b: 1, exclusive_or: true},
+      ...>           %{a: 1, b: 0, exclusive_or: true},
+      ...>           %{a: 1, b: 1, exclusive_or: false}],
+      ...>          [:a, :b],      # features
+      ...>          :exclusive_or, # class
+      ...>          [2],           # single hidden layer with two neurons
+      ...>          0.5,           # learning rate
+      ...>          0.01,          # error threshold
+      ...>          10000          # maximum number of iterations
+      ...>     )
       ...> f.([%{a: 0, b: 0},
       ...>     %{a: 0, b: 1},
       ...>     %{a: 1, b: 0},
