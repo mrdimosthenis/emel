@@ -51,7 +51,7 @@ defmodule Ml.NeuralNetwork do
   end
 
   @doc """
-  Returns the function that classifies an item (or a list of items) by using the _Neural Network Framework.
+  Returns the function that classifies an item (or a list of items) by using the _Neural Network Framework_.
 
   ## Examples
 
