@@ -64,7 +64,7 @@ defmodule Ml.NeuralNetwork do
       ...>                                 [2],           # single hidden layer with two neurons
       ...>                                 0.5,           # learning rate
       ...>                                 0.01,          # error threshold
-      ...>                                 10000          # maximum number of iterations
+      ...>                                 100            # maximum number of iterations
       ...>                                 )
       ...> f.([%{a: 0, b: 0},
       ...>     %{a: 0, b: 1},
