@@ -1,5 +1,3 @@
-  # Emel
-
   [Turn data into functions](https://github.com/mrdimosthenis/emel)! A simple and functional **machine learning** library written in **elixir**.
 
   ## Installation
