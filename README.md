@@ -47,6 +47,7 @@
   * [K Means](https://hexdocs.pm/emel/0.1.2/Ml.KMeans.html)
   * [Perceptron](https://hexdocs.pm/emel/0.1.2/Ml.Perceptron.html)
   * [Logistic Regression](https://hexdocs.pm/emel/0.1.2/Ml.LogisticRegression.html)
+  * [Neural Network](https://hexdocs.pm/emel/0.1.2/Ml.NeuralNetwork.html)
 
   ```elixir
   alias Ml.DecisionTree, as: DecisionTree
