@@ -7,19 +7,20 @@ defmodule Emel.Ml.NeuralNetworkTest do
   alias Emel.Math.Statistics
 
   test "neural network on titanic dataset" do
-    {training_set, test_set} = "resources/datasets/titanic.csv"
-                               |> Io.load_dataset(
-                                    ["Survived", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
-                                  )
-                               |> Enum.filter(
-                                    fn row ->
-                                      row
-                                      |> Map.values()
-                                      |> Enum.all?(&(&1 != ""))
-                                    end
-                                  )
-                               |> ModelTest.continuous_passenger_attributes()
-                               |> Model.normalize(["Pclass", "Age", "SibSp", "Parch", "Fare"])
+    {normalized_dataset, _} = "resources/datasets/titanic.csv"
+                              |> Io.load_dataset(
+                                   ["Survived", "Pclass", "Sex", "Age", "SibSp", "Parch", "Fare"]
+                                 )
+                              |> Enum.filter(
+                                   fn row ->
+                                     row
+                                     |> Map.values()
+                                     |> Enum.all?(&(&1 != ""))
+                                   end
+                                 )
+                              |> ModelTest.continuous_passenger_attributes()
+                              |> Model.normalize(["Pclass", "Age", "SibSp", "Parch", "Fare"])
+    {training_set, test_set} = normalized_dataset
                                |> Enum.map(
                                     fn %{"Survived" => survived, "Sex" => sex} = row ->
                                       %{

@@ -2,6 +2,8 @@ defmodule Emel.Help.Model do
 
   import Integer, only: [is_odd: 1]
 
+  alias Emel.Help.Utils
+
   @doc """
   Trims and parses the `string` into a float.
 
@@ -50,41 +52,75 @@ defmodule Emel.Help.Model do
   end
 
   @doc """
-  Applies _feature scaling_ on the `dataset`'s numeric values of `keys` and reduces them to a scale between 0 and 1.
+  Returns a two-element tuple.
+  The first element, is the `dataset` on which the _feature scaling_ has been applied.
+  _Feature scaling_ is used on the `dataset`'s numeric values of `keys` in order to reduce them to a scale between 0 and 1.
+  The second element, is the inversion of the _feature scaling_ function.
 
   ## Examples
 
-      iex> Emel.Help.Model.normalize([%{a: 0}, %{a: 1}], [:a])
-      [%{a: 0.0}, %{a: 1.0}]
+      iex> {normalized_rows, f} = Emel.Help.Model.normalize([%{a: 0}, %{a: 1}], [:a])
+      ...> {normalized_rows, f.(%{a: 0})}
+      {[%{a: 0.0}, %{a: 1.0}], %{a: 0}}
 
-      iex> Emel.Help.Model.normalize([%{"x" => 1}, %{"x" => 2}, %{"x" => 1.5}], ["x"])
-      [%{"x" => 0.0}, %{"x" => 1.0}, %{"x" => 0.5}]
+      iex> {normalized_rows, f} = Emel.Help.Model.normalize([%{"x" => 1}, %{"x" => 2}, %{"x" => 1.5}], ["x"])
+      ...> {normalized_rows, f.(%{"x" => 0.5})}
+      {[%{"x" => 0.0}, %{"x" => 1.0}, %{"x" => 0.5}], %{"x" => 1.5}}
 
-      iex> Emel.Help.Model.normalize([%{"x" => 1, "y" => -2, "z" => -4}, %{"x" => 2, "y" => 2, "z" => -8}], ["y", "z"])
-      [%{"x" => 1, "y" => 0.0, "z" => 1.0}, %{"x" => 2, "y" => 1.0, "z" => 0.0}]
+      iex> {normalized_rows, f} = Emel.Help.Model.normalize([%{"x" => 1.0, "y" => -2.0, "z" => -4.0},
+      ...>                                                   %{"x" => 2.0, "y" => 2.0, "z" => -8.0}],
+      ...>                                                  ["y", "z"])
+      ...> {normalized_rows, f.(%{"x" => 1.0, "y" => 0.0, "z" => 1.0})}
+      {[%{"x" => 1.0, "y" => 0.0, "z" => 1.0},
+        %{"x" => 2.0, "y" => 1.0, "z" => 0.0}],
+       %{"x" => 1.0, "y" => -2.0, "z" => -4.0}}
 
   """
   def normalize(dataset, keys) do
-    f_by_key = keys
-               |> Enum.map(
-                    fn k -> vals = Enum.map(dataset, fn row -> row[k] end)
-                            min_val = Enum.min(vals)
-                            max_val = Enum.max(vals)
-                            {k, fn v -> (v - min_val) / (max_val - min_val) end}
-                    end
-                  )
-               |> Map.new()
-    for row <- dataset do
+    fs_by_key = dataset
+                |> hd()
+                |> Map.keys()
+                |> Enum.map(
+                     fn k ->
+                       case Enum.member?(keys, k) do
+                         true ->
+                           vals = Enum.map(dataset, fn row -> row[k] end)
+                           min_val = Enum.min(vals)
+                           max_val = Enum.max(vals)
+                           {
+                             k,
+                             {
+                               fn v -> (v - min_val) / (max_val - min_val) end,
+                               fn v -> min_val - v * min_val + v * max_val end
+                             }
+                           }
+                         false ->
+                           {k, {&Utils.identity/1, &Utils.identity/1}}
+                       end
+                     end
+                   )
+                |> Map.new()
+    normalized_rows = for row <- dataset do
       row
       |> Enum.map(
-           fn {k, v} -> case Enum.member?(keys, k) do
-                          true -> {k, f_by_key[k].(v)}
-                          false -> {k, v}
-                        end
+           fn {k, v} ->
+             {f, _} = fs_by_key[k]
+             {k, f.(v)}
            end
          )
       |> Map.new()
     end
+    inverse = fn row ->
+      row
+      |> Enum.map(
+           fn {k, v} ->
+             {_, f} = fs_by_key[k]
+             {k, f.(v)}
+           end
+         )
+      |> Map.new()
+    end
+    {normalized_rows, inverse}
   end
 
   @doc """
