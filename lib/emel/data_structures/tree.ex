@@ -13,23 +13,23 @@ defmodule Emel.DataStructures.Tree do
       iex> alias Emel.DataStructures.Tree.Node
       ...>
       ...> Emel.DataStructures.Tree.pretty(%Node{
-      ...>                              content: "root",
-      ...>                              children: [
-      ...>                                %Node{
-      ...>                                content: :leaf
-      ...>                              },
-      ...>                                %Node{
-      ...>                                  children: [
-      ...>                                    %Node{
-      ...>                                      content: "second_level",
-      ...>                                      children: [
-      ...>                                        %Node{
-      ...>                                          content: 0
-      ...>                                        }
-      ...>                                      ]
-      ...>                                    }]
-      ...>                                }]
-      ...>                            })
+      ...>                                   content: "root",
+      ...>                                   children: [
+      ...>                                     %Node{
+      ...>                                     content: :leaf
+      ...>                                   },
+      ...>                                     %Node{
+      ...>                                       children: [
+      ...>                                         %Node{
+      ...>                                           content: "second_level",
+      ...>                                           children: [
+      ...>                                             %Node{
+      ...>                                               content: 0
+      ...>                                             }
+      ...>                                           ]
+      ...>                                         }]
+      ...>                                     }]
+      ...>                                 })
       [
         "root",
         [
@@ -68,23 +68,23 @@ defmodule Emel.DataStructures.Tree do
       iex> alias Emel.DataStructures.Tree.Node
       ...>
       ...> Emel.DataStructures.Tree.paths(%Node{
-      ...>                             content: "root",
-      ...>                             children: [
-      ...>                               %Node{
-      ...>                               content: :leaf
-      ...>                             },
-      ...>                               %Node{
-      ...>                                 children: [
-      ...>                                   %Node{
-      ...>                                     content: "second_level",
-      ...>                                     children: [
-      ...>                                       %Node{
-      ...>                                         content: 0
-      ...>                                       }
-      ...>                                     ]
-      ...>                                   }]
-      ...>                               }]
-      ...>                           })
+      ...>                                  content: "root",
+      ...>                                  children: [
+      ...>                                    %Node{
+      ...>                                    content: :leaf
+      ...>                                  },
+      ...>                                    %Node{
+      ...>                                      children: [
+      ...>                                        %Node{
+      ...>                                          content: "second_level",
+      ...>                                          children: [
+      ...>                                            %Node{
+      ...>                                              content: 0
+      ...>                                            }
+      ...>                                          ]
+      ...>                                        }]
+      ...>                                    }]
+      ...>                                })
       [["root", :leaf],
        ["root", nil, "second_level", 0]]
 
@@ -103,24 +103,24 @@ defmodule Emel.DataStructures.Tree do
       iex> alias Emel.DataStructures.Tree.Node
       ...>
       ...> Emel.DataStructures.Tree.map(%Node{
-      ...>                           content: -2,
-      ...>                           children: [
-      ...>                             %Node{
-      ...>                               content: 1
-      ...>                             },
-      ...>                             %Node{
-      ...>                               children: [
-      ...>                                 %Node{
-      ...>                                   content: 2,
-      ...>                                   children: [
-      ...>                                     %Node{
-      ...>                                       content: 3
-      ...>                                     }
-      ...>                                   ]
-      ...>                                 }]
-      ...>                             }]
-      ...>                         },
-      ...>                         fn x -> 3 * x end)
+      ...>                                content: -2,
+      ...>                                children: [
+      ...>                                  %Node{
+      ...>                                    content: 1
+      ...>                                  },
+      ...>                                  %Node{
+      ...>                                    children: [
+      ...>                                      %Node{
+      ...>                                        content: 2,
+      ...>                                        children: [
+      ...>                                          %Node{
+      ...>                                            content: 3
+      ...>                                          }
+      ...>                                        ]
+      ...>                                      }]
+      ...>                                  }]
+      ...>                              },
+      ...>                              fn x -> 3 * x end)
       %Emel.DataStructures.Tree.Node{
         content: -6,
         children: [
@@ -158,43 +158,43 @@ defmodule Emel.DataStructures.Tree do
       iex> alias Emel.DataStructures.Tree.Node
       ...>
       ...> Emel.DataStructures.Tree.apply(%Node{
-      ...>                             content: fn _ -> 5 end
-      ...>                           })
+      ...>                                  content: fn _ -> 5 end
+      ...>                                })
       5
 
       iex> alias Emel.DataStructures.Tree.Node
       ...>
       ...> Emel.DataStructures.Tree.apply(%Node{
-      ...>                             content: fn [x, y] -> x * y end,
-      ...>                             children: [
-      ...>                               %Node{
-      ...>                                 content: fn _ -> 7 end
-      ...>                               },
-      ...>                               %Node{
-      ...>                                 content: fn _ -> 2 end
-      ...>                               }
-      ...>                             ]
-      ...>                           })
+      ...>                                  content: fn [x, y] -> x * y end,
+      ...>                                  children: [
+      ...>                                    %Node{
+      ...>                                      content: fn _ -> 7 end
+      ...>                                    },
+      ...>                                    %Node{
+      ...>                                      content: fn _ -> 2 end
+      ...>                                    }
+      ...>                                  ]
+      ...>                                })
       14
 
       iex> alias Emel.DataStructures.Tree.Node
       ...>
       ...> Emel.DataStructures.Tree.apply(%Node{
-      ...>                             content: fn [x, y] -> x + y end,
-      ...>                             children: [
-      ...>                               %Node{
-      ...>                                 content: fn [x] -> x * x end,
-      ...>                                 children: [
-      ...>                                   %Node{
-      ...>                                     content: fn _ -> 3 end
-      ...>                                   }
-      ...>                                 ]
-      ...>                               },
-      ...>                               %Node{
-      ...>                                 content: fn _ -> 2 end
-      ...>                               }
-      ...>                             ]
-      ...>                           })
+      ...>                                  content: fn [x, y] -> x + y end,
+      ...>                                  children: [
+      ...>                                    %Node{
+      ...>                                      content: fn [x] -> x * x end,
+      ...>                                      children: [
+      ...>                                        %Node{
+      ...>                                          content: fn _ -> 3 end
+      ...>                                        }
+      ...>                                      ]
+      ...>                                    },
+      ...>                                    %Node{
+      ...>                                      content: fn _ -> 2 end
+      ...>                                    }
+      ...>                                  ]
+      ...>                                })
       11
 
   """

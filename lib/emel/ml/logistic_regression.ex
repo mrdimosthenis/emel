@@ -50,26 +50,26 @@ defmodule Emel.Ml.LogisticRegression do
   ## Examples
 
       iex> f = Emel.Ml.LogisticRegression.classifier([%{a: 0, b: 0, and: false},
-      ...>                                       %{a: 0, b: 1, and: false},
-      ...>                                       %{a: 1, b: 0, and: false},
-      ...>                                       %{a: 1, b: 1, and: true},
-      ...>                                      ], [:a, :b], :and, 0.5, 0.001, 100)
+      ...>                                            %{a: 0, b: 1, and: false},
+      ...>                                            %{a: 1, b: 0, and: false},
+      ...>                                            %{a: 1, b: 1, and: true},
+      ...>                                           ], [:a, :b], :and, 0.5, 0.001, 100)
       ...> f.(%{a: 1, b: 1})
       true
 
       iex> f = Emel.Ml.LogisticRegression.classifier([%{x: 0.0, y: 0.1, greater_than: false},
-      ...>                                       %{x: 0.3, y: 0.2, greater_than: true},
-      ...>                                       %{x: 0.2, y: 0.3, greater_than: false},
-      ...>                                       %{x: 0.3, y: 0.4, greater_than: false},
-      ...>                                       %{x: 0.4, y: 0.3, greater_than: true},
-      ...>                                       %{x: 0.5, y: 0.5, greater_than: false},
-      ...>                                       %{x: 0.5, y: 0.6, greater_than: false},
-      ...>                                       %{x: 0.1, y: 0.2, greater_than: false},
-      ...>                                       %{x: 0.0, y: 0.0, greater_than: false},
-      ...>                                       %{x: 0.1, y: 0.0, greater_than: true},
-      ...>                                       %{x: 0.2, y: 0.1, greater_than: true},
-      ...>                                       %{x: 0.6, y: 0.7, greater_than: false},
-      ...>                                      ], [:x, :y], :greater_than, 0.2, 0.01, 1000)
+      ...>                                            %{x: 0.3, y: 0.2, greater_than: true},
+      ...>                                            %{x: 0.2, y: 0.3, greater_than: false},
+      ...>                                            %{x: 0.3, y: 0.4, greater_than: false},
+      ...>                                            %{x: 0.4, y: 0.3, greater_than: true},
+      ...>                                            %{x: 0.5, y: 0.5, greater_than: false},
+      ...>                                            %{x: 0.5, y: 0.6, greater_than: false},
+      ...>                                            %{x: 0.1, y: 0.2, greater_than: false},
+      ...>                                            %{x: 0.0, y: 0.0, greater_than: false},
+      ...>                                            %{x: 0.1, y: 0.0, greater_than: true},
+      ...>                                            %{x: 0.2, y: 0.1, greater_than: true},
+      ...>                                            %{x: 0.6, y: 0.7, greater_than: false},
+      ...>                                           ], [:x, :y], :greater_than, 0.2, 0.01, 1000)
       ...> f.([%{x: 0.2, y: 0.1},
       ...>     %{x: 0.3, y: 0.2},
       ...>     %{x: 0.1, y: 0.3},
