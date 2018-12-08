@@ -84,7 +84,7 @@ PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 83,1,3,"McDermott, Miss. Brigdet Delia",female,,0,0,330932,7.7875,,Q
 84,0,1,"Carrau, Mr. Francisco M",male,28,0,0,113059,47.1,,S
 85,1,2,"Ilett, Miss. Bertha",female,17,0,0,SO/C 14885,10.5,,S
-86,1,3,"Backstrom, Mrs. Karl Alfred (Maria Mathilda Gustafsson)",female,33,3,0,3101278,15.85,,S
+86,1,3,"Backstrom, Mrs. Karl Alfred (Maria Emel.Mathilda Gustafsson)",female,33,3,0,3101278,15.85,,S
 87,0,3,"Ford, Mr. William Neal",male,16,1,3,W./C. 6608,34.375,,S
 88,0,3,"Slocovski, Mr. Selman Francis",male,,0,0,SOTON/OQ 392086,8.05,,S
 89,1,1,"Fortune, Miss. Mabel Helen",female,23,3,2,19950,263,C23 C25 C27,S
@@ -132,7 +132,7 @@ PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 131,0,3,"Drazenoic, Mr. Jozef",male,33,0,0,349241,7.8958,,C
 132,0,3,"Coelho, Mr. Domingos Fernandeo",male,20,0,0,SOTON/O.Q. 3101307,7.05,,S
 133,0,3,"Robins, Mrs. Alexander A (Grace Charity Laury)",female,47,1,0,A/5. 3337,14.5,,S
-134,1,2,"Weisz, Mrs. Leopold (Mathilde Francoise Pede)",female,29,1,0,228414,26,,S
+134,1,2,"Weisz, Mrs. Leopold (Emel.Mathilde Francoise Pede)",female,29,1,0,228414,26,,S
 135,0,2,"Sobey, Mr. Samuel James Hayden",male,25,0,0,C.A. 29178,13,,S
 136,0,2,"Richard, Mr. Emile",male,23,0,0,SC/PARIS 2133,15.0458,,C
 137,1,1,"Newsom, Miss. Helen Monypeny",female,19,0,2,11752,26.2833,D47,S
@@ -228,7 +228,7 @@ PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 227,1,2,"Mellors, Mr. William John",male,19,0,0,SW/PP 751,10.5,,S
 228,0,3,"Lovell, Mr. John Hall (""Henry"")",male,20.5,0,0,A/5 21173,7.25,,S
 229,0,2,"Fahlstrom, Mr. Arne Jonas",male,18,0,0,236171,13,,S
-230,0,3,"Lefebre, Miss. Mathilde",female,,3,1,4133,25.4667,,S
+230,0,3,"Lefebre, Miss. Emel.Mathilde",female,,3,1,4133,25.4667,,S
 231,1,1,"Harris, Mrs. Henry Birkhardt (Irene Wallach)",female,35,1,0,36973,83.475,C83,S
 232,0,3,"Larsson, Mr. Bengt Edvin",male,29,0,0,347067,7.775,,S
 233,0,2,"Sjostedt, Mr. Ernst Adolf",male,59,0,0,237442,13.5,,S
@@ -489,7 +489,7 @@ PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 488,0,1,"Kent, Mr. Edward Austin",male,58,0,0,11771,29.7,B37,C
 489,0,3,"Somerton, Mr. Francis William",male,30,0,0,A.5. 18509,8.05,,S
 490,1,3,"Coutts, Master. Eden Leslie ""Neville""",male,9,1,1,C.A. 37671,15.9,,S
-491,0,3,"Hagland, Mr. Konrad Mathias Reiersen",male,,1,0,65304,19.9667,,S
+491,0,3,"Hagland, Mr. Konrad Emel.Mathias Reiersen",male,,1,0,65304,19.9667,,S
 492,0,3,"Windelov, Mr. Einar",male,21,0,0,SOTON/OQ 3101317,7.25,,S
 493,0,1,"Molson, Mr. Harry Markland",male,55,0,0,113787,30.5,C30,S
 494,0,1,"Artagaveytia, Mr. Ramon",male,71,0,0,PC 17609,49.5042,,C
@@ -640,7 +640,7 @@ PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 639,0,3,"Panula, Mrs. Juha (Maria Emilia Ojala)",female,41,0,5,3101295,39.6875,,S
 640,0,3,"Thorneycroft, Mr. Percival",male,,1,0,376564,16.1,,S
 641,0,3,"Jensen, Mr. Hans Peder",male,20,0,0,350050,7.8542,,S
-642,1,1,"Sagesser, Mlle. Emma",female,24,0,0,PC 17477,69.3,B35,C
+642,1,1,"Sagesser, Emel.Mlle. Emma",female,24,0,0,PC 17477,69.3,B35,C
 643,0,3,"Skoog, Miss. Margit Elizabeth",female,2,3,2,347088,27.9,,S
 644,1,3,"Foo, Mr. Choong",male,,0,0,1601,56.4958,,S
 645,1,3,"Baclini, Miss. Eugenie",female,0.75,2,1,2666,19.2583,,C
@@ -698,7 +698,7 @@ PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 697,0,3,"Kelly, Mr. James",male,44,0,0,363592,8.05,,S
 698,1,3,"Mullens, Miss. Katherine ""Katie""",female,,0,0,35852,7.7333,,Q
 699,0,1,"Thayer, Mr. John Borland",male,49,1,1,17421,110.8833,C68,C
-700,0,3,"Humblen, Mr. Adolf Mathias Nicolai Olsen",male,42,0,0,348121,7.65,F G63,S
+700,0,3,"Humblen, Mr. Adolf Emel.Mathias Nicolai Olsen",male,42,0,0,348121,7.65,F G63,S
 701,1,1,"Astor, Mrs. John Jacob (Madeleine Talmadge Force)",female,18,1,0,PC 17757,227.525,C62 C64,C
 702,1,1,"Silverthorne, Mr. Spencer Victor",male,35,0,0,PC 17475,26.2875,E24,S
 703,0,3,"Barbara, Miss. Saiide",female,18,0,1,2691,14.4542,,C
@@ -709,7 +709,7 @@ PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 708,1,1,"Calderhead, Mr. Edward Pennington",male,42,0,0,PC 17476,26.2875,E24,S
 709,1,1,"Cleaver, Miss. Alice",female,22,0,0,113781,151.55,,S
 710,1,3,"Moubarek, Master. Halim Gonios (""William George"")",male,,1,1,2661,15.2458,,C
-711,1,1,"Mayne, Mlle. Berthe Antonine (""Mrs de Villiers"")",female,24,0,0,PC 17482,49.5042,C90,C
+711,1,1,"Mayne, Emel.Mlle. Berthe Antonine (""Mrs de Villiers"")",female,24,0,0,PC 17482,49.5042,C90,C
 712,0,1,"Klaber, Mr. Herman",male,,0,0,113028,26.55,C124,S
 713,1,1,"Taylor, Mr. Elmer Zebley",male,48,1,0,19996,52,C126,S
 714,0,3,"Larsson, Mr. August Viktor",male,29,0,0,7545,9.4833,,S

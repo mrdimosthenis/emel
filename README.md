@@ -20,7 +20,7 @@
 
   ```elixir
   # set up the aliases for the module
-  alias Ml.KNearestNeighbors, as: KNN
+  alias Emel.Ml.KNearestNeighbors, as: KNN
 
   dataset = [
     %{"x1" => 0.0, "x2" => 0.0, "x3" => 0.0, "y" => 0.0},
@@ -42,19 +42,19 @@
 
   ### Implemented Algorithms
 
-  * [Linear Regression](https://hexdocs.pm/emel/0.2.0/Ml.LinearRegression.html)
-  * [K Nearest Neighbors](https://hexdocs.pm/emel/0.2.0/Ml.KNearestNeighbors.html)
-  * [Decision Tree](https://hexdocs.pm/emel/0.2.0/Ml.DecisionTree.html)
-  * [Naive Bayes](https://hexdocs.pm/emel/0.2.0/Ml.NaiveBayes.html)
-  * [K Means](https://hexdocs.pm/emel/0.2.0/Ml.KMeans.html)
-  * [Perceptron](https://hexdocs.pm/emel/0.2.0/Ml.Perceptron.html)
-  * [Logistic Regression](https://hexdocs.pm/emel/0.2.0/Ml.LogisticRegression.html)
-  * [Neural Network](https://hexdocs.pm/emel/0.2.0/Ml.NeuralNetwork.html)
+  * [Linear Regression](https://hexdocs.pm/emel/0.2.0/Emel.Ml.LinearRegression.html)
+  * [K Nearest Neighbors](https://hexdocs.pm/emel/0.2.0/Emel.Ml.KNearestNeighbors.html)
+  * [Decision Tree](https://hexdocs.pm/emel/0.2.0/Emel.Ml.DecisionTree.html)
+  * [Naive Bayes](https://hexdocs.pm/emel/0.2.0/Emel.Ml.NaiveBayes.html)
+  * [K Means](https://hexdocs.pm/emel/0.2.0/Emel.Ml.KMeans.html)
+  * [Perceptron](https://hexdocs.pm/emel/0.2.0/Emel.Ml.Perceptron.html)
+  * [Logistic Regression](https://hexdocs.pm/emel/0.2.0/Emel.Ml.LogisticRegression.html)
+  * [Neural Network](https://hexdocs.pm/emel/0.2.0/Emel.Ml.NeuralNetwork.html)
 
   ```elixir
-  alias Ml.DecisionTree, as: DecisionTree
-  alias Help.Model, as: Mdl
-  alias Math.Statistics, as: Stat
+  alias Emel.Ml.DecisionTree, as: DecisionTree
+  alias Emel.Help.Model, as: Mdl
+  alias Emel.Math.Statistics, as: Stat
 
   dataset = [
     %{risk: "high", collateral: "none", income: "low", debt: "high", credit_history: "bad"},
@@ -83,17 +83,17 @@
   # 0.75
   ```
 
-  ### Mathematics
+  ### Emel.Mathematics
 
-  * [Algebra](https://hexdocs.pm/emel/0.2.0/Math.Algebra.html)
-  * [Geometry](https://hexdocs.pm/emel/0.2.0/Math.Geometry.html)
-  * [Statistics](https://hexdocs.pm/emel/0.2.0/Math.Statistics.html)
-  * [Calculus](https://hexdocs.pm/emel/0.2.0/Math.Calculus.html)
+  * [Algebra](https://hexdocs.pm/emel/0.2.0/Emel.Math.Algebra.html)
+  * [Geometry](https://hexdocs.pm/emel/0.2.0/Emel.Math.Geometry.html)
+  * [Statistics](https://hexdocs.pm/emel/0.2.0/Emel.Math.Statistics.html)
+  * [Calculus](https://hexdocs.pm/emel/0.2.0/Emel.Math.Calculus.html)
 
   ```elixir
-  alias Ml.LinearRegression, as: LR
-  alias Help.Model, as: Mdl
-  alias Math.Statistics, as: Stat
+  alias Emel.Ml.LinearRegression, as: LR
+  alias Emel.Help.Model, as: Mdl
+  alias Emel.Math.Statistics, as: Stat
 
   dataset = [
     %{x1: 1, x2: 1, y: -1},
