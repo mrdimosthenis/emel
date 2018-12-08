@@ -10,7 +10,7 @@ defmodule Emel.Ml.DecisionTree do
   alias Emel.DataStructures.Tree
   alias Emel.DataStructures.Tree.Node
 
-  def entropy(dataset, class_attr) do
+  defp entropy(dataset, class_attr) do
     dataset
     |> Enum.group_by(fn row -> row[class_attr] end)
     |> Map.values()
@@ -18,7 +18,7 @@ defmodule Emel.Ml.DecisionTree do
     |> Statistics.entropy()
   end
 
-  def entropy(dataset, class_attr, attribute) do
+  defp entropy(dataset, class_attr, attribute) do
     dataset
     |> Enum.group_by(fn row -> row[attribute] end)
     |> Map.values()
@@ -32,7 +32,7 @@ defmodule Emel.Ml.DecisionTree do
     |> Enum.sum()
   end
 
-  def information_gain(dataset, class_attr, attribute) do
+  defp information_gain(dataset, class_attr, attribute) do
     entropy(dataset, class_attr) - entropy(dataset, class_attr, attribute)
   end
 

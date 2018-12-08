@@ -7,31 +7,6 @@ defmodule DecisionTreeTest do
   alias Emel.Math.Statistics
   alias Emel.Help.Io
 
-  @observations [
-    %{outlook: "s", windy: "f", golf: "y"},
-    %{outlook: "s", windy: "f", golf: "y"},
-    %{outlook: "s", windy: "f", golf: "y"},
-    %{outlook: "o", windy: "f", golf: "y"},
-    %{outlook: "o", windy: "f", golf: "y"},
-    %{outlook: "o", windy: "t", golf: "y"},
-    %{outlook: "o", windy: "t", golf: "y"},
-    %{outlook: "r", windy: "f", golf: "y"},
-    %{outlook: "r", windy: "t", golf: "y"},
-    %{outlook: "s", windy: "t", golf: "n"},
-    %{outlook: "s", windy: "t", golf: "n"},
-    %{outlook: "r", windy: "f", golf: "n"},
-    %{outlook: "r", windy: "f", golf: "n"},
-    %{outlook: "r", windy: "t", golf: "n"}
-  ]
-
-  test "target attribute entropy" do
-    assert entropy(@observations, :golf) == 0.9402859586706309
-  end
-
-  test "information gain" do
-    assert information_gain(@observations, :golf, :outlook) == 0.2467498197744391
-  end
-
   test "decision tree on iris dataset" do
     {training_set, test_set} = "resources/datasets/iris.csv"
                                |> Io.load_dataset()

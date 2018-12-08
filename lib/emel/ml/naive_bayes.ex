@@ -6,7 +6,7 @@ defmodule Emel.Ml.NaiveBayes do
 
   """
 
-  def prior_probability(observations, attribute, value) do
+  defp prior_probability(observations, attribute, value) do
     denominator = length(observations)
     numerator = observations
                 |> Enum.filter(fn %{^attribute => val} -> val == value end)
@@ -14,13 +14,13 @@ defmodule Emel.Ml.NaiveBayes do
     numerator / denominator
   end
 
-  def probability_B_given_A(observations, attribute_B, value_B, attribute_A, value_A) do
+  defp probability_B_given_A(observations, attribute_B, value_B, attribute_A, value_A) do
     observations
     |> Enum.filter(fn %{^attribute_A => val} -> val == value_A end)
     |> prior_probability(attribute_B, value_B)
   end
 
-  def combined_posterior_probability(observations, values_by_attribute_B_map, attribute_A, value_A) do
+  defp combined_posterior_probability(observations, values_by_attribute_B_map, attribute_A, value_A) do
     probability_a = prior_probability(observations, attribute_A, value_A)
     combined_posterior = Enum.reduce(
       values_by_attribute_B_map,
