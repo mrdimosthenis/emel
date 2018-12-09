@@ -24,3 +24,5 @@ emel-*.tar
 
 /.idea/
 /emel.iml
+/notebooks/.ipynb_checkpoints/
+
