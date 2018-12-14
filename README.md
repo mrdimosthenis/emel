@@ -97,7 +97,7 @@
 
     categorizer = Mdl.categorizer(["inner", 0.6, "in between", 0.9, "outer"])
 
-    paraboloid(x1, x2) do
+    paraboloid = fn (x1, x2) ->
       v = :math.sqrt(x1 * x1 + x2 * x2)
       categorizer.(v)
     end
