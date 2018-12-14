@@ -121,5 +121,5 @@
     actual_values = Enum.map(test_set, fn %{y: y} -> y end)
     Stat.similarity(predictions, actual_values)
     # 0.85
-    ```
+  ```
   
