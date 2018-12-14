@@ -91,37 +91,36 @@ defmodule Emel do
   * [Calculus](https://hexdocs.pm/emel/0.3.0/Emel.Math.Calculus.html)
 
   ```elixir
-  alias Emel.Ml.LinearRegression, as: LR
+  alias Emel.Ml.NeuralNetwork, as: NN
   alias Emel.Help.Model, as: Mdl
   alias Emel.Math.Statistics, as: Stat
 
-  dataset = [
-    %{x1: 1, x2: 1, y: -1},
-    %{x1: 1, x2: 2, y: -1},
-    %{x1: 1, x2: 3, y: -2},
-    %{x1: 1, x2: 4, y: -4},
-    %{x1: 2, x2: 1, y: 1},
-    %{x1: 2, x2: 2, y: 1},
-    %{x1: 2, x2: 3, y: 0},
-    %{x1: 2, x2: 4, y: -1},
-    %{x1: 3, x2: 1, y: 3},
-    %{x1: 3, x2: 2, y: 2},
-    %{x1: 3, x2: 3, y: 1},
-    %{x1: 3, x2: 4, y: 0},
-    %{x1: 4, x2: 1, y: 5},
-    %{x1: 4, x2: 2, y: 4},
-    %{x1: 4, x2: 3, y: 4},
-    %{x1: 4, x2: 4, y: 3}
-  ]
+  categorizer = Mdl.categorizer(["inner", 0.6, "in between", 0.9, "outer"])
 
-  {training_set, test_set} = Mdl.training_and_test_sets(dataset, 0.8)
+  paraboloid(x1, x2) do
+    v = :math.sqrt(x1 * x1 + x2 * x2)
+    categorizer.(v)
+  end
 
-  f = LR.predictor(training_set, [:x1, :x2], :y)
+  range = Stream.iterate(-1, fn x -> x + 0.1 end) |> Enum.take(20)
+
+  dataset = for x1 <- range, x2 <- range, do: %{x1: x1, x2: x2, y: paraboloid.(x1, x2)}
+
+  {training_set, test_set} = Mdl.training_and_test_sets(dataset, 0.75)
+
+  features = [:x1, :x2]
+  class = :y
+  net_structure = [5, 4]
+  learning_rate = 0.1
+  error_threshold = 0.1
+  max_iterations = 200
+
+  f = NN.classifier( training_set, features, class, net_structure, learning_rate, error_threshold, max_iteration)
 
   predictions = Enum.map(test_set, fn row -> f.(row) end)
-  actual_values = Enum.map(test_set, fn %{y: v} -> v end)
-  Stat.mean_absolute_error(predictions, actual_values)
-  # 0.5889423076923077
+  actual_values = Enum.map(test_set, fn %{y: y} -> y end)
+  Stat.similarity(predictions, actual_values)
+  # 0.85
   ```
 
   """
