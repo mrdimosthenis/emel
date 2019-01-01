@@ -2,7 +2,7 @@ defmodule Emel do
   @moduledoc """
   [Turn data into functions](https://github.com/mrdimosthenis/emel)! A simple and functional **machine learning** library written in **elixir**.
 
-  ![emel neural network](https://github.com/mrdimosthenis/emel/tree/master/resources/images/emel_nn.png)
+  ![emel neural network](https://github.com/mrdimosthenis/emel/raw/master/resources/images/emel_nn.png)
 
   ## Installation
 
