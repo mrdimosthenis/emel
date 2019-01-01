@@ -2,7 +2,8 @@
   
   [Turn data into functions](https://github.com/mrdimosthenis/emel)! A simple and functional **machine learning** library written in **elixir**.
   
-  ![emel neural network](https://github.com/mrdimosthenis/emel/raw/master/resources/images/emel_nn.png)
+  <a href="https://hexdocs.pm/emel/0.3.0/Emel.Ml.NeuralNetwork.html">![emel neural network](https://github.com/mrdimosthenis/emel/raw/master/resources/images/emel_nn.png)
+  </a>
 
   ## Installation
 
