@@ -1,6 +1,8 @@
   # emel
   
   [Turn data into functions](https://github.com/mrdimosthenis/emel)! A simple and functional **machine learning** library written in **elixir**.
+  
+  ![emel neural network](https://github.com/mrdimosthenis/emel/tree/master/resources/images/emel_nn.png)
 
   ## Installation
 
@@ -83,43 +85,9 @@
   # 0.75
   ```
 
-  ### Emel.Mathematics
+  ### Mathematics
 
   * [Algebra](https://hexdocs.pm/emel/0.3.0/Emel.Math.Algebra.html)
   * [Geometry](https://hexdocs.pm/emel/0.3.0/Emel.Math.Geometry.html)
   * [Statistics](https://hexdocs.pm/emel/0.3.0/Emel.Math.Statistics.html)
   * [Calculus](https://hexdocs.pm/emel/0.3.0/Emel.Math.Calculus.html)
-
-  ```elixir
-    alias Emel.Ml.NeuralNetwork, as: NN
-    alias Emel.Help.Model, as: Mdl
-    alias Emel.Math.Statistics, as: Stat
-
-    categorizer = Mdl.categorizer(["inner", 0.6, "in between", 0.9, "outer"])
-
-    paraboloid = fn (x1, x2) ->
-      v = :math.sqrt(x1 * x1 + x2 * x2)
-      categorizer.(v)
-    end
-
-    range = Stream.iterate(-1, fn x -> x + 0.1 end) |> Enum.take(20)
-
-    dataset = for x1 <- range, x2 <- range, do: %{x1: x1, x2: x2, y: paraboloid.(x1, x2)}
-
-    {training_set, test_set} = Mdl.training_and_test_sets(dataset, 0.75)
-
-    features = [:x1, :x2]
-    class = :y
-    net_structure = [5, 4]
-    learning_rate = 0.1
-    error_threshold = 0.1
-    max_iterations = 200
-
-    f = NN.classifier( training_set, features, class, net_structure, learning_rate, error_threshold, max_iteration)
-
-    predictions = Enum.map(test_set, fn row -> f.(row) end)
-    actual_values = Enum.map(test_set, fn %{y: y} -> y end)
-    Stat.similarity(predictions, actual_values)
-    # 0.85
-  ```
-  
