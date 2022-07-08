@@ -1,15 +1,7 @@
-import gleam_zlists.{ZList} as zlist
 import emel/help/utils
-
-fn lazy_first_minor(
-  matrix: ZList(ZList(Float)),
-  i: Int,
-  j: Int,
-) -> ZList(ZList(Float)) {
-  matrix
-  |> utils.delete_at(i)
-  |> zlist.map(fn(zl) { utils.delete_at(zl, j) })
-}
+import emel/math/lazy/algebra as lazy
+import gleam/result
+import gleam_zlists as zlist
 
 pub fn first_minor(
   matrix: List(List(Float)),
@@ -18,6 +10,29 @@ pub fn first_minor(
 ) -> List(List(Float)) {
   matrix
   |> utils.to_zlist_of_zlists
-  |> lazy_first_minor(i, j)
+  |> lazy.first_minor(i, j)
   |> utils.to_list_of_lists
+}
+
+pub fn determinant(matrix: List(List(Float))) -> Float {
+  matrix
+  |> utils.to_zlist_of_zlists
+  |> lazy.determinant
+}
+
+pub fn transpose(matrix: List(List(Float))) -> List(List(Float)) {
+  matrix
+  |> utils.to_zlist_of_zlists
+  |> lazy.transpose
+  |> utils.to_list_of_lists
+}
+
+pub fn cramer_solution(
+  coefficients: List(List(Float)),
+  constants: List(Float),
+) -> Result(List(Float), String) {
+  let lazy_coefficients = utils.to_zlist_of_zlists(coefficients)
+  let lazy_constants = zlist.of_list(constants)
+  lazy.cramer_solution(lazy_coefficients, lazy_constants)
+  |> result.map(zlist.to_list)
 }
