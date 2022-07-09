@@ -1,5 +1,5 @@
 import emel/help/utils
-import emel/math/lazy/algebra as lazy
+import emel/lazy/math/algebra as lazy
 import gleam/result
 import gleam_zlists as zlist
 
