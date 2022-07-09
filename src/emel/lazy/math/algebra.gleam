@@ -19,9 +19,9 @@ pub fn determinant(matrix: ZList(ZList(Float))) -> Float {
       let [[a, b], [c, d]] = utils.to_list_of_lists(matrix)
       a *. d -. c *. b
     }
-    _ -> {
-      assert Ok(hd) = zlist.head(matrix)
-      hd
+    _ ->
+      matrix
+      |> utils.unsafe(zlist.head)
       |> zlist.with_index
       |> zlist.map(fn(t) {
         let #(elem, j) = t
@@ -36,7 +36,6 @@ pub fn determinant(matrix: ZList(ZList(Float))) -> Float {
         alpha *. delta
       })
       |> zlist.sum
-    }
   }
 }
 
@@ -47,20 +46,10 @@ pub fn transpose(matrix: ZList(ZList(Float))) -> ZList(ZList(Float)) {
       case zlist.is_empty(h) {
         True -> zlist.new()
         False -> {
-          let head =
-            zlist.map(
-              matrix,
-              fn(x) {
-                assert Ok(hd) = zlist.head(x)
-                hd
-              },
-            )
+          let head = zlist.map(matrix, utils.unsafe(zlist.head))
           let tail =
             matrix
-            |> zlist.map(fn(x) {
-              assert Ok(tl) = zlist.tail(x)
-              tl
-            })
+            |> zlist.map(utils.unsafe(zlist.tail))
             |> transpose
           zlist.cons(tail, head)
         }
