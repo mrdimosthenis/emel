@@ -1,9 +1,16 @@
 import gleam/pair
 import gleam_zlists.{ZList} as zlist
 
-pub fn unsafe(f: fn(a) -> Result(b, c)) -> fn(a) -> b {
+pub fn unsafe(f: fn(a) -> Result(b, _)) -> fn(a) -> b {
   fn(x) {
     assert Ok(res) = f(x)
+    res
+  }
+}
+
+pub fn unsafe2(f: fn(a, b) -> Result(c, _)) -> fn(a, b) -> c {
+  fn(x, y) {
+    assert Ok(res) = f(x, y)
     res
   }
 }
