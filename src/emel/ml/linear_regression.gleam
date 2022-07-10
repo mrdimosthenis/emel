@@ -11,3 +11,21 @@ pub fn regression_coefficients(
   |> lazy.regression_coefficients
   |> result.map(zlist.to_list)
 }
+
+pub fn predictor(
+  dataset: List(#(List(Float), Float)),
+) -> fn(List(Float)) -> Float {
+  let f =
+    dataset
+    |> zlist.of_list
+    |> zlist.map(fn(t) {
+      let #(xs, y) = t
+      #(zlist.of_list(xs), y)
+    })
+    |> lazy.predictor
+  fn(xs) {
+    xs
+    |> zlist.of_list
+    |> f
+  }
+}

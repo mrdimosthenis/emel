@@ -36,3 +36,16 @@ pub fn regression_coefficients_test() {
   |> lin_reg.regression_coefficients
   |> should.equal(Ok([0.785, 0.425]))
 }
+
+pub fn predictor_test() {
+  let f =
+    [
+      #([1.794638, 15.15426], 0.510998918),
+      #([3.220726, 229.6516], 105.6583692),
+      #([5.780040, 3480.201], 1776.99),
+    ]
+    |> lin_reg.predictor
+  [3.0, 230.0]
+  |> f
+  |> should.equal(106.74114058686602)
+}
