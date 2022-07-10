@@ -30,6 +30,10 @@ fn cs(points: ZList(ZList(Float))) -> ZList(ZList(Float)) {
   )
 }
 
+pub fn equation_terms(points: ZList(ZList(Float))) -> ZList(ZList(Float)) {
+  cs(points)
+}
+
 fn coefficients(points: ZList(ZList(Float))) -> ZList(ZList(Float)) {
   points
   |> cs
