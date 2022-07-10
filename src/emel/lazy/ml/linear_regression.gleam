@@ -1,64 +1,36 @@
 import emel/help/utils
 import emel/lazy/math/algebra
+import emel/lazy/math/geometry
 import gleam_zlists.{ZList} as zlist
 
-fn c(points: ZList(ZList(Float)), i: Int, j: Int) -> Float {
-  points
-  |> zlist.map(fn(p) {
-    let v = zlist.cons(p, 1.0)
-    let a = utils.unsafe2(zlist.fetch)(v, i)
-    let b = utils.unsafe2(zlist.fetch)(v, j)
-    a *. b
-  })
-  |> zlist.sum
-}
-
-fn cs(points: ZList(ZList(Float))) -> ZList(ZList(Float)) {
-  let dim =
-    points
-    |> utils.unsafe(zlist.head)
-    |> zlist.count
-  let indices =
-    zlist.indices()
-    |> zlist.take(dim)
-  let indices_plus =
-    zlist.indices()
-    |> zlist.take(dim + 1)
-  zlist.map(
-    indices,
-    fn(i) { zlist.map(indices_plus, fn(j) { c(points, i, j) }) },
-  )
-}
-
 pub fn equation_terms(points: ZList(ZList(Float))) -> ZList(ZList(Float)) {
-  cs(points)
-}
-
-fn coefficients(points: ZList(ZList(Float))) -> ZList(ZList(Float)) {
-  points
-  |> cs
-  |> zlist.map(fn(vec) {
-    vec
+  let m2 =
+    points
+    |> zlist.map(zlist.cons(_, 1.0))
+    |> algebra.transpose
+  let m1 =
+    m2
     |> zlist.reverse
     |> zlist.drop(1)
     |> zlist.reverse
-  })
-}
-
-fn constants(points: ZList(ZList(Float))) -> ZList(Float) {
-  points
-  |> cs
-  |> zlist.map(fn(vec) {
-    vec
-    |> zlist.reverse
-    |> utils.unsafe(zlist.head)
-  })
+  zlist.map(
+    m1,
+    fn(v1) { zlist.map(m2, fn(v2) { geometry.dot_product(v1, v2) }) },
+  )
 }
 
 pub fn regression_coefficients(
   points: ZList(ZList(Float)),
 ) -> Result(ZList(Float), String) {
-  let a = coefficients(points)
-  let b = constants(points)
-  algebra.cramer_solution(a, b)
+  let #(constants, coefficients) =
+    points
+    |> equation_terms
+    |> zlist.map(fn(v) {
+      let #(h, t) = v
+      |> zlist.reverse
+      |> utils.unsafe(zlist.uncons)
+      #(h, zlist.reverse(t))
+    })
+    |> zlist.unzip
+  algebra.cramer_solution(coefficients, constants)
 }
