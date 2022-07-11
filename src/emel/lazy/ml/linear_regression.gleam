@@ -35,24 +35,3 @@ pub fn regression_coefficients(
     |> zlist.unzip
   algebra.cramer_solution(coefficients, constants)
 }
-
-pub fn predictor(
-  dataset: ZList(#(ZList(Float), Float)),
-) -> fn(ZList(Float)) -> Float {
-  let cs_res =
-    dataset
-    |> zlist.map(fn(t) {
-      let #(xs, y) = t
-      xs
-      |> zlist.reverse
-      |> zlist.cons(y)
-      |> zlist.reverse
-    })
-    |> regression_coefficients
-  assert Ok(cs) = cs_res
-  fn(xs) {
-    xs
-    |> zlist.cons(1.0)
-    |> geometry.dot_product(cs)
-  }
-}

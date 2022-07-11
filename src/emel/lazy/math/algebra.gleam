@@ -1,5 +1,7 @@
 import emel/help/utils
+import gleam/float
 import gleam/int
+import gleam/order.{Eq}
 import gleam_zlists.{ZList} as zlist
 
 pub fn first_minor(
@@ -61,9 +63,10 @@ pub fn cramer_solution(
   coefficients: ZList(ZList(Float)),
   constants: ZList(Float),
 ) -> Result(ZList(Float), String) {
-  case determinant(coefficients) {
-    0.0 -> Error("No unique solution")
-    determ -> {
+  let determ = determinant(coefficients)
+  case float.loosely_compare(determ, 0.0, 0.0001) {
+    Eq -> Error("No unique solution")
+    _ -> {
       let transp = transpose(coefficients)
       constants
       |> zlist.with_index

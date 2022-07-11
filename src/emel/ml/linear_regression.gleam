@@ -1,5 +1,7 @@
 import emel/help/utils
 import emel/lazy/ml/linear_regression as lazy
+import emel/math/geometry
+import gleam/list
 import gleam/result
 import gleam_zlists as zlist
 
@@ -15,17 +17,22 @@ pub fn regression_coefficients(
 pub fn predictor(
   dataset: List(#(List(Float), Float)),
 ) -> fn(List(Float)) -> Float {
-  let f =
+  assert Ok(reg_coeff) =
     dataset
     |> zlist.of_list
     |> zlist.map(fn(t) {
       let #(xs, y) = t
-      #(zlist.of_list(xs), y)
+      xs
+      |> zlist.of_list
+      |> zlist.reverse
+      |> zlist.cons(y)
+      |> zlist.reverse
     })
-    |> lazy.predictor
+    |> lazy.regression_coefficients
+    |> result.map(zlist.to_list)
   fn(xs) {
     xs
-    |> zlist.of_list
-    |> f
+    |> list.prepend(1.0)
+    |> geometry.dot_product(reg_coeff)
   }
 }

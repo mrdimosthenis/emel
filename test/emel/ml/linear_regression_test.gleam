@@ -35,6 +35,10 @@ pub fn regression_coefficients_test() {
   [[1.0, 1.0], [2.0, 2.0], [3.0, 1.3], [4.0, 3.75], [5.0, 2.25]]
   |> lin_reg.regression_coefficients
   |> should.equal(Ok([0.785, 0.425]))
+
+  [[1.0, 1.0, 1.0], [1.0, 2.0, 3.0], [2.0, 1.0, 0.0]]
+  |> lin_reg.regression_coefficients
+  |> should.equal(Ok([0.0, -1.0, 2.0]))
 }
 
 pub fn predictor_test() {
