@@ -1,4 +1,4 @@
-import emel/help/utils
+import emel/utils/result as ut_res
 import emel/lazy/math/algebra
 import emel/lazy/math/geometry
 import gleam_zlists.{ZList} as zlist
@@ -29,7 +29,8 @@ pub fn regression_coefficients(
       let #(h, t) =
         v
         |> zlist.reverse
-        |> utils.unsafe(zlist.uncons)
+        |> zlist.uncons
+        |> ut_res.unsafe_res
       #(h, zlist.reverse(t))
     })
     |> zlist.unzip

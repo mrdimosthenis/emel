@@ -1,4 +1,4 @@
-import emel/help/utils
+import emel/utils/result as ut_res
 import gleam/option.{None, Option, Some}
 import gleam_zlists.{ZList} as zlist
 
@@ -29,7 +29,8 @@ pub fn updated(
     False ->
       gt_zls
       |> zlist.reverse
-      |> utils.unsafe(zlist.tail)
+      |> zlist.tail
+      |> ut_res.unsafe_res
       |> zlist.reverse
       |> zlist.cons(Some(el_with_weight))
       |> zlist.append(lt_zls, _)

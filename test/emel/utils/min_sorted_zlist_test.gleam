@@ -1,4 +1,4 @@
-import emel/help/min_sorted_zlist as mszl
+import emel/utils/min_sorted_zlist as mszl
 import gleam/option.{None, Some}
 import gleam_zlists as zlist
 import gleeunit/should

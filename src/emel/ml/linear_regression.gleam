@@ -1,5 +1,5 @@
-import emel/help/utils
 import emel/lazy/ml/linear_regression as lazy
+import emel/utils/zlist as ut_zlist
 import emel/math/geometry
 import gleam/list
 import gleam/result
@@ -9,7 +9,7 @@ pub fn regression_coefficients(
   points: List(List(Float)),
 ) -> Result(List(Float), String) {
   points
-  |> utils.to_zlist_of_zlists
+  |> ut_zlist.to_zlist_of_zlists
   |> lazy.regression_coefficients
   |> result.map(zlist.to_list)
 }

@@ -1,4 +1,5 @@
-import emel/help/utils
+import emel/utils/result as ut_res
+import emel/utils/zlist as ut_zlist
 import gleam/float
 import gleam/int
 import gleam/order.{Eq}
@@ -10,20 +11,21 @@ pub fn first_minor(
   j: Int,
 ) -> ZList(ZList(Float)) {
   matrix
-  |> utils.delete_at(i)
-  |> zlist.map(fn(zl) { utils.delete_at(zl, j) })
+  |> ut_zlist.delete_at(i)
+  |> zlist.map(fn(zl) { ut_zlist.delete_at(zl, j) })
 }
 
 pub fn determinant(matrix: ZList(ZList(Float))) -> Float {
   case zlist.count(matrix) {
     0 -> 1.0
     2 -> {
-      let [[a, b], [c, d]] = utils.to_list_of_lists(matrix)
+      let [[a, b], [c, d]] = ut_zlist.to_list_of_lists(matrix)
       a *. d -. c *. b
     }
     _ ->
       matrix
-      |> utils.unsafe(zlist.head)
+      |> zlist.head
+      |> ut_res.unsafe_res
       |> zlist.with_index
       |> zlist.map(fn(t) {
         let #(elem, j) = t
@@ -48,10 +50,10 @@ pub fn transpose(matrix: ZList(ZList(Float))) -> ZList(ZList(Float)) {
       case zlist.is_empty(h) {
         True -> zlist.new()
         False -> {
-          let head = zlist.map(matrix, utils.unsafe(zlist.head))
+          let head = zlist.map(matrix, ut_res.unsafe_f(zlist.head))
           let tail =
             matrix
-            |> zlist.map(utils.unsafe(zlist.tail))
+            |> zlist.map(ut_res.unsafe_f(zlist.tail))
             |> transpose
           zlist.cons(tail, head)
         }
@@ -74,7 +76,7 @@ pub fn cramer_solution(
         let #(_, i) = t
         let denominator =
           transp
-          |> utils.replace_at(i, constants)
+          |> ut_zlist.replace_at(i, constants)
           |> transpose
           |> determinant
         denominator /. determ

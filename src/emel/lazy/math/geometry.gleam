@@ -1,4 +1,4 @@
-import emel/help/utils
+import emel/utils/result as ut_res
 import gleam/float
 import gleam_zlists.{ZList} as zlist
 
@@ -19,5 +19,6 @@ pub fn euclidean_distance(x: ZList(Float), y: ZList(Float)) -> Float {
     d *. d
   })
   |> zlist.sum
-  |> utils.unsafe(float.square_root)
+  |> float.square_root
+  |> ut_res.unsafe_res
 }
