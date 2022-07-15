@@ -1,3 +1,4 @@
+import gleam/function
 import gleam/map.{Map}
 import gleam/pair
 import gleam_zlists.{ZList} as zlist
@@ -71,16 +72,23 @@ pub fn max_by(zl: ZList(a), f: fn(a) -> Float) -> Result(a, Nil) {
   }
 }
 
-pub fn frequencies(zl: ZList(a)) -> Map(a, Int) {
+pub fn group_by(zl: ZList(a), f: fn(a) -> b) -> Map(b, ZList(a)) {
   zlist.reduce(
     zl,
     map.new(),
     fn(el, acc) {
-      let freq = case map.get(acc, el) {
-        Ok(n) -> n + 1
-        Error(Nil) -> 1
+      let k = f(el)
+      let new_group = case map.get(acc, k) {
+        Ok(group) -> zlist.cons(group, el)
+        Error(Nil) -> zlist.singleton(el)
       }
-      map.insert(acc, el, freq)
+      map.insert(acc, k, new_group)
     },
   )
+}
+
+pub fn frequencies(zl: ZList(a)) -> Map(a, Int) {
+  zl
+  |> group_by(function.identity)
+  |> map.map_values(fn(_, v) { zlist.count(v) })
 }
