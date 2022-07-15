@@ -34,7 +34,7 @@ pub fn classifier(
     dataset
     |> k_nearest_neighbors(xs, k)
     |> zlist.map(pair.second)
-    |> ut_zlist.frequencies
+    |> ut_zlist.abs_freqs
     |> map.to_list
     |> zlist.of_list
     |> zlist.map(pair.map_second(_, int.to_float))

@@ -1,4 +1,3 @@
-import gleam/function
 import gleam/map.{Map}
 import gleam/pair
 import gleam_zlists.{ZList} as zlist
@@ -72,23 +71,34 @@ pub fn max_by(zl: ZList(a), f: fn(a) -> Float) -> Result(a, Nil) {
   }
 }
 
-pub fn group_by(zl: ZList(a), f: fn(a) -> b) -> Map(b, ZList(a)) {
+pub fn abs_freqs(zl: ZList(a)) -> Map(a, Int) {
   zlist.reduce(
     zl,
     map.new(),
     fn(el, acc) {
-      let k = f(el)
-      let new_group = case map.get(acc, k) {
-        Ok(group) -> zlist.cons(group, el)
-        Error(Nil) -> zlist.singleton(el)
+      let new_group = case map.get(acc, el) {
+        Ok(n) -> n + 1
+        Error(Nil) -> 1
       }
-      map.insert(acc, k, new_group)
+      map.insert(acc, el, new_group)
     },
   )
 }
 
-pub fn frequencies(zl: ZList(a)) -> Map(a, Int) {
-  zl
-  |> group_by(function.identity)
-  |> map.map_values(fn(_, v) { zlist.count(v) })
+pub fn rel_freqs(zl: ZList(a)) -> Map(a, Float) {
+  let #(freqs, counter) =
+    zlist.reduce(
+      zl,
+      #(map.new(), 0.0),
+      fn(el, acc) {
+        let #(acc_map, acc_counter) = acc
+        let new_group = case map.get(acc_map, el) {
+          Ok(n) -> n +. 1.0
+          Error(Nil) -> 1.0
+        }
+        let new_acc_map = map.insert(acc_map, el, new_group)
+        #(new_acc_map, acc_counter +. 1.0)
+      },
+    )
+  map.map_values(freqs, fn(_, v) { v /. counter })
 }
