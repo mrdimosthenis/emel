@@ -3,7 +3,6 @@ import emel/utils/result as ut_res
 import emel/utils/zlist as ut_zlist
 import emel/lazy/math/geometry
 import gleam/int
-import gleam/map
 import gleam/pair
 import gleam_zlists.{ZList} as zlist
 
@@ -34,9 +33,8 @@ pub fn classifier(
     dataset
     |> k_nearest_neighbors(xs, k)
     |> zlist.map(pair.second)
-    |> ut_zlist.abs_freqs
-    |> map.to_list
-    |> zlist.of_list
+    |> ut_zlist.freqs_with_size
+    |> pair.first
     |> zlist.map(pair.map_second(_, int.to_float))
     |> ut_zlist.max_by(pair.second)
     |> ut_res.unsafe_res

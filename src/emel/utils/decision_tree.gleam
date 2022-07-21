@@ -1,38 +1,38 @@
 import gleam_zlists.{ZList} as zlist
 
 pub type ZPath {
-  ZDecision(index: Int, condition: String, answer: String)
-  ZBreakDown(index: Int, condition: String, children: ZList(Path))
+  ZDecision(attribute: String, condition: String, answer: String)
+  ZBreakDown(attribute: String, condition: String, children: ZList(Path))
 }
 
 pub type ZDecisionTree =
   ZList(ZPath)
 
 pub type Path {
-  Decision(index: Int, condition: String, answer: String)
-  BreakDown(index: Int, condition: String, children: List(Path))
+  Decision(attribute: String, condition: String, answer: String)
+  BreakDown(attribute: String, condition: String, children: List(Path))
 }
 
 pub type DecisionTree =
   List(Path)
 
-pub fn to_path(zpath: ZPath) -> Path {
+fn to_path(zpath: ZPath) -> Path {
   case zpath {
-    ZDecision(index, condition, answer) -> Decision(index, condition, answer)
-    ZBreakDown(index, condition, children) ->
+    ZDecision(attribute, condition, answer) -> Decision(attribute, condition, answer)
+    ZBreakDown(attribute, condition, children) ->
       children
       |> zlist.to_list
-      |> BreakDown(index, condition, _)
+      |> BreakDown(attribute, condition, _)
   }
 }
 
-pub fn of_path(path: Path) -> ZPath {
+fn of_path(path: Path) -> ZPath {
   case path {
-    Decision(index, condition, answer) -> ZDecision(index, condition, answer)
-    BreakDown(index, condition, children) ->
+    Decision(attribute, condition, answer) -> ZDecision(attribute, condition, answer)
+    BreakDown(attribute, condition, children) ->
       children
       |> zlist.of_list
-      |> ZBreakDown(index, condition, _)
+      |> ZBreakDown(attribute, condition, _)
   }
 }
 

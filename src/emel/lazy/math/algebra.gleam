@@ -43,7 +43,7 @@ pub fn determinant(matrix: ZList(ZList(Float))) -> Float {
   }
 }
 
-pub fn transpose(matrix: ZList(ZList(Float))) -> ZList(ZList(Float)) {
+pub fn transpose(matrix: ZList(ZList(a))) -> ZList(ZList(a)) {
   case zlist.uncons(matrix) {
     Error(Nil) -> zlist.new()
     Ok(#(h, _)) ->

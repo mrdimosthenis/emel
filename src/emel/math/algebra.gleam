@@ -20,7 +20,7 @@ pub fn determinant(matrix: List(List(Float))) -> Float {
   |> lazy.determinant
 }
 
-pub fn transpose(matrix: List(List(Float))) -> List(List(Float)) {
+pub fn transpose(matrix: List(List(a))) -> List(List(a)) {
   matrix
   |> ut_zlist.to_zlist_of_zlists
   |> lazy.transpose
