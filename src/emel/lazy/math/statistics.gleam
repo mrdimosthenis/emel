@@ -18,3 +18,21 @@ pub fn entropy(probability_values: ZList(Float)) -> Float {
   |> zlist.map(fn(p) { float.negate(p) *. log_base(p, b) })
   |> zlist.sum
 }
+
+pub fn classical_probability(observations: ZList(a), event: a) -> Float {
+  let #(numerator, denominator) =
+    zlist.reduce(
+      observations,
+      #(0.0, 0.0),
+      fn(ev, acc) {
+        let #(num, denom) = acc
+        let next_num = case ev == event {
+          True -> num +. 1.0
+          False -> num
+        }
+        let next_denom = denom +. 1.0
+        #(next_num, next_denom)
+      },
+    )
+  numerator /. denominator
+}

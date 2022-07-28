@@ -40,7 +40,7 @@ pub fn regression_coefficients(
 pub fn predictor(
   dataset: ZList(#(ZList(Float), Float)),
 ) -> fn(ZList(Float)) -> Float {
-  assert Ok(reg_coeff) =
+  let reg_coeff: ZList(Float) =
     dataset
     |> zlist.map(fn(t) {
       let #(xs, y) = t
@@ -50,6 +50,7 @@ pub fn predictor(
       |> zlist.reverse
     })
     |> regression_coefficients
+    |> ut_res.unsafe_res
   fn(xs) {
     xs
     |> zlist.cons(1.0)

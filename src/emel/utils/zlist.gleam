@@ -1,6 +1,8 @@
 import gleam/map
 import gleam/pair
+import gleam/set
 import gleam_zlists.{ZList} as zlist
+import minigen
 
 pub fn to_list_of_lists(zl: ZList(ZList(a))) -> List(List(a)) {
   zl
@@ -12,6 +14,13 @@ pub fn to_zlist_of_zlists(ls: List(List(a))) -> ZList(ZList(a)) {
   ls
   |> zlist.of_list
   |> zlist.map(zlist.of_list)
+}
+
+pub fn uniq(zl: ZList(a)) -> ZList(a) {
+  zl
+  |> zlist.reduce(set.new(), fn(x, acc) { set.insert(acc, x) })
+  |> set.to_list
+  |> zlist.of_list
 }
 
 pub fn delete_at(zl: ZList(a), i: Int) -> ZList(a) {
@@ -71,6 +80,10 @@ pub fn max_by(zl: ZList(a), f: fn(a) -> Float) -> Result(a, Nil) {
   }
 }
 
+pub fn min_by(zl: ZList(a), f: fn(a) -> Float) -> Result(a, Nil) {
+  max_by(zl, fn(x) { 0.0 -. f(x) })
+}
+
 pub fn group_by(zl: ZList(a), f: fn(a) -> b) -> ZList(#(b, ZList(a))) {
   zl
   |> zlist.reduce(
@@ -108,4 +121,12 @@ pub fn freqs_with_size(zl: ZList(a)) -> #(ZList(#(a, Int)), Int) {
     |> map.to_list
     |> zlist.of_list
   #(zfreqs, counter)
+}
+
+pub fn shuffle(zl: ZList(a)) -> ZList(a) {
+  zl
+  |> zlist.to_list
+  |> minigen.shuffled_list
+  |> minigen.run
+  |> zlist.of_list
 }
