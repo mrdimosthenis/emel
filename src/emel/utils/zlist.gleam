@@ -123,10 +123,10 @@ pub fn freqs_with_size(zl: ZList(a)) -> #(ZList(#(a, Int)), Int) {
   #(zfreqs, counter)
 }
 
-pub fn shuffle(zl: ZList(a)) -> ZList(a) {
+pub fn shuffle(zl: ZList(a), seed: Int) -> ZList(a) {
   zl
   |> zlist.to_list
   |> minigen.shuffled_list
-  |> minigen.run
+  |> minigen.run_with_seed(seed)
   |> zlist.of_list
 }

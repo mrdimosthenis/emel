@@ -1,3 +1,4 @@
+import emel/utils/result as ut_res
 import emel/utils/zlist as ut_zlist
 import emel/lazy/math/geometry
 import gleam/pair
@@ -40,17 +41,48 @@ fn iterate(
   }
 }
 
-pub fn clusters(
+pub fn centroids_with_clusters(
   points: ZList(ZList(Float)),
   k: Int,
-) -> ZList(ZList(ZList(Float))) {
+  seed: Int,
+) -> ZList(#(ZList(Float), ZList(ZList(Float)))) {
   let centroids =
     points
     |> ut_zlist.uniq
-    |> ut_zlist.shuffle
+    |> ut_zlist.shuffle(seed)
     |> zlist.take(k)
   points
   |> point_groups(centroids)
   |> iterate
+}
+
+pub fn clusters(
+  points: ZList(ZList(Float)),
+  k: Int,
+  seed: Int,
+) -> ZList(ZList(ZList(Float))) {
+  centroids_with_clusters(points, k, seed)
   |> zlist.map(pair.second)
+}
+
+pub fn classifier(
+  dataset: ZList(ZList(Float)),
+  k: Int,
+  seed: Int,
+) -> fn(ZList(Float)) -> Int {
+  let centroids: ZList(ZList(Float)) =
+    dataset
+    |> centroids_with_clusters(k, seed)
+    |> zlist.map(pair.first)
+  fn(xs) {
+    zlist.indices()
+    |> zlist.zip(centroids)
+    |> ut_zlist.min_by(fn(t) {
+      t
+      |> pair.second
+      |> geometry.euclidean_distance(xs)
+    })
+    |> ut_res.unsafe_res
+    |> pair.first
+  }
 }
