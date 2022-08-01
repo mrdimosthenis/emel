@@ -22,3 +22,11 @@ pub fn entropy_test() {
   |> statistics.entropy
   |> should.equal(0.5109640474436812)
 }
+
+pub fn mean_absolute_error_test() {
+  statistics.mean_absolute_error([0.0, 1.0], [0.0, 1.0])
+  |> should.equal(0.0)
+
+  statistics.mean_absolute_error([5.0, 1.0, 0.0, 0.5], [0.0, 1.0, -3.0, 0.5])
+  |> should.equal(2.0)
+}

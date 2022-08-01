@@ -25,13 +25,32 @@ pub fn classical_probability(observations: ZList(a), event: a) -> Float {
       observations,
       #(0.0, 0.0),
       fn(ev, acc) {
-        let #(num, denom) = acc
-        let next_num = case ev == event {
-          True -> num +. 1.0
-          False -> num
+        let #(numer, denom) = acc
+        let next_numer = case ev == event {
+          True -> numer +. 1.0
+          False -> numer
         }
         let next_denom = denom +. 1.0
-        #(next_num, next_denom)
+        #(next_numer, next_denom)
+      },
+    )
+  numerator /. denominator
+}
+
+pub fn mean_absolute_error(
+  predictions: ZList(Float),
+  observations: ZList(Float),
+) -> Float {
+  let #(numerator, denominator) =
+    zlist.reduce(
+      zlist.zip(predictions, observations),
+      #(0.0, 0.0),
+      fn(p, acc) {
+        let #(v1, v2) = p
+        let #(numer, denom) = acc
+        let next_numer = numer +. float.absolute_value(v1 -. v2)
+        let next_denom = denom +. 1.0
+        #(next_numer, next_denom)
       },
     )
   numerator /. denominator
