@@ -1,5 +1,5 @@
-import emel/datasets/decision as decision
-import emel/datasets/risk as risk
+import emel/datasets/decision
+import emel/datasets/risk
 import emel/lazy/ml/decision_tree as lazy
 import emel/ml/decision_tree as d3
 import gleam/list

@@ -54,7 +54,8 @@ pub fn classifier(
   error_threshold: Float,
   max_iterations: Int,
 ) -> fn(ZList(Float)) -> Bool {
-  let #(xs, bools) = zlist.unzip(dataset)
+  let #(xs_temp, bools) = zlist.unzip(dataset)
+  let xs_prepended = zlist.map(xs_temp, zlist.cons(_, 1.0))
   let ys =
     zlist.map(
       bools,
@@ -67,12 +68,19 @@ pub fn classifier(
     )
   let zeros = zlist.iterate(0.0, fn(_) { 0.0 })
   let weights: ZList(Float) =
-    iterate(zeros, xs, ys, learning_rate, error_threshold, max_iterations)
-  fn(item) {
+    iterate(
+      zeros,
+      xs_prepended,
+      ys,
+      learning_rate,
+      error_threshold,
+      max_iterations,
+    )
+  fn(xs) {
     let y_hat =
-      item
+      xs
       |> zlist.cons(1.0)
       |> geometry.dot_product(weights)
-    y_hat >. 0.5
+    y_hat >=. 0.5
   }
 }

@@ -1,4 +1,4 @@
-import emel/datasets/decision as decision
+import emel/datasets/decision
 import emel/ml/naive_bayes
 import gleam/map
 import gleam_zlists as zlist

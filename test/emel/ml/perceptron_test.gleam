@@ -2,15 +2,31 @@ import emel/ml/perceptron
 import gleeunit/should
 
 pub fn classifier_test() {
-  let f1 =
+  let f0 =
     [
       #([0.0, 0.0], False),
       #([0.0, 1.0], True),
       #([1.0, 0.0], True),
       #([1.0, 1.0], True),
     ]
-    |> perceptron.classifier(0.001, 0.1, 1000)
-  should.equal(f1([1.0, 0.0]), True)
+    |> perceptron.classifier(0.01, 0.1, 100)
+  should.equal(f0([0.0, 0.0]), False)
+  should.equal(f0([0.0, 1.0]), True)
+  should.equal(f0([1.0, 0.0]), True)
+  should.equal(f0([1.0, 1.0]), True)
+
+  let f1 =
+    [
+      #([0.0, 0.0], False),
+      #([0.0, 1.0], False),
+      #([1.0, 0.0], False),
+      #([1.0, 1.0], True),
+    ]
+    |> perceptron.classifier(0.01, 0.1, 100)
+  should.equal(f1([0.0, 0.0]), False)
+  should.equal(f1([0.0, 1.0]), False)
+  should.equal(f1([1.0, 0.0]), False)
+  should.equal(f1([1.0, 1.0]), True)
 
   let f2 =
     [
