@@ -35,9 +35,7 @@ pub fn regression_coefficients(
 /// F([3.0, 230.0]).
 /// % 106.74114058686602
 /// ```
-pub fn predictor(
-  data: List(#(List(Float), Float)),
-) -> fn(List(Float)) -> Float {
+pub fn predictor(data: List(#(List(Float), Float))) -> fn(List(Float)) -> Float {
   let f =
     data
     |> zlist.of_list

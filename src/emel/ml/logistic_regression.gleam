@@ -30,7 +30,7 @@ pub fn classifier(
   max_iterations: Int,
 ) -> fn(List(Float)) -> Bool {
   let f =
-  data
+    data
     |> zlist.of_list
     |> zlist.map(pair.map_first(_, zlist.of_list))
     |> lazy.classifier(

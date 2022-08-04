@@ -76,9 +76,5 @@ pub fn classifier(
   features: List(String),
   class: String,
 ) -> fn(Map(String, String)) -> String {
-  lazy.classifier(
-    zlist.of_list(data),
-    zlist.of_list(features),
-    class,
-  )
+  lazy.classifier(zlist.of_list(data), zlist.of_list(features), class)
 }
