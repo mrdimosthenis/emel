@@ -1,6 +1,6 @@
 # emel
 
-Turn data into functions! A simple and functional **machine learning** library, implemented in **Gleam** for the **Erlang** ecosystem.
+Turn data into functions! A simple and functional **machine learning** library, (re)implemented in **Gleam** for the **Erlang** ecosystem.
 
 ## Installation
 
