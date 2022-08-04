@@ -8,7 +8,7 @@ Turn data into functions! A simple and functional **machine learning** library, 
 
 ```erlang
 {deps, [
-    {emel, "1.0.0-rc2"}
+    {emel, "1.0.0"}
 ]}.
 ```
 
@@ -17,7 +17,7 @@ Turn data into functions! A simple and functional **machine learning** library, 
 ```elixir
 defp deps do
   [
-    {:emel, "~> 1.0.0-rc2"}
+    {:emel, "~> 1.0.0"}
   ]
 end
 ```
@@ -72,23 +72,23 @@ f([0.0, 0.8, 0.0]) // "y"
 
 ## Documentation
 
-The [documentation](https://hexdocs.pm/emel/1.0.0-rc2) describes all the public functions. **Gleam** developers can pay attention to the type annotations. **Erlang** and **Elixir** devs may take a look at the examples which are written in **Erlang**.
+The [documentation](https://hexdocs.pm/emel/1.0.0/) describes all the public functions. **Gleam** developers can pay attention to the type annotations. **Erlang** and **Elixir** devs may take a look at the examples which are written in **Erlang**.
 
 ### Implemented Algorithms
 
- * [Linear Regression](https://hexdocs.pm/emel/1.0.0-rc2/emel/ml/linear_regression.html)
- * [K Nearest Neighbors](https://hexdocs.pm/emel/1.0.0-rc2/emel/ml/k_nearest_neighbors.html)
- * [Decision Tree](https://hexdocs.pm/emel/1.0.0-rc2/emel/ml/decision_tree.html)
- * [Naive Bayes](https://hexdocs.pm/emel/1.0.0-rc2/emel/ml/naive_bayes.html)
- * [K Means](https://hexdocs.pm/emel/1.0.0-rc2/emel/ml/k_means.html)
- * [Perceptron](https://hexdocs.pm/emel/1.0.0-rc2/emel/ml/perceptron.html)
- * [Logistic Regression](https://hexdocs.pm/emel/1.0.0-rc2/emel/ml/logistic_regression.html)
- * [Neural Network](https://hexdocs.pm/emel/1.0.0-rc2/emel/ml/neural_network.html)
+ * [Linear Regression](https://hexdocs.pm/emel/1.0.0/emel/ml/linear_regression.html)
+ * [K Nearest Neighbors](https://hexdocs.pm/emel/1.0.0/emel/ml/k_nearest_neighbors.html)
+ * [Decision Tree](https://hexdocs.pm/emel/1.0.0/emel/ml/decision_tree.html)
+ * [Naive Bayes](https://hexdocs.pm/emel/1.0.0/emel/ml/naive_bayes.html)
+ * [K Means](https://hexdocs.pm/emel/1.0.0/emel/ml/k_means.html)
+ * [Perceptron](https://hexdocs.pm/emel/1.0.0/emel/ml/perceptron.html)
+ * [Logistic Regression](https://hexdocs.pm/emel/1.0.0/emel/ml/logistic_regression.html)
+ * [Neural Network](https://hexdocs.pm/emel/1.0.0/emel/ml/neural_network.html)
 
 ### Mathematics
 
-* [Algebra](https://hexdocs.pm/emel/1.0.0-rc2/emel/math/algebra.html)
-* [Geometry](https://hexdocs.pm/emel/1.0.0-rc2/emel/math/geometry.html)
-* [Statistics](https://hexdocs.pm/emel/1.0.0-rc2/emel/math/statistics.html)
+* [Algebra](https://hexdocs.pm/emel/1.0.0/emel/math/algebra.html)
+* [Geometry](https://hexdocs.pm/emel/1.0.0/emel/math/geometry.html)
+* [Statistics](https://hexdocs.pm/emel/1.0.0/emel/math/statistics.html)
 
-_For the documentation of the previous version (`0.3.0`), click [here](https://hexdocs.pm/emel/0.3.0)._
+_For the documentation of the previous version (`0.3.0`), click [here](https://hexdocs.pm/emel/0.3.0/)._
