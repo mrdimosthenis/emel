@@ -1,5 +1,5 @@
 name = "emel"
-version = "1.0.0-rc1"
+version = "1.0.0-rc2"
 licences = ["Apache-2.0"]
 description = "Turn data into functions in the Erlang ecosystem"
 
