@@ -47,7 +47,7 @@ data = [
   {[3.220726, 229.6516], 105.6583692},
   {[5.780040, 3480.201], 1776.99}
 ]
-f = :emel@ml@linear_regression_test.predictor(data)
+f = :emel@ml@linear_regression.predictor(data)
 f.([3.0, 230.0]) # 106.74114058686602
 ```
 
