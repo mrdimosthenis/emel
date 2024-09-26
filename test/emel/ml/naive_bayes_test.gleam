@@ -1,6 +1,6 @@
 import emel/datasets/decision
 import emel/ml/naive_bayes
-import gleam/map
+import gleam/dict
 import gleam_zlists as zlist
 import gleeunit/should
 
@@ -14,56 +14,56 @@ pub fn classifier_test() {
     )
 
   let item1 =
-    map.from_list([
+    dict.from_list([
       #("outlook", "Sunny"),
       #("temperature", "Mild"),
       #("humidity", "Normal"),
       #("wind", "Strong"),
     ])
   let item2 =
-    map.from_list([
+    dict.from_list([
       #("outlook", "Overcast"),
       #("temperature", "Mild"),
       #("humidity", "Normal"),
       #("wind", "Strong"),
     ])
   let item3 =
-    map.from_list([
+    dict.from_list([
       #("outlook", "Sunny"),
       #("temperature", "Hot"),
       #("humidity", "High"),
       #("wind", "Strong"),
     ])
   let item4 =
-    map.from_list([
+    dict.from_list([
       #("outlook", "Sunny"),
       #("temperature", "Mild"),
       #("humidity", "Normal"),
       #("wind", "Weak"),
     ])
   let item5 =
-    map.from_list([
+    dict.from_list([
       #("outlook", "Sunny"),
       #("temperature", "Mild"),
       #("humidity", "Normal"),
       #("wind", "Weak"),
     ])
   let item6 =
-    map.from_list([
+    dict.from_list([
       #("outlook", "Overcast"),
       #("temperature", "Mild"),
       #("humidity", "High"),
       #("wind", "Strong"),
     ])
   let item7 =
-    map.from_list([
+    dict.from_list([
       #("outlook", "Sunny"),
       #("temperature", "Cool"),
       #("humidity", "High"),
       #("wind", "Strong"),
     ])
   let item8 =
-    map.from_list([
+    dict.from_list([
       #("outlook", "Rain"),
       #("temperature", "Mild"),
       #("humidity", "Normal"),

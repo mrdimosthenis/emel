@@ -1,13 +1,13 @@
 import emel/lazy/math/statistics as stats
 import emel/utils/result as ut_res
 import emel/utils/zlist as ut_zlist
+import gleam/dict.{type Dict}
 import gleam/int
-import gleam/map.{Map}
 import gleam/pair
-import gleam_zlists.{ZList} as zlist
+import gleam_zlists.{type ZList} as zlist
 
 pub fn entropy_with_size(
-  dataset: ZList(Map(String, String)),
+  dataset: ZList(Dict(String, String)),
   class_attr: String,
 ) -> #(Float, Int) {
   let #(freqs, size) =
@@ -23,7 +23,7 @@ pub fn entropy_with_size(
 }
 
 pub fn feature_entropy(
-  dataset: ZList(Map(String, String)),
+  dataset: ZList(Dict(String, String)),
   class_attr: String,
   feature: String,
   dataset_size: Int,
@@ -40,23 +40,23 @@ pub fn feature_entropy(
 }
 
 fn same_class(
-  rule: Map(String, String),
+  rule: Dict(String, String),
   class_attr: String,
-  sub_dataset: ZList(Map(String, String)),
-) -> ZList(Map(String, String)) {
+  sub_dataset: ZList(Dict(String, String)),
+) -> ZList(Dict(String, String)) {
   sub_dataset
   |> zlist.head
   |> ut_res.unsafe_res
   |> ut_res.unsafe_get(class_attr)
-  |> map.insert(rule, class_attr, _)
+  |> dict.insert(rule, class_attr, _)
   |> zlist.singleton
 }
 
 fn exhausted_attributes(
-  rule: Map(String, String),
+  rule: Dict(String, String),
   class_attr: String,
-  grouped_by_class: ZList(#(String, ZList(Map(String, String)))),
-) -> ZList(Map(String, String)) {
+  grouped_by_class: ZList(#(String, ZList(Dict(String, String)))),
+) -> ZList(Dict(String, String)) {
   grouped_by_class
   |> ut_zlist.max_by(fn(t) {
     t
@@ -66,16 +66,16 @@ fn exhausted_attributes(
   })
   |> ut_res.unsafe_res
   |> pair.first
-  |> map.insert(rule, class_attr, _)
+  |> dict.insert(rule, class_attr, _)
   |> zlist.singleton
 }
 
 fn unfold_rule(
-  rule: Map(String, String),
+  rule: Dict(String, String),
   non_selected_attrs: ZList(String),
   class_attr: String,
-  sub_dataset: ZList(Map(String, String)),
-) -> ZList(Map(String, String)) {
+  sub_dataset: ZList(Dict(String, String)),
+) -> ZList(Dict(String, String)) {
   let grouped_by_class =
     ut_zlist.group_by(sub_dataset, ut_res.unsafe_get(_, class_attr))
   case zlist.count(grouped_by_class) {
@@ -89,24 +89,19 @@ fn unfold_rule(
           let next_selected_attr =
             non_selected_attrs
             |> ut_zlist.max_by(fn(feature) {
-              entropy -. feature_entropy(
-                sub_dataset,
-                class_attr,
-                feature,
-                dataset_size,
-              )
+              entropy
+              -. feature_entropy(sub_dataset, class_attr, feature, dataset_size)
             })
             |> ut_res.unsafe_res
           let next_non_selected_attrs =
-            zlist.filter(
-              non_selected_attrs,
-              fn(attr) { attr != next_selected_attr },
-            )
+            zlist.filter(non_selected_attrs, fn(attr) {
+              attr != next_selected_attr
+            })
           sub_dataset
           |> ut_zlist.group_by(ut_res.unsafe_get(_, next_selected_attr))
           |> zlist.flat_map(fn(t) {
             let #(feature_val, sub_group) = t
-            let next_rule = map.insert(rule, next_selected_attr, feature_val)
+            let next_rule = dict.insert(rule, next_selected_attr, feature_val)
             unfold_rule(
               next_rule,
               next_non_selected_attrs,
@@ -120,32 +115,29 @@ fn unfold_rule(
 }
 
 pub fn decision_tree(
-  dataset: ZList(Map(String, String)),
+  dataset: ZList(Dict(String, String)),
   attributes: ZList(String),
   class: String,
-) -> ZList(Map(String, String)) {
-  unfold_rule(map.new(), attributes, class, dataset)
+) -> ZList(Dict(String, String)) {
+  unfold_rule(dict.new(), attributes, class, dataset)
 }
 
 pub fn classifier(
-  dataset: ZList(Map(String, String)),
+  dataset: ZList(Dict(String, String)),
   discrete_attributes: ZList(String),
   class: String,
-) -> fn(Map(String, String)) -> String {
-  let all_rules: ZList(Map(String, String)) =
+) -> fn(Dict(String, String)) -> String {
+  let all_rules: ZList(Dict(String, String)) =
     decision_tree(dataset, discrete_attributes, class)
   fn(item) {
     all_rules
     |> zlist.find(fn(rule) {
-      zlist.all(
-        discrete_attributes,
-        fn(feature) {
-          case map.get(rule, feature) {
-            Error(Nil) -> True
-            Ok(v) -> v == ut_res.unsafe_get(item, feature)
-          }
-        },
-      )
+      zlist.all(discrete_attributes, fn(feature) {
+        case dict.get(rule, feature) {
+          Error(Nil) -> True
+          Ok(v) -> v == ut_res.unsafe_get(item, feature)
+        }
+      })
     })
     |> ut_res.unsafe_res
     |> ut_res.unsafe_get(class)

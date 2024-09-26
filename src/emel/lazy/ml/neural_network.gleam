@@ -1,11 +1,11 @@
 import emel/lazy/math/statistics
 import emel/utils/result as ut_res
 import emel/utils/zlist as ut_zlist
-import gleam/map
-import gleam_zlists.{ZList} as zlist
-import gleam_synapses/codec.{Codec}
-import gleam_synapses/model/net_elems/network/network.{Network}
+import gleam/dict
+import gleam_synapses/codec.{type Codec}
+import gleam_synapses/model/net_elems/network/network.{type Network}
 import gleam_synapses/model/net_elems/network/network_serialized
+import gleam_zlists.{type ZList} as zlist
 import minigen
 
 fn mean_absolute_error(
@@ -13,18 +13,14 @@ fn mean_absolute_error(
   expected_outputs: ZList(ZList(Float)),
 ) -> Float {
   let #(numerator, denominator) =
-    zlist.reduce(
-      zlist.zip(outputs, expected_outputs),
-      #(0.0, 0.0),
-      fn(p, acc) {
-        let #(predictions, observations) = p
-        let #(numer, denom) = acc
-        let next_numer =
-          numer +. statistics.mean_absolute_error(predictions, observations)
-        let next_denom = denom +. 1.0
-        #(next_numer, next_denom)
-      },
-    )
+    zlist.reduce(zlist.zip(outputs, expected_outputs), #(0.0, 0.0), fn(p, acc) {
+      let #(predictions, observations) = p
+      let #(numer, denom) = acc
+      let next_numer =
+        numer +. statistics.mean_absolute_error(predictions, observations)
+      let next_denom = denom +. 1.0
+      #(next_numer, next_denom)
+    })
   numerator /. denominator
 }
 
@@ -68,14 +64,11 @@ pub fn iterate(
     _ -> {
       let next_net =
         zlist.zip(inputs, expected_outputs)
-        |> zlist.reduce(
-          net,
-          fn(t, acc) {
-            let #(xs, ys) = t
-            network.fit(acc, learning_rate, xs, ys, False)
-            |> network_serialized.realized
-          },
-        )
+        |> zlist.reduce(net, fn(t, acc) {
+          let #(xs, ys) = t
+          network.fit(acc, learning_rate, xs, ys, False)
+          |> network_serialized.realized
+        })
       let mean_abs_err =
         inputs
         |> zlist.map(network.output(next_net, _, False))
@@ -107,14 +100,14 @@ pub fn classifier(
   let #(inputs, class_vals) = zlist.unzip(dataset)
   let cdc: Codec =
     class_vals
-    |> zlist.map(fn(c) { map.from_list([#("class", c)]) })
+    |> zlist.map(fn(c) { dict.from_list([#("class", c)]) })
     |> zlist.to_iterator
     |> codec.new([#("class", True)], _)
   let expected_outputs =
     class_vals
     |> zlist.map(fn(c) {
       [#("class", c)]
-      |> map.from_list
+      |> dict.from_list
       |> codec.encode(cdc, _)
     })
     |> zlist.map(zlist.of_list)

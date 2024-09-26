@@ -1,7 +1,7 @@
-import gleam/map
+import gleam/dict
 import gleam/pair
 import gleam/set
-import gleam_zlists.{ZList} as zlist
+import gleam_zlists.{type ZList} as zlist
 import minigen
 
 pub fn to_list_of_lists(zl: ZList(ZList(a))) -> List(List(a)) {
@@ -47,14 +47,10 @@ pub fn avg(zl: ZList(Float)) -> Result(Float, Nil) {
     Error(Nil) -> Error(Nil)
     Ok(#(hd, tl)) -> {
       let #(s, n) =
-        zlist.reduce(
-          tl,
-          #(hd, 1.0),
-          fn(x, acc) {
-            let #(acc_s, acc_n) = acc
-            #(acc_s +. x, acc_n +. 1.0)
-          },
-        )
+        zlist.reduce(tl, #(hd, 1.0), fn(x, acc) {
+          let #(acc_s, acc_n) = acc
+          #(acc_s +. x, acc_n +. 1.0)
+        })
       Ok(s /. n)
     }
   }
@@ -65,16 +61,13 @@ pub fn max_by(zl: ZList(a), f: fn(a) -> Float) -> Result(a, Nil) {
     Error(Nil) -> Error(Nil)
     Ok(#(hd, tl)) ->
       tl
-      |> zlist.reduce(
-        #(hd, f(hd)),
-        fn(el, acc) {
-          let f_el = f(el)
-          case f_el >. pair.second(acc) {
-            True -> #(el, f_el)
-            False -> acc
-          }
-        },
-      )
+      |> zlist.reduce(#(hd, f(hd)), fn(el, acc) {
+        let f_el = f(el)
+        case f_el >. pair.second(acc) {
+          True -> #(el, f_el)
+          False -> acc
+        }
+      })
       |> pair.first
       |> Ok
   }
@@ -86,39 +79,32 @@ pub fn min_by(zl: ZList(a), f: fn(a) -> Float) -> Result(a, Nil) {
 
 pub fn group_by(zl: ZList(a), f: fn(a) -> b) -> ZList(#(b, ZList(a))) {
   zl
-  |> zlist.reduce(
-    map.new(),
-    fn(el, acc) {
-      let k = f(el)
-      let new_group = case map.get(acc, k) {
-        Ok(group) -> zlist.cons(group, el)
-        Error(Nil) -> zlist.singleton(el)
-      }
-      map.insert(acc, k, new_group)
-    },
-  )
-  |> map.to_list
+  |> zlist.reduce(dict.new(), fn(el, acc) {
+    let k = f(el)
+    let new_group = case dict.get(acc, k) {
+      Ok(group) -> zlist.cons(group, el)
+      Error(Nil) -> zlist.singleton(el)
+    }
+    dict.insert(acc, k, new_group)
+  })
+  |> dict.to_list
   |> zlist.of_list
 }
 
 pub fn freqs_with_size(zl: ZList(a)) -> #(ZList(#(a, Int)), Int) {
   let #(freqs, counter) =
-    zlist.reduce(
-      zl,
-      #(map.new(), 0),
-      fn(el, acc) {
-        let #(acc_map, acc_counter) = acc
-        let new_group = case map.get(acc_map, el) {
-          Ok(n) -> n + 1
-          Error(Nil) -> 1
-        }
-        let new_acc_map = map.insert(acc_map, el, new_group)
-        #(new_acc_map, acc_counter + 1)
-      },
-    )
+    zlist.reduce(zl, #(dict.new(), 0), fn(el, acc) {
+      let #(acc_map, acc_counter) = acc
+      let new_group = case dict.get(acc_map, el) {
+        Ok(n) -> n + 1
+        Error(Nil) -> 1
+      }
+      let new_acc_map = dict.insert(acc_map, el, new_group)
+      #(new_acc_map, acc_counter + 1)
+    })
   let zfreqs =
     freqs
-    |> map.to_list
+    |> dict.to_list
     |> zlist.of_list
   #(zfreqs, counter)
 }

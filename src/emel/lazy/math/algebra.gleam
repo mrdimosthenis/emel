@@ -3,7 +3,7 @@ import emel/utils/zlist as ut_zlist
 import gleam/float
 import gleam/int
 import gleam/order.{Eq}
-import gleam_zlists.{ZList} as zlist
+import gleam_zlists.{type ZList} as zlist
 
 pub fn first_minor(
   matrix: ZList(ZList(Float)),
@@ -19,7 +19,7 @@ pub fn determinant(matrix: ZList(ZList(Float))) -> Float {
   case zlist.count(matrix) {
     0 -> 1.0
     2 -> {
-      let [[a, b], [c, d]] = ut_zlist.to_list_of_lists(matrix)
+      let assert [[a, b], [c, d]] = ut_zlist.to_list_of_lists(matrix)
       a *. d -. c *. b
     }
     _ ->

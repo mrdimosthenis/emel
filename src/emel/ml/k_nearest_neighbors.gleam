@@ -3,7 +3,7 @@
 
 import emel/lazy/ml/k_nearest_neighbors as lazy
 import gleam/pair
-import gleam_zlists.{ZList} as zlist
+import gleam_zlists.{type ZList} as zlist
 
 fn to_lazy_dataset(
   dataset: List(#(List(Float), a)),

@@ -1,6 +1,6 @@
 import emel/lazy/math/geometry
 import emel/lazy/math/statistics
-import gleam_zlists.{ZList} as zlist
+import gleam_zlists.{type ZList} as zlist
 
 fn updated_weights(
   ws: ZList(Float),
@@ -8,20 +8,16 @@ fn updated_weights(
   ys: ZList(Float),
   a: Float,
 ) -> ZList(Float) {
-  zlist.reduce(
-    zlist.zip(xs, ys),
-    ws,
-    fn(p, acc) {
-      let #(x, y) = p
-      let y_hat = geometry.dot_product(acc, x)
-      let common_factor = a *. { y -. y_hat }
-      zlist.zip(acc, x)
-      |> zlist.map(fn(t) {
-        let #(wi, xi) = t
-        wi +. common_factor *. xi
-      })
-    },
-  )
+  zlist.reduce(zlist.zip(xs, ys), ws, fn(p, acc) {
+    let #(x, y) = p
+    let y_hat = geometry.dot_product(acc, x)
+    let common_factor = a *. { y -. y_hat }
+    zlist.zip(acc, x)
+    |> zlist.map(fn(t) {
+      let #(wi, xi) = t
+      wi +. common_factor *. xi
+    })
+  })
 }
 
 fn iterate(
@@ -57,15 +53,12 @@ pub fn classifier(
   let #(xs_temp, bools) = zlist.unzip(dataset)
   let xs_prepended = zlist.map(xs_temp, zlist.cons(_, 1.0))
   let ys =
-    zlist.map(
-      bools,
-      fn(b) {
-        case b {
-          True -> 1.0
-          False -> 0.0
-        }
-      },
-    )
+    zlist.map(bools, fn(b) {
+      case b {
+        True -> 1.0
+        False -> 0.0
+      }
+    })
   let zeros = zlist.iterate(0.0, fn(_) { 0.0 })
   let weights: ZList(Float) =
     iterate(

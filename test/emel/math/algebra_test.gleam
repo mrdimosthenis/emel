@@ -53,10 +53,9 @@ pub fn cramer_solution_test() {
   algebra.cramer_solution([[2.0, 3.0], [4.0, 9.0]], [6.0, 15.0])
   |> should.equal(Ok([1.5, 1.0]))
 
-  algebra.cramer_solution(
-    [[1.0, 3.0, -2.0], [3.0, 5.0, 6.0], [2.0, 4.0, 3.0]],
-    [5.0, 7.0, 8.0],
-  )
+  algebra.cramer_solution([[1.0, 3.0, -2.0], [3.0, 5.0, 6.0], [2.0, 4.0, 3.0]], [
+    5.0, 7.0, 8.0,
+  ])
   |> should.equal(Ok([-15.0, 8.0, 2.0]))
 
   algebra.cramer_solution([[0.0, 0.0], [3.0, 5.0]], [0.0, 12.0])

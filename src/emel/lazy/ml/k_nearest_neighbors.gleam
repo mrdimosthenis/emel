@@ -1,10 +1,10 @@
+import emel/lazy/math/geometry
 import emel/utils/min_sorted_zlist as mszl
 import emel/utils/result as ut_res
 import emel/utils/zlist as ut_zlist
-import emel/lazy/math/geometry
 import gleam/int
 import gleam/pair
-import gleam_zlists.{ZList} as zlist
+import gleam_zlists.{type ZList} as zlist
 
 pub fn k_nearest_neighbors(
   dataset: ZList(#(ZList(Float), a)),
@@ -12,16 +12,13 @@ pub fn k_nearest_neighbors(
   k: Int,
 ) -> ZList(#(ZList(Float), a)) {
   dataset
-  |> zlist.reduce(
-    mszl.new(k),
-    fn(el, acc) {
-      let weight =
-        el
-        |> pair.first
-        |> geometry.euclidean_distance(item)
-      mszl.updated(acc, #(el, weight))
-    },
-  )
+  |> zlist.reduce(mszl.new(k), fn(el, acc) {
+    let weight =
+      el
+      |> pair.first
+      |> geometry.euclidean_distance(item)
+    mszl.updated(acc, #(el, weight))
+  })
   |> mszl.extract
 }
 

@@ -1,19 +1,19 @@
 import emel/datasets/ut
-import gleam/map.{Map}
-import gleam_zlists.{ZList} as zlist
+import gleam/dict.{type Dict}
+import gleam_zlists.{type ZList} as zlist
 
 fn decisions() {
   [
-    "No", "No", "Yes", "Yes", "Yes", "No", "Yes", "No", "Yes", "Yes", "Yes", "Yes",
-    "Yes", "No",
+    "No", "No", "Yes", "Yes", "Yes", "No", "Yes", "No", "Yes", "Yes", "Yes",
+    "Yes", "Yes", "No",
   ]
   |> zlist.of_list
 }
 
 fn outlooks() {
   [
-    "Sunny", "Sunny", "Overcast", "Rain", "Rain", "Rain", "Overcast", "Sunny", "Sunny",
-    "Rain", "Sunny", "Overcast", "Overcast", "Rain",
+    "Sunny", "Sunny", "Overcast", "Rain", "Rain", "Rain", "Overcast", "Sunny",
+    "Sunny", "Rain", "Sunny", "Overcast", "Overcast", "Rain",
   ]
   |> zlist.of_list
 }
@@ -28,8 +28,8 @@ fn temperatures() {
 
 fn humidities() {
   [
-    "High", "High", "High", "High", "Normal", "Normal", "Normal", "High", "Normal",
-    "Normal", "Normal", "High", "Normal", "High",
+    "High", "High", "High", "High", "Normal", "Normal", "Normal", "High",
+    "Normal", "Normal", "Normal", "High", "Normal", "High",
   ]
   |> zlist.of_list
 }
@@ -42,10 +42,10 @@ fn winds() {
   |> zlist.of_list
 }
 
-pub fn dataset() -> ZList(Map(String, String)) {
+pub fn dataset() -> ZList(Dict(String, String)) {
   decisions()
   |> zlist.map(fn(s) { [#("decision", s)] })
-  |> zlist.map(map.from_list)
+  |> zlist.map(dict.from_list)
   |> ut.merge_attr("outlook", outlooks())
   |> ut.merge_attr("temperature", temperatures())
   |> ut.merge_attr("humidity", humidities())

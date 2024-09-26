@@ -1,7 +1,7 @@
-import emel/utils/result as ut_res
 import emel/lazy/math/algebra
 import emel/lazy/math/geometry
-import gleam_zlists.{ZList} as zlist
+import emel/utils/result as ut_res
+import gleam_zlists.{type ZList} as zlist
 
 pub fn equation_terms(points: ZList(ZList(Float))) -> ZList(ZList(Float)) {
   let m2 =
@@ -13,10 +13,9 @@ pub fn equation_terms(points: ZList(ZList(Float))) -> ZList(ZList(Float)) {
     |> zlist.reverse
     |> zlist.drop(1)
     |> zlist.reverse
-  zlist.map(
-    m1,
-    fn(v1) { zlist.map(m2, fn(v2) { geometry.dot_product(v1, v2) }) },
-  )
+  zlist.map(m1, fn(v1) {
+    zlist.map(m2, fn(v2) { geometry.dot_product(v1, v2) })
+  })
 }
 
 pub fn regression_coefficients(

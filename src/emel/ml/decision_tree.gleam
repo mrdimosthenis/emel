@@ -2,7 +2,7 @@
 //// to conclusions about the point's discrete target value (represented in the leaves).
 
 import emel/lazy/ml/decision_tree as lazy
-import gleam/map.{Map}
+import gleam/dict.{type Dict}
 import gleam_zlists as zlist
 
 /// The expanded _decision tree_ as a list of maps.
@@ -38,10 +38,10 @@ import gleam_zlists as zlist
 /// % ]
 /// ```
 pub fn decision_tree(
-  data: List(Map(String, String)),
+  data: List(Dict(String, String)),
   features: List(String),
   class: String,
-) -> List(Map(String, String)) {
+) -> List(Dict(String, String)) {
   lazy.decision_tree(zlist.of_list(data), zlist.of_list(features), class)
   |> zlist.to_list
 }
@@ -72,9 +72,9 @@ pub fn decision_tree(
 /// % "low"
 /// ```
 pub fn classifier(
-  data: List(Map(String, String)),
+  data: List(Dict(String, String)),
   features: List(String),
   class: String,
-) -> fn(Map(String, String)) -> String {
+) -> fn(Dict(String, String)) -> String {
   lazy.classifier(zlist.of_list(data), zlist.of_list(features), class)
 }

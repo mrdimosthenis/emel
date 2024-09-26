@@ -8,7 +8,7 @@ Turn data into functions! A simple and functional **machine learning** library, 
 
 ```erlang
 {deps, [
-    {emel, "1.0.0"}
+    {emel, "1.0.1"}
 ]}.
 ```
 
@@ -17,7 +17,7 @@ Turn data into functions! A simple and functional **machine learning** library, 
 ```elixir
 defp deps do
   [
-    {:emel, "~> 1.0.0"}
+    {:emel, "~> 1.0.1"}
   ]
 end
 ```

@@ -2,19 +2,18 @@
 # You typically do not need to edit this file
 
 packages = [
-  { name = "gleam_json", version = "0.5.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "thoas"], otp_app = "gleam_json", source = "hex", outer_checksum = "E42443C98AA66E30143C24818F2CEA801491C10CE6B1A5EDDF3FC4ABDC7601CB" },
-  { name = "gleam_stdlib", version = "0.22.1", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "9C6C66EDAAFD097267089565488DEDFC111A0497DE9CB2C42248E26330CC48E9" },
-  { name = "gleam_synapses", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_json", "minigen", "gleam_stdlib", "gleam_zlists"], otp_app = "gleam_synapses", source = "hex", outer_checksum = "B8D86A43EADC88D951AC9B3E40F667AFCDB30BA13485123E503041FBA542DE04" },
-  { name = "gleam_zlists", version = "0.0.4", build_tools = ["gleam"], requirements = ["gleam_stdlib", "zlists"], otp_app = "gleam_zlists", source = "hex", outer_checksum = "A71998C938A90475051845960ABD73647DB9734088E78A58B0CDFC41B1486461" },
-  { name = "gleeunit", version = "0.6.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "5BF486C3E135B7F5ED8C054925FC48E5B2C79016A39F416FD8CF2E860520EE55" },
-  { name = "minigen", version = "0.0.3", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "minigen", source = "hex", outer_checksum = "F74D7B2BF5E05A493BF2048BB557F8FC08AA93EB5A6664FC66FD5A69C3A57B6A" },
-  { name = "thoas", version = "0.3.0", build_tools = ["rebar3"], requirements = [], otp_app = "thoas", source = "hex", outer_checksum = "B8E1F8C8FAD317C0B75239A9234CB093DE1FB8BE7BA3E41433FF80A0B3353973" },
+  { name = "gleam_json", version = "2.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_json", source = "hex", outer_checksum = "CB10B0E7BF44282FB25162F1A24C1A025F6B93E777CCF238C4017E4EEF2CDE97" },
+  { name = "gleam_stdlib", version = "0.40.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "86606B75A600BBD05E539EB59FABC6E307EEEA7B1E5865AFB6D980A93BCB2181" },
+  { name = "gleam_synapses", version = "1.0.1", build_tools = ["gleam"], requirements = ["gleam_json", "gleam_stdlib", "gleam_zlists", "minigen"], otp_app = "gleam_synapses", source = "hex", outer_checksum = "2097F516EF2131B6FCE3D2058C787632D7BFDEE3B91AFD3CBF669D43CE722BCE" },
+  { name = "gleam_zlists", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "zlists"], otp_app = "gleam_zlists", source = "hex", outer_checksum = "DCA7EAAAB38C0BB3A16E7490EFF51DA0C2355A63B60BC3DD98752FDE96314B94" },
+  { name = "gleeunit", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "F7A7228925D3EE7D0813C922E062BFD6D7E9310F0BEE585D3A42F3307E3CFD13" },
+  { name = "minigen", version = "0.1.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "minigen", source = "hex", outer_checksum = "AFD1E637A7F429C2C57438FB635CCCAD818AA9C39D6F6E1A5200E5952940E2FD" },
   { name = "zlists", version = "0.0.4", build_tools = ["mix", "rebar3"], requirements = [], otp_app = "zlists", source = "hex", outer_checksum = "BABC8B78984E4988DAFEB9E07A77F04D3F8EA208D49E60B6669DA43B0D2C2C4B" },
 ]
 
 [requirements]
-gleam_stdlib = "~> 0.22"
-gleam_synapses = "~> 1.0"
-gleam_zlists = "~> 0.0"
-gleeunit = "~> 0.6"
-minigen = "~> 0.0"
+gleam_stdlib = { version = "~> 0.40.0" }
+gleam_synapses = { version = "~> 1.0.1" }
+gleam_zlists = { version = "~> 1.0.0" }
+gleeunit = { version = "~> 1.2.0" }
+minigen = { version = "~> 0.1.1" }

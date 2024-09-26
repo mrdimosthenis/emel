@@ -1,15 +1,15 @@
-import gleam/map.{Map}
-import gleam_zlists.{ZList} as zlist
+import gleam/dict.{type Dict}
+import gleam_zlists.{type ZList} as zlist
 
 pub fn merge_attr(
-  dataset: ZList(Map(String, String)),
+  dataset: ZList(Dict(String, String)),
   attr: String,
   attr_vals: ZList(String),
-) -> ZList(Map(String, String)) {
+) -> ZList(Dict(String, String)) {
   dataset
   |> zlist.zip(attr_vals)
   |> zlist.map(fn(t) {
     let #(m, s) = t
-    map.insert(m, attr, s)
+    dict.insert(m, attr, s)
   })
 }

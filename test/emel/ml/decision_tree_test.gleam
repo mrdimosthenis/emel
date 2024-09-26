@@ -2,8 +2,8 @@ import emel/datasets/decision
 import emel/datasets/risk
 import emel/lazy/ml/decision_tree as lazy
 import emel/ml/decision_tree as d3
+import gleam/dict
 import gleam/list
-import gleam/map
 import gleam_zlists as zlist
 import gleeunit/should
 
@@ -58,7 +58,7 @@ pub fn decision_tree_test() {
     ["outlook", "temperature", "humidity", "wind"],
     "decision",
   )
-  |> list.map(map.to_list)
+  |> list.map(dict.to_list)
   |> should.equal([
     [#("decision", "Yes"), #("outlook", "Overcast")],
     [#("decision", "No"), #("outlook", "Rain"), #("wind", "Strong")],
@@ -74,7 +74,7 @@ pub fn classifier_test() {
     |> zlist.to_list
     |> d3.classifier(["collateral", "income", "dept", "credit_history"], "risk")
   let item1 =
-    map.from_list([
+    dict.from_list([
       #("collateral", "none"),
       #("income", "high"),
       #("debt", "low"),
@@ -87,7 +87,7 @@ pub fn classifier_test() {
     |> zlist.to_list
     |> d3.classifier(["outlook", "temperature", "humidity", "wind"], "decision")
   let item2 =
-    map.from_list([
+    dict.from_list([
       #("outlook", "Rain"),
       #("temperature", "Hot"),
       #("humidity", "Normal"),

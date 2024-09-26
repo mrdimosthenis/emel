@@ -1,6 +1,6 @@
 import emel/datasets/ut
-import gleam/map.{Map}
-import gleam_zlists.{ZList} as zlist
+import gleam/dict.{type Dict}
+import gleam_zlists.{type ZList} as zlist
 
 fn risks() {
   [
@@ -12,8 +12,8 @@ fn risks() {
 
 fn collaterals() {
   [
-    "none", "none", "none", "none", "none", "adequate", "none", "adequate", "none",
-    "adequate", "none", "none", "none", "none",
+    "none", "none", "none", "none", "none", "adequate", "none", "adequate",
+    "none", "adequate", "none", "none", "none", "none",
   ]
   |> zlist.of_list
 }
@@ -28,24 +28,24 @@ fn incomes() {
 
 fn depts() {
   [
-    "high", "high", "low", "low", "low", "low", "low", "low", "low", "high", "high",
-    "high", "high", "high",
+    "high", "high", "low", "low", "low", "low", "low", "low", "low", "high",
+    "high", "high", "high", "high",
   ]
   |> zlist.of_list
 }
 
 fn credit_histories() {
   [
-    "bad", "unknown", "unknown", "unknown", "unknown", "unknown", "bad", "bad", "good",
-    "good", "good", "good", "good", "bad",
+    "bad", "unknown", "unknown", "unknown", "unknown", "unknown", "bad", "bad",
+    "good", "good", "good", "good", "good", "bad",
   ]
   |> zlist.of_list
 }
 
-pub fn dataset() -> ZList(Map(String, String)) {
+pub fn dataset() -> ZList(Dict(String, String)) {
   risks()
   |> zlist.map(fn(s) { [#("risk", s)] })
-  |> zlist.map(map.from_list)
+  |> zlist.map(dict.from_list)
   |> ut.merge_attr("collateral", collaterals())
   |> ut.merge_attr("income", incomes())
   |> ut.merge_attr("dept", depts())

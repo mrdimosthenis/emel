@@ -10,7 +10,7 @@ pub fn classifier_test() {
   let dataset =
     [#(x, False), #(y, False), #(z, False), #(w, True)]
     |> zlist.of_list
-  let f = lazy.classifier(dataset, 0.5, 0.001, 100, 10000)
+  let f = lazy.classifier(dataset, 0.5, 0.001, 100, 10_000)
   should.equal(f(x), False)
   should.equal(f(y), False)
   should.equal(f(z), False)

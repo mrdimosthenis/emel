@@ -3,7 +3,7 @@
 //// It makes classifications using the maximum _posteriori_ decision rule in a Bayesian setting.
 
 import emel/lazy/ml/naive_bayes as lazy
-import gleam/map.{Map}
+import gleam/dict.{type Dict}
 import gleam_zlists as zlist
 
 /// Returns the function that classifies an item by using the _Naive Bayes Algorithm_.
@@ -32,9 +32,9 @@ import gleam_zlists as zlist
 /// % "Yes"
 /// ```
 pub fn classifier(
-  data: List(Map(String, String)),
+  data: List(Dict(String, String)),
   features: List(String),
   class: String,
-) -> fn(Map(String, String)) -> String {
+) -> fn(Dict(String, String)) -> String {
   lazy.classifier(zlist.of_list(data), zlist.of_list(features), class)
 }

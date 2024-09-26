@@ -1,8 +1,8 @@
 import emel/lazy/ml/neural_network as nn
 import emel/utils/result as ut_res
-import gleam_zlists.{ZList} as zlist
-import gleam_synapses/model/net_elems/network/network.{Network}
+import gleam_synapses/model/net_elems/network/network.{type Network}
 import gleam_synapses/model/net_elems/network/network_serialized
+import gleam_zlists.{type ZList} as zlist
 import minigen
 
 fn initial_network(inputs: ZList(ZList(Float)), seed: Int) -> Network {

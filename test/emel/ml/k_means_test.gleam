@@ -9,7 +9,7 @@ pub fn clusters_test() {
   |> lazy.clusters(2, 1000)
   |> zlist.map(ut_zlist.to_list_of_lists)
   |> zlist.to_list
-  |> should.equal([[[1.0, 1.0], [2.0, 1.0]], [[4.0, 3.0], [5.0, 4.0]]])
+  |> should.equal([[[2.0, 1.0], [1.0, 1.0]], [[4.0, 3.0], [5.0, 4.0]]])
 
   [
     [0.0, 0.0],
@@ -26,7 +26,7 @@ pub fn clusters_test() {
   |> zlist.to_list
   |> should.equal([
     [[0.1, 0.1], [0.0, 0.0]],
-    [[4.0, 4.0], [4.3, 4.3], [4.4, 4.4]],
+    [[4.3, 4.3], [4.0, 4.0], [4.4, 4.4]],
     [[9.9, 9.9], [9.0, 9.0]],
   ])
 }

@@ -1,9 +1,9 @@
+import emel/lazy/math/geometry
 import emel/utils/result as ut_res
 import emel/utils/zlist as ut_zlist
-import emel/lazy/math/geometry
 import gleam/pair
-import gleam/set.{Set}
-import gleam_zlists.{ZList} as zlist
+import gleam/set.{type Set}
+import gleam_zlists.{type ZList} as zlist
 
 fn point_groups(
   points: ZList(ZList(Float)),
